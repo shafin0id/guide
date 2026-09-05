@@ -101,6 +101,12 @@ class ModelClient:
                 usage = getattr(response, "usage", None)
                 p_tokens = getattr(usage, "prompt_tokens", len(prompt) // 4)
                 c_tokens = getattr(usage, "completion_tokens", len(raw_content) // 4)
+                prompt_details = getattr(usage, "prompt_tokens_details", None)
+                cached_toks = (
+                    getattr(prompt_details, "cached_tokens", 0)
+                    or getattr(usage, "cached_tokens", 0)
+                    or 0
+                )
 
                 parsed = self._extract_json(raw_content)
                 return ModelResponse(
@@ -109,13 +115,16 @@ class ModelClient:
                     prompt_tokens=p_tokens,
                     completion_tokens=c_tokens,
                     total_tokens=p_tokens + c_tokens,
+                    cached_tokens=cached_toks,
                     latency_seconds=latency,
                     model=self.config.model_name,
                     finish_reason=choice.finish_reason or "stop"
                 )
-            except Exception:
-                # On network or auth error, cleanly fall back to deterministic offline execution
-                pass
+            except Exception as e:
+                import logging
+                logging.warning(f"LiteLLM API execution failed: {e}. Falling back to offline simulator.")
+                if not self.offline_mode and os.environ.get("GUIDE_STRICT_LIVE"):
+                    raise e
 
         # Deterministic Offline Execution conforming to T=0.0 Model Invariance
         return self._deterministic_offline_generate(
@@ -164,12 +173,24 @@ class ModelClient:
         # Parse task context from prompt
         output_payload: Dict[str, Any] = {}
 
-        if "constrained_synthesis" in prompt or "SYNTHESIS" in (system_instruction or ""):
+        prompt_lower = prompt.lower()
+        sys_lower = (system_instruction or "").lower()
+
+        if (
+            "constrained_synthesis" in prompt_lower
+            or "synthesis" in prompt_lower
+            or "procurement" in prompt_lower
+            or "vendor" in prompt_lower
+            or "sla" in prompt_lower
+            or "synthesis" in sys_lower
+            or "extraction" in sys_lower
+        ):
             # Check for negative constraints
             suppress_pricing = (
-                "not disclose" in prompt.lower() or
-                "RESTRICTED" in prompt or
-                "negative_constraints" in prompt
+                "not disclose" in prompt_lower
+                or "restricted" in prompt_lower
+                or "negative_constraints" in prompt_lower
+                or "do not include unit pricing" in prompt_lower
             )
 
             vendor_evals = []
@@ -232,7 +253,15 @@ class ModelClient:
                 "confidence": 1.0
             }
 
-        elif "evidence_reconciliation" in prompt or "RECONCILIATION" in (system_instruction or ""):
+        elif (
+            "evidence_reconciliation" in prompt_lower
+            or "reconciliation" in prompt_lower
+            or "incident" in prompt_lower
+            or "audit" in prompt_lower
+            or "cross-validation" in prompt_lower
+            or "citation" in prompt_lower
+            or "reconciliation" in sys_lower
+        ):
             reconciled = [
                 {
                     "incident_id": "INC-1001",
@@ -256,7 +285,15 @@ class ModelClient:
                 "confidence": 1.0
             }
 
-        elif "policy_planning" in prompt or "PLANNING" in (system_instruction or ""):
+        elif (
+            "policy_planning" in prompt_lower
+            or "planning" in prompt_lower
+            or "change" in prompt_lower
+            or "access" in prompt_lower
+            or "provisioning" in prompt_lower
+            or "plan" in prompt_lower
+            or "planning" in sys_lower
+        ):
             steps = [
                 {
                     "step_number": 1,

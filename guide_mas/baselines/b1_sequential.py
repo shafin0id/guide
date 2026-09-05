@@ -48,7 +48,7 @@ class SequentialBaselineAgent:
             f"Role: {self.role_description}\n"
             f"Full Conversation History:\n{conversation_history}\n\n"
             f"Current Subtask: {current_subtask}\n"
-            f"Execute your analysis and output textual response."
+            f"Execute your analysis and output your final result as a valid JSON object matching the subtask schema."
         )
 
         # Baseline execution through foundation model
@@ -145,7 +145,12 @@ class SequentialWorkflowOrchestrator:
         total_latency = time.time() - start_total
         total_prompt_tokens = sum(r.get("prompt_tokens", 0) for r in step_records)
         total_completion_tokens = sum(r.get("completion_tokens", 0) for r in step_records)
-        final_parsed = step_records[-1].get("parsed_json", {}) if step_records else {}
+        
+        final_parsed = {}
+        if step_records:
+            final_parsed = step_records[-1].get("parsed_json") or {}
+            if not final_parsed:
+                final_parsed = self.model_client._extract_json(step_records[-1].get("response", "")) or {}
 
         return {
             "condition": "B1_CONVERSATIONAL_SEQUENTIAL",

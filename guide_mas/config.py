@@ -11,6 +11,12 @@ from typing import Dict, List, Optional
 from pydantic import BaseModel, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 
 class SensitivityLevel(str, Enum):
     """Hierarchical enterprise data sensitivity classification."""
@@ -103,7 +109,9 @@ class GUIDEConfig(BaseSettings):
 
     model_config = SettingsConfigDict(
         arbitrary_types_allowed=True,
-        env_prefix="GUIDE_"
+        env_prefix="GUIDE_",
+        env_file=".env",
+        extra="ignore"
     )
 
 
