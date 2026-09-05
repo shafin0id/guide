@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=68.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "guide-mas"
+version = "2.4.0"
+description = "GUIDE: Policy-Aware Orchestration Framework for Enterprise LLM Multi-Agent Workflows"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+authors = [
+    {name = "Shafin Ahmad", email = "tp0126417@mail.apu.edu.my"}
+]
+keywords = [
+    "multi-agent-systems",
+    "orchestration",
+    "bayesian-ucb",
+    "policy-enforcement",
+    "cryptographic-lineage",
+    "enterprise-ai",
+    "llm"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence"
+]
+dependencies = [
+    "pydantic>=2.5.0",
+    "pydantic-settings>=2.1.0",
+    "cryptography>=41.0.0",
+    "scipy>=1.10.0",
+    "numpy>=1.24.0",
+    "litellm>=1.0.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0"
+]
+
+[project.scripts]
+guide-eval = "guide_mas.evaluation.runner:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["guide_mas*"]
