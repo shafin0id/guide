@@ -13,7 +13,7 @@
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Methodology: Design Science Research](https://img.shields.io/badge/Methodology-DSR%20(Hevner%20et%20al.)-orange.svg)](https://doi.org/10.2307/25148625)
 [![Status: Production-Grade](https://img.shields.io/badge/Status-Production--Grade-brightgreen.svg)](#)
-[![Tests: 51 Passed](https://img.shields.io/badge/Tests-51%20Passed%20(100%25)-success.svg)](#)
+[![Tests: 61 Passed](https://img.shields.io/badge/Tests-61%20Passed%20(100%25)-success.svg)](#)
 [![Academic Venue: APU MSc AI / IEEE TSC](https://img.shields.io/badge/Submission-IEEE%20TSC%20%2F%20ACM%20TOSEM-purple.svg)](#)
 
 > **Policy-Aware Orchestration Framework for Enterprise LLM Multi-Agent Workflows**  
@@ -276,7 +276,7 @@ doc_ref = cas.store("Enterprise Vendor Agreement 2026")
 
 # 2. Setup Bayes-UCB Coordinator and CAMCO Policy Gate
 coordinator = BayesUCBCoordinator(["agent_synthesis", "agent_backup"], ["synthesis"])
-gate = CAMCOPolicyGate({"permitted_tools": ["procurement_db"], "max_query_limit": 100})
+gate = CAMCOPolicyGate({"permitted_tools": ["procurement_db"], "max_data_sensitivity": "INTERNAL", "max_query_limit": 100})
 priv_key, pub_key = CryptographicHandoffManager.generate_keypair()
 
 # 3. Route, Seal State with Ed25519, Validate Action, and Audit
@@ -301,14 +301,14 @@ print(f"Workflow Complete. Status: {output['status']}, Decision: {decision}, Rec
 
 ## 8. Benchmark Suite & Replication Guide
 
-### 7.1 The 18 Enterprise Benchmark Tasks
+### 8.1 The 18 Enterprise Benchmark Tasks
 
 The evaluation suite comprises 18 distinct real-world tasks stratified across 3 domains and 3 complexity tiers:
 - **Family 1: Constrained Information Synthesis (Tasks T01–T06):** Extracting procurement SLAs under non-disclosure constraints (T01–T02: Low, T03–T04: Medium, T05–T06: High).
 - **Family 2: Evidence Reconciliation with References (Tasks T07–T12):** Cross-referencing multi-source IT outage logs against documentary citations with 0% hallucination (T07–T08: Low, T09–T10: Medium, T11–T12: High).
 - **Family 3: Policy-Sensitive Task Planning (Tasks T13–T18):** Formulating IT change-management and access-provisioning plans under zero-trust bounds (T13–T14: Low, T15–T16: Medium, T17–T18: High).
 
-### 7.2 The 12 Adversarial Robustness Scenarios
+### 8.2 The 12 Adversarial Robustness Scenarios
 
 12 stress-testing scenarios targeting GUIDE's architectural controls:
 - **R01 (Ambiguity Attack):** Underspecified inputs triggering deterministic fallback.
@@ -324,12 +324,14 @@ The evaluation suite comprises 18 distinct real-world tasks stratified across 3 
 - **R11 (Parameter Limit Overflow):** `LIMIT 100000` clamped to 100 via Euclidean projection $\Pi_{\mathbf{C}}$.
 - **R12 (Sleeper Agent Anomaly):** High-confidence failure ($\kappa \ge 0.80$) triggers trust freeze ($\beta += 5.0$) and re-routing.
 
-### 7.3 Executing the 270 Comparative & 24 Robustness Runs
+### 8.3 Executing the 270 Comparative & 24 Robustness Runs
+
+> **Note on Evaluation Suites:** `guide_mas.evaluation.runner` executes the native internal verification suite (294 runs). To replicate the 4-framework cross-comparison in Section 4, use the companion repository [guide-bench](https://github.com/shafin0id/guide-bench) via `mas-bench --suite all`.
 
 Run the complete formal evaluation suite:
 
 ```bash
-# 1. Run all 51 unit & integration tests
+# 1. Run all 61 unit & integration tests
 pytest -v
 
 # 2. Execute the complete evaluation runner (270 comparative + 24 robustness runs = 294 runs)

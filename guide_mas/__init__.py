@@ -34,6 +34,7 @@ from guide_mas.core.topology import (
 from guide_mas.core.trace_ledger import HashLinkedTraceLedger
 from guide_mas.storage.content_store import (
     CompactEntityIndexer,
+    ContentAddressableStorage,
     ContentAddressableStore,
 )
 
@@ -61,5 +62,6 @@ __all__ = [
     "AdaptiveTopologyScheduler",
     "TaskNode",
     "ContentAddressableStore",
+    "ContentAddressableStorage",
     "CompactEntityIndexer",
 ]

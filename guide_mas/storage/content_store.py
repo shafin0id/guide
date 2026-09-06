@@ -304,3 +304,7 @@ class CompactEntityIndexer:
         except Exception:
             return content_str
 
+
+# Backward-compatible alias
+ContentAddressableStorage = ContentAddressableStore
+
