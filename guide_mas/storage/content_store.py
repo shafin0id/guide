@@ -6,11 +6,12 @@ and leverage cryptographic content integrity across multi-agent delegation hops.
 """
 
 import hashlib
+import json
 import os
 from pathlib import Path
 import threading
 import time
-from typing import Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Set, Union
 
 
 class ContentAddressableStore:
@@ -161,3 +162,145 @@ class ContentAddressableStore:
                         child.unlink()
                     except OSError:
                         pass
+
+
+class CompactEntityIndexer:
+    """
+    Indexes verbose structured data payloads into Content Addressable Storage (CAS)
+    and constructs compact entity indices for token-efficient prompt context.
+    Eliminates internal duplication and retains critical fields required by downstream tasks.
+    """
+
+    DEFAULT_CRITICAL_FIELDS: Set[str] = {
+        "vendor_id",
+        "vendor_name",
+        "delivery_sla_days",
+        "uptime_guarantee_pct",
+        "warranty_months",
+        "incident_id",
+        "service",
+        "root_cause",
+        "citation_ref",
+        "verification_status",
+        "step_number",
+        "operation",
+        "resource_class",
+        "data_sensitivity",
+        "plan_id",
+        "status",
+        "severity",
+        "timestamp",
+        "id",
+        "name",
+    }
+
+    def __init__(self, cas_store: Optional[ContentAddressableStore] = None):
+        self.cas_store = cas_store or ContentAddressableStore()
+
+    def create_entity_index(
+        self,
+        raw_data: Any,
+        entity_types: Optional[List[str]] = None,
+        critical_fields: Optional[Set[str]] = None,
+    ) -> Dict[str, Any]:
+        """
+        Offloads full raw payload to CAS and returns a compact index containing
+        only critical attributes and the CAS pointer (_cas_ref).
+
+        Args:
+            raw_data: Arbitrary structured data (dict, list, or JSON string).
+            entity_types: Optional list of entity key names to prioritize.
+            critical_fields: Optional override set of critical attribute keys to preserve.
+
+        Returns:
+            Compact dictionary with minimal fields and '_cas_ref' pointer.
+        """
+        if critical_fields is None:
+            fields_to_keep = self.DEFAULT_CRITICAL_FIELDS
+        else:
+            fields_to_keep = set(critical_fields)
+
+        # 1. Store full raw payload in CAS
+        if isinstance(raw_data, str):
+            raw_str = raw_data
+            try:
+                parsed_data = json.loads(raw_data)
+            except Exception:
+                parsed_data = {"raw_text": raw_data}
+        else:
+            raw_str = json.dumps(raw_data, sort_keys=True, ensure_ascii=False)
+            parsed_data = raw_data
+
+        cas_ref = self.cas_store.store(raw_str)
+
+        # 2. Extract compact entities and eliminate duplicate collections
+        compact_index: Dict[str, Any] = {"_cas_ref": cas_ref}
+
+        if isinstance(parsed_data, list):
+            compact_index["entities"] = [
+                self._filter_entity(item, fields_to_keep)
+                for item in parsed_data
+            ]
+        elif isinstance(parsed_data, dict):
+            seen_collections: List[Any] = []
+            entity_keys = entity_types or [
+                "records", "logs", "incidents", "vendors", "events", "entities", "items"
+            ]
+
+            # Process entity list collections without duplicating identical collections
+            for k in entity_keys:
+                if k in parsed_data and isinstance(parsed_data[k], list):
+                    if any(parsed_data[k] == prev for prev in seen_collections):
+                        continue
+                    seen_collections.append(parsed_data[k])
+                    compact_index[k] = [
+                        self._filter_entity(item, fields_to_keep)
+                        for item in parsed_data[k]
+                    ]
+
+            # Process any remaining fields
+            for k, v in parsed_data.items():
+                if k in entity_keys or k.startswith("_"):
+                    continue
+                if isinstance(v, list):
+                    if any(v == prev for prev in seen_collections):
+                        continue
+                    seen_collections.append(v)
+                    compact_index[k] = [
+                        self._filter_entity(item, fields_to_keep)
+                        for item in v
+                    ]
+                elif isinstance(v, dict):
+                    compact_index[k] = self._filter_entity(v, fields_to_keep)
+                elif (
+                    k in fields_to_keep
+                    or k.endswith("_id")
+                    or k.startswith("status")
+                    or isinstance(v, (int, float, bool))
+                ):
+                    compact_index[k] = v
+        else:
+            compact_index["summary"] = str(parsed_data)
+
+        return compact_index
+
+    @classmethod
+    def _filter_entity(cls, entity: Any, fields_to_keep: Set[str]) -> Any:
+        if not isinstance(entity, dict):
+            return entity
+        filtered: Dict[str, Any] = {}
+        for k, v in entity.items():
+            if k in fields_to_keep:
+                filtered[k] = v
+            elif isinstance(v, (int, float, bool)) and not k.startswith("_"):
+                filtered[k] = v
+        return filtered
+
+    def retrieve_raw(self, cas_ref: str) -> Any:
+        """Retrieves raw content from CAS and deserializes if JSON."""
+        content_str = self.cas_store.retrieve(cas_ref)
+        try:
+            return json.loads(content_str)
+        except Exception:
+            return content_str
+

@@ -16,7 +16,12 @@ from guide_mas.prompts.system_prompts import (
     RECONCILIATION_SPECIALIST_PROMPT,
     SYNTHESIS_SPECIALIST_PROMPT,
 )
-from guide_mas.prompts.templates import format_task_prompt, get_static_prefix_for_domain
+from guide_mas.prompts.templates import (
+    clean_prompt_constraints,
+    format_chat_prompt,
+    format_task_prompt,
+    get_static_prefix_for_domain,
+)
 
 
 def test_static_prefix_byte_invariance():
@@ -71,3 +76,61 @@ def test_dynamic_execution_context_assembly():
     assert refs[0] in prompt
     assert "<execution_context>" in prompt
     assert "</execution_context>" in prompt
+
+
+def test_clean_prompt_constraints_filters_crypto_and_camco():
+    """Verifies that synthetic crypto directives and redundant CAMCO text are filtered."""
+    raw_constraints = [
+        "Suppress unit pricing",
+        "Log to hash-linked trace ledger",
+        "Verify Ed25519 signature before execution",
+        "Bound query limit strictly to 50",
+        "CAMCO pre-execution projection must validate arguments",
+        "Compute SHA-256 state hash for verification",
+        "Ensure high uptime guarantee",
+    ]
+
+    cleaned = clean_prompt_constraints(raw_constraints)
+
+    assert "Suppress unit pricing" in cleaned
+    assert "Bound query limit strictly to 50" in cleaned
+    assert "Ensure high uptime guarantee" in cleaned
+
+    # Synthetic crypto filtered
+    assert not any("trace ledger" in c.lower() for c in cleaned)
+    assert not any("ed25519" in c.lower() for c in cleaned)
+    assert not any("sha-256" in c.lower() for c in cleaned)
+
+    # Redundant CAMCO filtered
+    assert not any("camco pre-execution" in c.lower() for c in cleaned)
+
+
+def test_format_chat_prompt_byte_identical_system_role():
+    """Verifies that format_chat_prompt produces byte-invariant system prompts for KV cache reuse."""
+    messages1 = format_chat_prompt(
+        domain="constrained_synthesis",
+        objective_s0="Task 1 Objective",
+        subtask_goal="Task 1 Subtask",
+        mandatory_constraints=["Constraint 1", "Log to hash-linked trace ledger"],
+        input_refs=["sha256:1111"],
+    )
+    messages2 = format_chat_prompt(
+        domain="constrained_synthesis",
+        objective_s0="Task 2 Objective entirely different",
+        subtask_goal="Task 2 Subtask entirely different",
+        mandatory_constraints=["Constraint 2"],
+        input_refs=["sha256:2222"],
+    )
+
+    # System role must be 100% byte identical across completely different tasks in the same domain
+    assert messages1[0]["role"] == "system"
+    assert messages2[0]["role"] == "system"
+    assert messages1[0]["content"] == messages2[0]["content"]
+    assert messages1[0]["content"].encode("utf-8") == messages2[0]["content"].encode("utf-8")
+
+    # Dynamic parts in user prompt
+    assert "Task 1 Objective" in messages1[1]["content"]
+    assert "Task 2 Objective entirely different" in messages2[1]["content"]
+    # Filtered crypto not in prompt
+    assert "trace ledger" not in messages1[1]["content"]
+

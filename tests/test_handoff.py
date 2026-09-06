@@ -13,7 +13,7 @@ Verifies:
 
 import time
 import pytest
-from guide_mas.core.handoff import CryptographicHandoffManager, IntentPackage
+from guide_mas.core.handoff import CryptographicHandoffManager, IntentPackage, Tier, TieredHandoffManager
 
 
 @pytest.fixture
@@ -202,3 +202,100 @@ def test_rejection_altered_root_objective(keys):
         CryptographicHandoffManager.verify_and_unpack(
             envelope, pub_key, expected_prev_hash=prev_hash, expected_objective=original_s0
         )
+
+
+def test_tiered_handoff_internal_execution_and_verification():
+    """Verifies that Tier.INTERNAL performs in-memory state handoff without Ed25519 signing overhead."""
+    prev_hash = "1" * 64
+    obj = "Internal task handoff"
+
+    pkg = IntentPackage(
+        run_id="run_internal",
+        handoff_id="hop_int_1",
+        parent_hash=prev_hash,
+        objective=obj,
+        expiry_time=time.time() + 60.0,
+        findings={"stage_1_done": True}
+    )
+
+    handoff_dict = TieredHandoffManager.execute_handoff(
+        tier=Tier.INTERNAL,
+        package=pkg,
+        prev_hash=prev_hash
+    )
+
+    assert handoff_dict["tier"] == "INTERNAL"
+    assert handoff_dict["signature"] is None
+    assert handoff_dict["package_hash"] is not None
+
+    unpacked = TieredHandoffManager.verify_handoff(
+        payload=handoff_dict,
+        expected_prev_hash=prev_hash,
+        expected_objective=obj
+    )
+    assert unpacked.run_id == "run_internal"
+    assert unpacked.findings == {"stage_1_done": True}
+
+
+def test_tiered_handoff_boundary_requires_and_validates_signature(keys):
+    """Verifies that Tier.BOUNDARY signs with Ed25519 and verifies signature."""
+    priv_key, pub_key = keys
+    prev_hash = "2" * 64
+    obj = "Boundary delivery package"
+
+    pkg = IntentPackage(
+        run_id="run_boundary",
+        handoff_id="hop_bnd_final",
+        parent_hash=prev_hash,
+        objective=obj,
+        expiry_time=time.time() + 60.0,
+        findings={"final_result": "SUCCESS"}
+    )
+
+    sealed = TieredHandoffManager.execute_handoff(
+        tier=Tier.BOUNDARY,
+        package=pkg,
+        prev_hash=prev_hash,
+        private_key=priv_key
+    )
+
+    assert sealed["tier"] == "BOUNDARY"
+    assert sealed["signature"] is not None
+
+    unpacked = TieredHandoffManager.verify_handoff(
+        payload=sealed,
+        expected_prev_hash=prev_hash,
+        expected_objective=obj,
+        public_key=pub_key
+    )
+    assert unpacked.run_id == "run_boundary"
+    assert unpacked.findings == {"final_result": "SUCCESS"}
+
+
+def test_tiered_handoff_internal_rejects_altered_objective():
+    """Verifies that Tier.INTERNAL still strictly enforces S_0 immutability."""
+    prev_hash = "3" * 64
+    original_s0 = "Preserve enterprise data classification rules"
+    modified_s0 = "Violate enterprise data classification rules"
+
+    pkg = IntentPackage(
+        run_id="run_int_tamper",
+        handoff_id="hop_tamper",
+        parent_hash=prev_hash,
+        objective=modified_s0,
+        expiry_time=time.time() + 60.0
+    )
+
+    handoff_dict = TieredHandoffManager.execute_handoff(
+        tier=Tier.INTERNAL,
+        package=pkg,
+        prev_hash=prev_hash
+    )
+
+    with pytest.raises(ValueError, match="REJECTED_INTEGRITY: Immutable objective S_0 has been altered"):
+        TieredHandoffManager.verify_handoff(
+            payload=handoff_dict,
+            expected_prev_hash=prev_hash,
+            expected_objective=original_s0
+        )
+

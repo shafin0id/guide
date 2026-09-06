@@ -7,8 +7,37 @@ Enforces zero-trust boundaries returning ALLOW, BOUNDED, or DENIED_BY_POLICY.
 """
 
 from dataclasses import dataclass
+from enum import Enum
 from typing import Any, Dict, List, Optional, Tuple
 import numpy as np
+
+
+class PolicyDecision(str, Enum):
+    """Standard policy decisions emitted by CAMCO gate."""
+    ALLOW = "ALLOW"
+    BOUNDED = "BOUNDED"
+    DENY = "DENY"
+    DENIED_BY_POLICY = "DENIED_BY_POLICY"
+
+
+@dataclass
+class PolicyEvaluationResult:
+    decision: PolicyDecision
+    validated_params: Dict[str, Any]
+    is_blocked: bool
+    error: Optional[str] = None
+
+
+@dataclass
+class ActionProposal:
+    """Action proposal for open-domain tool use evaluation."""
+    agent_id: str
+    tool_name: str
+    tool_arguments: Dict[str, Any]
+    permitted_tools: List[str]
+    data_sensitivity: str = "PUBLIC"
+    is_write_effect: bool = False
+    target_resource: str = "default"
 
 
 @dataclass(frozen=True)
@@ -210,3 +239,45 @@ class CAMCOPolicyGate:
     ) -> Tuple[str, Dict[str, Any]]:
         """Convenience alias for validate_and_project."""
         return self.validate_and_project(action, params)
+
+    def evaluate(self, proposal: ActionProposal) -> PolicyEvaluationResult:
+        """
+        Evaluates an ActionProposal against CAMCO zero-trust policy rules.
+        """
+        # If proposal provides permitted_tools, enforce tool allow-list
+        if proposal.permitted_tools is not None:
+            if proposal.tool_name not in proposal.permitted_tools:
+                return PolicyEvaluationResult(
+                    decision=PolicyDecision.DENY,
+                    validated_params=proposal.tool_arguments,
+                    is_blocked=True,
+                    error=f"Tool '{proposal.tool_name}' not in permitted tools: {proposal.permitted_tools}"
+                )
+
+        # Check write effect
+        if proposal.is_write_effect and not self.allow_write:
+            return PolicyEvaluationResult(
+                decision=PolicyDecision.DENY,
+                validated_params=proposal.tool_arguments,
+                is_blocked=True,
+                error="Write operations prohibited by policy"
+            )
+
+        # Check sensitivity
+        prop_sens = self.SENSITIVITY_HIERARCHY.get(proposal.data_sensitivity.upper(), 4)
+        max_sens = self.SENSITIVITY_HIERARCHY.get(self.max_data_sensitivity, 1)
+        if prop_sens > max_sens:
+            return PolicyEvaluationResult(
+                decision=PolicyDecision.DENY,
+                validated_params=proposal.tool_arguments,
+                is_blocked=True,
+                error=f"Data sensitivity '{proposal.data_sensitivity}' exceeds clearance '{self.max_data_sensitivity}'"
+            )
+
+        return PolicyEvaluationResult(
+            decision=PolicyDecision.ALLOW,
+            validated_params=proposal.tool_arguments,
+            is_blocked=False,
+            error=None
+        )
+

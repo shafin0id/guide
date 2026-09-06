@@ -10,7 +10,7 @@ Verifies:
 """
 
 import pytest
-from guide_mas.core.topology import DynamicTopologyEngine, TaskNode
+from guide_mas.core.topology import AdaptiveTopologyScheduler, DynamicTopologyEngine, TaskNode
 
 
 def test_acyclic_topological_sort():
@@ -92,3 +92,62 @@ def test_critical_path_latency_speedup():
     # Parallel: 3 stages * 2.4s = 7.2s (50.0% speedup)
     assert latency_report["guide_latency_seconds"] == 7.2
     assert latency_report["latency_reduction_pct"] == 50.0
+
+
+def test_adaptive_topology_scheduler_coalesce_small_workflow():
+    """Verifies that workflows with <= 4 subtasks coalesce into exactly 2 execution stages."""
+    subtasks = [
+        "Query vendor database for SLA terms",
+        "Extract delivery timelines and warranty constraints",
+        "Cross-reference compliance certification",
+        "Synthesize final evaluation JSON report"
+    ]
+    scheduler = AdaptiveTopologyScheduler.from_subtasks(subtasks, task_id="T01")
+    stages = scheduler.get_coalesced_stages()
+
+    # 4 subtasks -> 2 coalesced stages
+    assert len(stages) == 2
+    stage_1_nodes = stages[0]
+    stage_2_nodes = stages[1]
+    assert len(stage_1_nodes) == 1
+    assert len(stage_2_nodes) == 1
+
+    # Check that descriptions combine subtasks
+    assert "Query vendor database" in stage_1_nodes[0].description
+    assert "Extract delivery timelines" in stage_1_nodes[0].description
+    assert "Cross-reference compliance" in stage_2_nodes[0].description
+    assert "Synthesize final evaluation" in stage_2_nodes[0].description
+
+    # Check stage dependencies
+    assert stage_1_nodes[0].dependencies == []
+    assert stage_2_nodes[0].dependencies == ["stage_1"]
+
+
+def test_adaptive_topology_scheduler_deep_multihop_workflow():
+    """Verifies that deep multi-hop workflows (e.g. 8 subtasks) coalesce into 4 stages."""
+    subtasks = [f"Step {i}: execute action {i}" for i in range(1, 9)]
+    scheduler = AdaptiveTopologyScheduler.from_subtasks(subtasks, task_id="GAIA01")
+    stages = scheduler.get_coalesced_stages()
+
+    # 8 subtasks -> 4 coalesced stages
+    assert len(stages) == 4
+    for stage in stages:
+        assert len(stage) == 1
+
+    # 6 subtasks -> 3 coalesced stages
+    subtasks_6 = [f"Step {i}: execute action {i}" for i in range(1, 7)]
+    scheduler_6 = AdaptiveTopologyScheduler.from_subtasks(subtasks_6, task_id="GAIA02")
+    stages_6 = scheduler_6.get_coalesced_stages()
+    assert len(stages_6) == 3
+
+
+def test_adaptive_topology_scheduler_single_or_empty():
+    """Verifies edge cases for empty or single subtask DAGs."""
+    empty_scheduler = AdaptiveTopologyScheduler()
+    assert empty_scheduler.get_coalesced_stages() == []
+
+    single_scheduler = AdaptiveTopologyScheduler.from_subtasks(["Single atomic task"])
+    single_stages = single_scheduler.get_coalesced_stages()
+    assert len(single_stages) == 1
+    assert len(single_stages[0]) == 1
+

@@ -153,3 +153,105 @@ class DynamicTopologyEngine:
             "total_nodes": len(self.nodes),
             "total_stages": len(stages),
         }
+
+
+class AdaptiveTopologyScheduler(DynamicTopologyEngine):
+    """
+    Adaptive Topology Scheduler with dynamic stage coalescing.
+    Coalesces fine-grained subtask nodes into optimal execution stages to minimize
+    LLM invocation overhead while preserving causal data dependencies.
+    """
+
+    def get_coalesced_stages(self, target_stages: Optional[int] = None) -> List[List[TaskNode]]:
+        """
+        Partitions the DAG into adaptive coalesced execution stages:
+        - <= 4 subtasks: Coalesced into 2 stages (Exploration/Extraction -> Synthesis/Validation).
+        - 5-7 subtasks: Coalesced into 3 stages.
+        - >= 8 subtasks: Coalesced into 4 stages.
+
+        Returns:
+            List of stages, each containing coalesced TaskNode(s).
+        """
+        topological_order = self.validate_acyclic()
+        n_nodes = len(topological_order)
+
+        if n_nodes == 0:
+            return []
+        if n_nodes == 1:
+            return [[self.nodes[topological_order[0]]]]
+
+        if target_stages is None:
+            if n_nodes <= 4:
+                n_stages = 2
+            elif n_nodes <= 7:
+                n_stages = 3
+            else:
+                n_stages = 4
+        else:
+            n_stages = max(1, min(target_stages, n_nodes))
+
+        coalesced_stages: List[List[TaskNode]] = []
+        for stage_idx in range(n_stages):
+            start = (stage_idx * n_nodes) // n_stages
+            end = ((stage_idx + 1) * n_nodes) // n_stages
+            chunk_task_ids = topological_order[start:end]
+            chunk_nodes = [self.nodes[tid] for tid in chunk_task_ids]
+
+            if not chunk_nodes:
+                continue
+
+            # Identify dominant domain or terminal stage persona
+            domain = chunk_nodes[-1].domain
+            combined_desc = "\n".join(
+                f"- [{node.task_id}] {node.description}" for node in chunk_nodes
+            )
+            deps = [f"stage_{stage_idx}"] if stage_idx > 0 else []
+
+            coalesced_node = TaskNode(
+                task_id=f"stage_{stage_idx + 1}",
+                domain=domain,
+                description=combined_desc,
+                dependencies=deps,
+                estimated_latency=sum(n.estimated_latency for n in chunk_nodes),
+                metadata={
+                    "original_task_ids": chunk_task_ids,
+                    "original_nodes": chunk_nodes,
+                    "stage_index": stage_idx,
+                }
+            )
+            coalesced_stages.append([coalesced_node])
+
+        return coalesced_stages
+
+    def schedule(self, target_stages: Optional[int] = None) -> List[List[TaskNode]]:
+        """Convenience alias for get_coalesced_stages."""
+        return self.get_coalesced_stages(target_stages=target_stages)
+
+    def get_parallel_execution_stages(self, coalesce: bool = False) -> List[List[TaskNode]]:
+        """
+        Overrides DynamicTopologyEngine method to support optional coalesced scheduling.
+        """
+        if coalesce:
+            return self.get_coalesced_stages()
+        return super().get_parallel_execution_stages()
+
+    @classmethod
+    def from_subtasks(
+        cls,
+        subtasks: List[str],
+        task_id: str = "task",
+        default_domain: str = "constrained_synthesis"
+    ) -> "AdaptiveTopologyScheduler":
+        """Factory method to construct an AdaptiveTopologyScheduler directly from subtask strings."""
+        scheduler = cls()
+        for idx, st in enumerate(subtasks):
+            scheduler.add_node(
+                TaskNode(
+                    task_id=f"{task_id}_step{idx + 1}",
+                    domain=default_domain,
+                    description=st,
+                    dependencies=[f"{task_id}_step{idx}"] if idx > 0 else []
+                )
+            )
+        return scheduler
+

@@ -13,7 +13,7 @@ import shutil
 import tempfile
 from pathlib import Path
 import pytest
-from guide_mas.storage.content_store import ContentAddressableStore
+from guide_mas.storage.content_store import CompactEntityIndexer, ContentAddressableStore
 
 
 @pytest.fixture
@@ -75,3 +75,70 @@ def test_concurrent_thread_writes(temp_cas):
 
     assert len(refs) == 50
     assert len(set(refs)) == 50
+
+
+def test_compact_entity_indexer_creation_and_filtering(temp_cas):
+    """Verifies that CompactEntityIndexer offloads full data to CAS and preserves critical attributes."""
+    indexer = CompactEntityIndexer(cas_store=temp_cas)
+
+    raw_payload = {
+        "records": [
+            {
+                "vendor_id": "V-001",
+                "vendor_name": "Apex Cloud Systems",
+                "delivery_sla_days": 3,
+                "uptime_guarantee_pct": 99.95,
+                "secret_internal_pricing": "$12,000/mo",
+                "unrelated_verbose_text": "Extremely long marketing description that bloats prompts" * 50,
+            }
+        ],
+        "status": "ACTIVE",
+    }
+
+    index = indexer.create_entity_index(raw_payload)
+
+    assert "_cas_ref" in index
+    assert index["_cas_ref"].startswith("sha256:")
+    assert temp_cas.has(index["_cas_ref"])
+
+    # Critical fields are retained
+    record = index["records"][0]
+    assert record["vendor_id"] == "V-001"
+    assert record["vendor_name"] == "Apex Cloud Systems"
+    assert record["delivery_sla_days"] == 3
+    assert record["uptime_guarantee_pct"] == 99.95
+
+    # Non-critical bloated fields are removed
+    assert "secret_internal_pricing" not in record
+    assert "unrelated_verbose_text" not in record
+
+    # Full raw payload is recoverable via CAS
+    recovered = indexer.retrieve_raw(index["_cas_ref"])
+    assert recovered["records"][0]["vendor_id"] == "V-001"
+    assert "secret_internal_pricing" in recovered["records"][0]
+
+
+def test_compact_entity_indexer_deduplication(temp_cas):
+    """Verifies that duplicated collections (e.g. records vs vendors) are deduplicated."""
+    indexer = CompactEntityIndexer(cas_store=temp_cas)
+
+    data = [
+        {"vendor_id": "V-001", "vendor_name": "Apex", "delivery_sla_days": 2},
+        {"vendor_id": "V-002", "vendor_name": "Beacon", "delivery_sla_days": 5},
+    ]
+
+    # Raw tool output having 3-fold internal duplication
+    duplicated_payload = {
+        "records": data,
+        "vendors": data,
+        "items": data,
+    }
+
+    index = indexer.create_entity_index(duplicated_payload)
+
+    # Only one collection should be retained, avoiding 3x token blowup
+    assert "records" in index
+    assert "vendors" not in index
+    assert "items" not in index
+    assert len(index["records"]) == 2
+

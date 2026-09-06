@@ -18,11 +18,24 @@ from guide_mas.config import (
     set_config,
 )
 from guide_mas.core.coordinator import BayesUCBCoordinator
-from guide_mas.core.handoff import CryptographicHandoffManager, IntentPackage
+from guide_mas.core.handoff import (
+    CryptographicHandoffManager,
+    GovernanceTier,
+    IntentPackage,
+    Tier,
+    TieredHandoffManager,
+)
 from guide_mas.core.policy_gate import ActionRecord, CAMCOPolicyGate
-from guide_mas.core.topology import DynamicTopologyEngine, TaskNode
+from guide_mas.core.topology import (
+    AdaptiveTopologyScheduler,
+    DynamicTopologyEngine,
+    TaskNode,
+)
 from guide_mas.core.trace_ledger import HashLinkedTraceLedger
-from guide_mas.storage.content_store import ContentAddressableStore
+from guide_mas.storage.content_store import (
+    CompactEntityIndexer,
+    ContentAddressableStore,
+)
 
 __version__ = "2.4.0"
 __author__ = "Shafin Ahmad"
@@ -37,11 +50,16 @@ __all__ = [
     "ComplexityTier",
     "BayesUCBCoordinator",
     "CryptographicHandoffManager",
+    "TieredHandoffManager",
+    "Tier",
+    "GovernanceTier",
     "IntentPackage",
     "CAMCOPolicyGate",
     "ActionRecord",
     "HashLinkedTraceLedger",
     "DynamicTopologyEngine",
+    "AdaptiveTopologyScheduler",
     "TaskNode",
     "ContentAddressableStore",
+    "CompactEntityIndexer",
 ]
