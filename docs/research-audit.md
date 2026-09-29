@@ -159,3 +159,10 @@ Candidate directions that could turn this into a stronger (Q1/Q2-plausible) cont
 | P3 | Pilot (6 tasks, excluded) → freeze protocol → formal 294 runs of baseline GUIDE | Frozen, reproducible baseline dataset |
 | P4 | Improvements with pre-registered hypotheses (provenance-aware gate, constraint-ID fidelity) + ablations + adversarial suite | Baseline vs improved with stats; negative results kept |
 | P5 | Docs set, ADRs, CI, packaging extras | Another researcher can reproduce from README |
+
+## 12. Resolution status (2026-09-29, branch `research/evidence-based-rebuild`)
+
+E1–E6, E8, E10, E11 are fixed and regression-tested (`tests/regression/`). E7/E9 are resolved by withdrawal: no
+third-party framework or named-benchmark claim remains. All §4–§6 mechanism issues were addressed, except those listed as
+explicit limitations (in-process keys, no rollback, no human escalation, sequential execution). Results:
+`docs/experiments.md`. Scope deviations: `docs/submission-alignment.md`.

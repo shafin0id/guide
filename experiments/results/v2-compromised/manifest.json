@@ -1,0 +1,46 @@
+{
+  "suite": "compromised",
+  "conditions": [
+    "B1",
+    "B2",
+    "P",
+    "GPLUS",
+    "GPLUS-provenance",
+    "GPLUS-gate",
+    "GPLUS-signing"
+  ],
+  "reps": 5,
+  "seed": 2026,
+  "provider": "openai-compatible",
+  "model_requested": "deepseek-chat",
+  "base_url": "https://api.deepseek.com",
+  "settings": {
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "seed": 42,
+    "json_mode": true
+  },
+  "git": {
+    "commit": "cf515c9c0d283845704af3e9a46e8c19605b2a93",
+    "dirty": false
+  },
+  "python": "3.12.13",
+  "platform": "macOS-26.5.2-arm64-arm-64bit",
+  "tasks": {
+    "K4": "db3a2d66cb3c8734",
+    "K3": "88c188084d90ecf0",
+    "K1": "d0f64be64f0c9183",
+    "K2": "12bea64a21f93f1f"
+  },
+  "started_utc": "2026-09-29T14:51:56Z",
+  "items_total": 140,
+  "items_resumed_skipped": 0,
+  "reportable": true,
+  "finished_utc": "2026-09-29T14:55:09Z",
+  "model_ids_observed": [
+    "deepseek-flash"
+  ],
+  "status_counts_this_session": {
+    "completed": 140
+  }
+}

@@ -17,9 +17,10 @@ marked ✓ were checked online on 2026-09-29; others are from the submitted lite
 
 ## 2. What the evidence actually supports (see docs/experiments.md)
 
-1. On nominal tasks with a capable model, none of the controls improved success or fidelity (null result, practical-significance criterion not met). Their overhead was small (≈3 % median wall time).
-2. Under attack and fault conditions, specific controls prevented specific failures, and the ablations show which: the gate for writes and data exposure, signing for in-transit tampering, the provenance guard for in-domain sink steering.
-3. Per-principal keys are necessary for attribution (spoofing 0 % → 100 % detected).
+1. On nominal tasks with a capable model, none of the controls improved success or fidelity (null result, practical-significance criterion not met). Their overhead was small: ≈3 % median wall time, ≈1.5 ms of framework time per run.
+2. Under assumed compromise, the ablations attribute containment to specific mechanisms. The rule gate contained restricted-data exposure, external exfiltration and destructive writes. The provenance guard alone contained in-domain sink steering, and it depends on the gate. Signing turned in-transit tampering into a fail-closed halt. The model resisted every textual injection, so injection *resistance* was not measurable.
+3. Per-principal keys are necessary for attribution (spoofing detection 0 % → 100 %).
+4. Adaptive routing and re-dispatch each removed the degraded-agent failure mode (static assignment 0/20, routing 19/20, both 20/20).
 
 That is an empirical systems/DSR contribution. It is suitable for the MSc dissertation. On its own it is **not** a
 Q1-level novelty claim.
