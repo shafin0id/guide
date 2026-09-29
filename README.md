@@ -77,7 +77,7 @@ Dependencies point one way only (Core ← Research ← Bench), enforced by `scri
 ## Reproduce
 
 ```bash
-pytest -q                                                   # 72 tests, no network
+pytest -q                                                   # 99 tests, no network
 python -m guide_bench.integrity --n 500 --out experiments/results/integrity
 python -m guide_bench.routing_sim --seeds 100 --horizon 1000 --out experiments/results/routing
 guide-bench --suite main --conditions B1,B2,P,GPLUS --reps 5 --out experiments/results/main --env-file .env
@@ -90,7 +90,7 @@ Each run directory contains `manifest.json` (git commit, model requested/observe
 ## Documentation
 
 [architecture](docs/architecture.md) · [evaluation protocol](docs/evaluation.md) · [experiments](docs/experiments.md) ·
-[novelty](docs/novelty.md) · [limitations](docs/limitations.md) · [security](docs/security.md) · [ADRs](docs/adr/README.md) ·
+[formal model](docs/formal_model.md) · [novelty](docs/novelty.md) · [limitations](docs/limitations.md) · [security](docs/security.md) · [ADRs](docs/adr/README.md) ·
 [research audit](docs/research-audit.md) · [submission alignment](docs/submission-alignment.md)
 
 ## License

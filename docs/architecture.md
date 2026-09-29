@@ -20,13 +20,15 @@ src/
     runtime.py        Runtime + RuntimeConfig: the single orchestration engine
   guide_research/     GUIDE Research — experimental mechanisms under evaluation
     provenance.py     ProvenanceGuard (H1): control arguments of side-effecting calls must be
-                      supported by trusted content
+                      supported by trusted content (substring or exact-token matching)
+    blast_radius.py   static worst-case bound BR(K) + least-privilege synthesis (docs/formal_model.md)
   guide_bench/        GUIDE Bench — reproducible evaluation
     env.py            sandbox enterprise tools + fault hooks        tasks.py  18 proposal tasks
     adversarial.py    12 robustness cases                           faults.py model/transport faults
     conditions.py     B1, B2, P, GPLUS, ablations                   scoring.py condition-blind checks
     run.py            randomised, resumable runner + manifest       stats.py  bootstrap, Wilcoxon, Holm
     integrity.py      mutation experiment (H3)                      routing_sim.py bandit simulation (H4)
+    validate_bound.py soundness/tightness validation of BR(K) + least-privilege experiments
 ```
 
 ## Execution flow (one run)

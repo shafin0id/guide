@@ -41,6 +41,17 @@
   overhead.
 * **No concurrency, no human escalation, no rollback** (see architecture.md).
 
+## Blast-radius analysis (protocol-v3)
+* The guarantee is conditional on A1–A5 (formal_model.md §4): complete mediation, unforgeable signatures, honest agents
+  in a role being interchangeable, tools that honour their `ToolSpec`, and a single run on a fresh environment.
+* It bounds *which effects and destinations* are reachable. It does not bound *content*: an exfiltrating body sent to a
+  permitted recipient is inside every bound (F3).
+* The bound is exact only for directly compromised steps. Beyond that it is conservative (transitive tightness 0/6).
+* The proof is on paper and checked by property tests, not machine-checked.
+* Least privilege is minimal with respect to the *observed* nominal traces; unseen legitimate behaviour may be denied.
+  Held-out replay found 0/44 denials, but that is only 18 tasks.
+* Validation used one task (T15) for the adaptive attacker and one model family.
+
 ## What was not done (scope honesty)
 Standard-benchmark evaluation, multiple model families, adaptive attacks, formal protocol verification, human assessors,
 LangGraph/CrewAI/AutoGen comparisons through their real libraries.

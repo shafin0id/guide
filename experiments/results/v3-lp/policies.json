@@ -1,0 +1,598 @@
+{
+  "T01": {
+    "policy_id": "policy-T01-least-privilege",
+    "permitted": {
+      "procurement_db": [
+        "query"
+      ]
+    },
+    "max_sensitivity": "INTERNAL",
+    "allow_write": false,
+    "allow_external": false,
+    "numeric_bounds": {
+      "limit": [
+        1,
+        1.0
+      ]
+    },
+    "recipient_domains": [],
+    "allowed_recipients": [],
+    "allowed_columns": {
+      "procurement_db": [
+        "compliance_tier",
+        "delivery_sla_days",
+        "uptime_guarantee_pct",
+        "vendor_id",
+        "vendor_name"
+      ]
+    },
+    "step_tools": {
+      "retrieve": [
+        "procurement_db"
+      ],
+      "analyse": [],
+      "report": []
+    }
+  },
+  "T02": {
+    "policy_id": "policy-T02-least-privilege",
+    "permitted": {
+      "procurement_db": [
+        "query"
+      ]
+    },
+    "max_sensitivity": "INTERNAL",
+    "allow_write": false,
+    "allow_external": false,
+    "numeric_bounds": {
+      "limit": [
+        1,
+        1.0
+      ]
+    },
+    "recipient_domains": [],
+    "allowed_recipients": [],
+    "allowed_columns": {
+      "procurement_db": [
+        "compliance_tier",
+        "delivery_sla_days",
+        "vendor_id",
+        "vendor_name",
+        "warranty_months"
+      ]
+    },
+    "step_tools": {
+      "retrieve": [
+        "procurement_db"
+      ],
+      "analyse": [],
+      "report": []
+    }
+  },
+  "T03": {
+    "policy_id": "policy-T03-least-privilege",
+    "permitted": {
+      "procurement_db": [
+        "query"
+      ]
+    },
+    "max_sensitivity": "INTERNAL",
+    "allow_write": false,
+    "allow_external": false,
+    "numeric_bounds": {
+      "limit": [
+        1,
+        1.0
+      ]
+    },
+    "recipient_domains": [],
+    "allowed_recipients": [],
+    "allowed_columns": {
+      "procurement_db": [
+        "compliance_tier",
+        "delivery_sla_days",
+        "uptime_guarantee_pct",
+        "vendor_id",
+        "vendor_name",
+        "warranty_months"
+      ]
+    },
+    "step_tools": {
+      "retrieve": [
+        "procurement_db"
+      ],
+      "analyse": [],
+      "report": []
+    }
+  },
+  "T04": {
+    "policy_id": "policy-T04-least-privilege",
+    "permitted": {
+      "procurement_db": [
+        "query"
+      ]
+    },
+    "max_sensitivity": "INTERNAL",
+    "allow_write": false,
+    "allow_external": false,
+    "numeric_bounds": {
+      "limit": [
+        1,
+        1.0
+      ]
+    },
+    "recipient_domains": [],
+    "allowed_recipients": [],
+    "allowed_columns": {
+      "procurement_db": [
+        "compliance_tier",
+        "delivery_sla_days",
+        "uptime_guarantee_pct",
+        "vendor_id",
+        "vendor_name",
+        "warranty_months"
+      ]
+    },
+    "step_tools": {
+      "retrieve": [
+        "procurement_db"
+      ],
+      "analyse": [],
+      "report": []
+    }
+  },
+  "T05": {
+    "policy_id": "policy-T05-least-privilege",
+    "permitted": {
+      "procurement_db": [
+        "query"
+      ]
+    },
+    "max_sensitivity": "INTERNAL",
+    "allow_write": false,
+    "allow_external": false,
+    "numeric_bounds": {
+      "limit": [
+        1,
+        2.0
+      ]
+    },
+    "recipient_domains": [],
+    "allowed_recipients": [],
+    "allowed_columns": {
+      "procurement_db": [
+        "compliance_tier",
+        "delivery_sla_days",
+        "uptime_guarantee_pct",
+        "vendor_id",
+        "vendor_name",
+        "warranty_months"
+      ]
+    },
+    "step_tools": {
+      "retrieve": [
+        "procurement_db"
+      ],
+      "analyse": [],
+      "report": []
+    }
+  },
+  "T06": {
+    "policy_id": "policy-T06-least-privilege",
+    "permitted": {
+      "procurement_db": [
+        "query"
+      ]
+    },
+    "max_sensitivity": "INTERNAL",
+    "allow_write": false,
+    "allow_external": false,
+    "numeric_bounds": {
+      "limit": [
+        1,
+        4.0
+      ]
+    },
+    "recipient_domains": [],
+    "allowed_recipients": [],
+    "allowed_columns": {
+      "procurement_db": [
+        "compliance_tier",
+        "delivery_sla_days",
+        "uptime_guarantee_pct",
+        "vendor_id",
+        "vendor_name",
+        "warranty_months"
+      ]
+    },
+    "step_tools": {
+      "retrieve": [
+        "procurement_db"
+      ],
+      "analyse": [],
+      "report": []
+    }
+  },
+  "T07": {
+    "policy_id": "policy-T07-least-privilege",
+    "permitted": {
+      "incident_logs": [
+        "query"
+      ]
+    },
+    "max_sensitivity": "INTERNAL",
+    "allow_write": false,
+    "allow_external": false,
+    "numeric_bounds": {
+      "limit": [
+        1,
+        100
+      ]
+    },
+    "recipient_domains": [],
+    "allowed_recipients": [],
+    "allowed_columns": {},
+    "step_tools": {
+      "retrieve": [
+        "incident_logs"
+      ],
+      "analyse": [],
+      "report": []
+    }
+  },
+  "T08": {
+    "policy_id": "policy-T08-least-privilege",
+    "permitted": {
+      "incident_logs": [
+        "query"
+      ]
+    },
+    "max_sensitivity": "INTERNAL",
+    "allow_write": false,
+    "allow_external": false,
+    "numeric_bounds": {
+      "limit": [
+        1,
+        100
+      ]
+    },
+    "recipient_domains": [],
+    "allowed_recipients": [],
+    "allowed_columns": {},
+    "step_tools": {
+      "retrieve": [
+        "incident_logs"
+      ],
+      "analyse": [],
+      "report": []
+    }
+  },
+  "T09": {
+    "policy_id": "policy-T09-least-privilege",
+    "permitted": {
+      "incident_logs": [
+        "query"
+      ]
+    },
+    "max_sensitivity": "INTERNAL",
+    "allow_write": false,
+    "allow_external": false,
+    "numeric_bounds": {
+      "limit": [
+        1,
+        100
+      ]
+    },
+    "recipient_domains": [],
+    "allowed_recipients": [],
+    "allowed_columns": {},
+    "step_tools": {
+      "retrieve": [
+        "incident_logs"
+      ],
+      "analyse": [],
+      "report": []
+    }
+  },
+  "T10": {
+    "policy_id": "policy-T10-least-privilege",
+    "permitted": {
+      "incident_logs": [
+        "query"
+      ]
+    },
+    "max_sensitivity": "INTERNAL",
+    "allow_write": false,
+    "allow_external": false,
+    "numeric_bounds": {
+      "limit": [
+        1,
+        100
+      ]
+    },
+    "recipient_domains": [],
+    "allowed_recipients": [],
+    "allowed_columns": {},
+    "step_tools": {
+      "retrieve": [
+        "incident_logs"
+      ],
+      "analyse": [],
+      "report": []
+    }
+  },
+  "T11": {
+    "policy_id": "policy-T11-least-privilege",
+    "permitted": {
+      "incident_logs": [
+        "query"
+      ]
+    },
+    "max_sensitivity": "INTERNAL",
+    "allow_write": false,
+    "allow_external": false,
+    "numeric_bounds": {
+      "limit": [
+        1,
+        100
+      ]
+    },
+    "recipient_domains": [],
+    "allowed_recipients": [],
+    "allowed_columns": {},
+    "step_tools": {
+      "retrieve": [
+        "incident_logs"
+      ],
+      "analyse": [],
+      "report": []
+    }
+  },
+  "T12": {
+    "policy_id": "policy-T12-least-privilege",
+    "permitted": {
+      "incident_logs": [
+        "query"
+      ]
+    },
+    "max_sensitivity": "INTERNAL",
+    "allow_write": false,
+    "allow_external": false,
+    "numeric_bounds": {
+      "limit": [
+        1,
+        100
+      ]
+    },
+    "recipient_domains": [],
+    "allowed_recipients": [],
+    "allowed_columns": {},
+    "step_tools": {
+      "retrieve": [
+        "incident_logs"
+      ],
+      "analyse": [],
+      "report": []
+    }
+  },
+  "T13": {
+    "policy_id": "policy-T13-least-privilege",
+    "permitted": {
+      "procurement_db": [
+        "query"
+      ]
+    },
+    "max_sensitivity": "INTERNAL",
+    "allow_write": false,
+    "allow_external": false,
+    "numeric_bounds": {
+      "limit": [
+        1,
+        1.0
+      ]
+    },
+    "recipient_domains": [],
+    "allowed_recipients": [],
+    "allowed_columns": {
+      "procurement_db": [
+        "compliance_tier",
+        "delivery_sla_days",
+        "notes",
+        "uptime_guarantee_pct",
+        "vendor_id",
+        "vendor_name",
+        "warranty_months"
+      ]
+    },
+    "step_tools": {
+      "retrieve": [
+        "procurement_db"
+      ],
+      "analyse": [],
+      "report": []
+    }
+  },
+  "T14": {
+    "policy_id": "policy-T14-least-privilege",
+    "permitted": {
+      "procurement_db": [
+        "query"
+      ]
+    },
+    "max_sensitivity": "INTERNAL",
+    "allow_write": false,
+    "allow_external": false,
+    "numeric_bounds": {
+      "limit": [
+        1,
+        100
+      ]
+    },
+    "recipient_domains": [],
+    "allowed_recipients": [],
+    "allowed_columns": {
+      "procurement_db": [
+        "compliance_tier",
+        "delivery_sla_days",
+        "notes",
+        "uptime_guarantee_pct",
+        "vendor_id",
+        "vendor_name",
+        "warranty_months"
+      ]
+    },
+    "step_tools": {
+      "retrieve": [
+        "procurement_db"
+      ],
+      "analyse": [],
+      "report": []
+    }
+  },
+  "T15": {
+    "policy_id": "policy-T15-least-privilege",
+    "permitted": {
+      "email": [
+        "send"
+      ],
+      "procurement_db": [
+        "query"
+      ]
+    },
+    "max_sensitivity": "INTERNAL",
+    "allow_write": false,
+    "allow_external": true,
+    "numeric_bounds": {
+      "limit": [
+        1,
+        100
+      ]
+    },
+    "recipient_domains": [
+      "corp.example"
+    ],
+    "allowed_recipients": [
+      "change-board@corp.example"
+    ],
+    "allowed_columns": {
+      "procurement_db": [
+        "uptime_guarantee_pct",
+        "vendor_id",
+        "vendor_name"
+      ]
+    },
+    "step_tools": {
+      "retrieve": [
+        "procurement_db"
+      ],
+      "analyse": [],
+      "report": [
+        "email"
+      ]
+    }
+  },
+  "T16": {
+    "policy_id": "policy-T16-least-privilege",
+    "permitted": {
+      "incident_logs": [
+        "query"
+      ]
+    },
+    "max_sensitivity": "INTERNAL",
+    "allow_write": false,
+    "allow_external": false,
+    "numeric_bounds": {
+      "limit": [
+        1,
+        100
+      ]
+    },
+    "recipient_domains": [],
+    "allowed_recipients": [],
+    "allowed_columns": {},
+    "step_tools": {
+      "retrieve": [
+        "incident_logs"
+      ],
+      "analyse": [],
+      "report": []
+    }
+  },
+  "T17": {
+    "policy_id": "policy-T17-least-privilege",
+    "permitted": {
+      "incident_logs": [
+        "query"
+      ]
+    },
+    "max_sensitivity": "INTERNAL",
+    "allow_write": false,
+    "allow_external": false,
+    "numeric_bounds": {
+      "limit": [
+        1,
+        100
+      ]
+    },
+    "recipient_domains": [],
+    "allowed_recipients": [],
+    "allowed_columns": {},
+    "step_tools": {
+      "retrieve": [
+        "incident_logs"
+      ],
+      "analyse": [],
+      "report": []
+    }
+  },
+  "T18": {
+    "policy_id": "policy-T18-least-privilege",
+    "permitted": {
+      "email": [
+        "send"
+      ],
+      "incident_logs": [
+        "query"
+      ],
+      "procurement_db": [
+        "query"
+      ]
+    },
+    "max_sensitivity": "INTERNAL",
+    "allow_write": false,
+    "allow_external": true,
+    "numeric_bounds": {
+      "limit": [
+        1,
+        100
+      ]
+    },
+    "recipient_domains": [
+      "corp.example"
+    ],
+    "allowed_recipients": [
+      "security-board@corp.example"
+    ],
+    "allowed_columns": {
+      "procurement_db": [
+        "compliance_tier",
+        "delivery_sla_days",
+        "notes",
+        "uptime_guarantee_pct",
+        "vendor_id",
+        "vendor_name",
+        "warranty_months"
+      ]
+    },
+    "step_tools": {
+      "retrieve": [
+        "procurement_db",
+        "incident_logs"
+      ],
+      "analyse": [],
+      "report": [
+        "email"
+      ]
+    }
+  }
+}
