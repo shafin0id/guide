@@ -22,9 +22,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from guide.policy import Policy
 from guide.providers import ModelProvider, ModelSettings, OpenAICompatibleProvider, ScriptedProvider
 from guide.routing import Router
 from guide.tools import ToolRegistry
+from guide.workflow import TaskSpec
 from guide_bench.adversarial import AdversarialCase, adversarial_cases, compromised_cases
 from guide_bench.conditions import CONDITIONS, build_runtime, make_router
 from guide_bench.env import Environment
@@ -98,13 +100,25 @@ def build_items(suite: str, conditions: list[str], reps: int) -> list[Item]:
     return [Item(c, cond, rep) for c in cases for cond in conditions for rep in range(1, reps + 1)]
 
 
-def execute(item: Item, provider: ModelProvider, router: Router, settings: ModelSettings) -> tuple[dict, dict]:
+def execute(
+    item: Item,
+    provider: ModelProvider,
+    router: Router,
+    settings: ModelSettings,
+    *,
+    policy: Policy | None = None,
+    spec: TaskSpec | None = None,
+) -> tuple[dict, dict]:
     case, task = item.case, item.case.task
     env = Environment(task.faults)
     registry = ToolRegistry(env.tools)
     prov: ModelProvider = FaultyProvider(provider, case.model_faults) if case.model_faults else provider
-    runtime = build_runtime(CONDITIONS[item.condition], prov, registry, task.policy(), router, settings, case.transport)
-    record = runtime.run(task.spec(), run_id=f"{task.task_id}-{item.condition}-r{item.rep}-{int(time.time()*1000)}")
+    runtime = build_runtime(
+        CONDITIONS[item.condition], prov, registry, policy or task.policy(), router, settings, case.transport
+    )
+    record = runtime.run(
+        spec or task.spec(), run_id=f"{task.task_id}-{item.condition}-r{item.rep}-{int(time.time()*1000)}"
+    )
     outcome = Outcome(record, env.side_effects)
     s = score(task.constraints, outcome)
     decisions = Counter(c.decision for c in record.calls)
@@ -158,6 +172,8 @@ def execute(item: Item, provider: ModelProvider, router: Router, settings: Model
                 "tool": c.proposed.tool,
                 "op": c.proposed.operation,
                 "args": dict(c.proposed.args),
+                "executed_args": dict(c.executed.args) if c.executed is not None else None,
+                "principal": c.principal,
                 "decision": c.decision,
                 "rule": c.rule,
                 "reason": c.reason,

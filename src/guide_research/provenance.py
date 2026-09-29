@@ -11,7 +11,8 @@ content -- the task objective, constraints and policy. Values that appear only i
 UNTRUSTED content (tool results, retrieved documents) or nowhere at all (hallucinated) are
 denied. Data arguments (e.g. an e-mail body) are not constrained by this rule.
 
-This is value-level provenance (exact, case-insensitive substring support), not full
+This is value-level provenance (case-insensitive substring support by default; ``match='token'``
+requires an exact token), not full
 information-flow control: a value the attacker can make appear in trusted text, or a
 destination the task legitimately delegates to external data, is out of scope. Closest
 prior art: capability/data-flow separation in CaMeL (Debenedetti et al., 2025) and
@@ -21,9 +22,10 @@ multi-agent orchestration gate, independent of which agent proposed the action.
 
 from __future__ import annotations
 
+import re
 import threading
 from collections.abc import Iterator
-from typing import Any
+from typing import Any, Literal
 
 from guide.policy import Decision, PolicyContext, PolicyDecision, PolicyEngine
 from guide.tools import ToolRegistry
@@ -44,12 +46,32 @@ def _strings(obj: Any) -> Iterator[str]:
         yield str(obj)
 
 
+Match = Literal["substring", "token"]
+_TOKEN = re.compile(r"[^\s,;()\[\]{}<>\"'`]+")
+
+
+def corpus_of(content: Any) -> str:
+    """Trusted corpus exactly as the guard builds it from one TRUSTED observation."""
+    return "\n".join(s.lower() for s in _strings(content))
+
+
+def tokens_of(corpus: str) -> frozenset[str]:
+    """Whitespace/punctuation-delimited tokens with trailing sentence punctuation removed."""
+    return frozenset(t for t in (m.rstrip(".:!?") for m in _TOKEN.findall(corpus)) if t)
+
+
+def supported(value: str, corpus: str, match: Match) -> bool:
+    """Whether a normalised (stripped, lower-case) value is supported by the trusted corpus."""
+    return value in corpus if match == "substring" else value in tokens_of(corpus)
+
+
 class ProvenanceGuard:
     """Wraps any :class:`PolicyEngine`; also acts as the runtime's ContentObserver."""
 
-    def __init__(self, inner: PolicyEngine, registry: ToolRegistry) -> None:
+    def __init__(self, inner: PolicyEngine, registry: ToolRegistry, match: Match = "substring") -> None:
         self.inner = inner
         self.registry = registry
+        self.match: Match = match
         self._trusted: dict[str, list[str]] = {}
         self._untrusted: dict[str, list[str]] = {}
         self._lock = threading.Lock()
@@ -83,7 +105,7 @@ class ProvenanceGuard:
                 v = str(value or "").strip().lower()
                 if not v:
                     continue
-                if v not in trusted:
+                if not supported(v, trusted, self.match):
                     origin = "untrusted content" if v in untrusted else "no source"
                     return PolicyDecision(
                         Decision.DENY,

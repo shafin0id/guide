@@ -50,6 +50,8 @@ class Policy:
     allow_external: bool = False
     numeric_bounds: Mapping[str, tuple[float, float]] = field(default_factory=lambda: {"limit": (1, 100)})
     recipient_domains: frozenset[str] = frozenset()  # empty = any domain (when external allowed)
+    allowed_columns: Mapping[str, frozenset[str]] = field(default_factory=dict)  # tool -> column allow-list
+    allowed_recipients: frozenset[str] = frozenset()  # exact, lower-case; empty = no exact allow-list
 
     def digest(self) -> str:
         doc = {
@@ -60,6 +62,8 @@ class Policy:
             "allow_external": self.allow_external,
             "numeric_bounds": {k: list(v) for k, v in sorted(self.numeric_bounds.items())},
             "recipient_domains": sorted(self.recipient_domains),
+            "allowed_columns": {k: sorted(v) for k, v in sorted(self.allowed_columns.items())},
+            "allowed_recipients": sorted(self.allowed_recipients),
         }
         return hashlib.sha256(json.dumps(doc, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
 
@@ -109,6 +113,9 @@ class RulePolicyEngine:
                 domain = recipient.rsplit("@", 1)[-1].lower() if "@" in recipient else ""
                 if domain not in p.recipient_domains:
                     return _deny(call, "external.recipient_domain", f"recipient domain '{domain}' not allow-listed")
+            if p.allowed_recipients:
+                if str(call.args.get("recipient", "")).strip().lower() not in p.allowed_recipients:
+                    return _deny(call, "external.recipient_not_allowed", "recipient is not on the exact allow-list")
 
         args: dict[str, Any] = dict(call.args)
         bounded: list[str] = []
@@ -120,9 +127,19 @@ class RulePolicyEngine:
             cols = list(requested) if isinstance(requested, list | tuple) and requested else all_cols
             unknown = [c for c in cols if c not in spec.column_sensitivity]
             if unknown:
-                valid = [c for c in all_cols if spec.sensitivity_of(c) <= p.max_sensitivity]
+                valid = [
+                    c
+                    for c in all_cols
+                    if spec.sensitivity_of(c) <= p.max_sensitivity
+                    and (call.tool not in p.allowed_columns or c in p.allowed_columns[call.tool])
+                ]
                 return _deny(call, "argument.unknown_column", f"unknown columns {unknown}; permitted columns: {valid}")
-            allowed = [c for c in cols if spec.sensitivity_of(c) <= p.max_sensitivity]
+            column_allow = p.allowed_columns.get(call.tool)
+            allowed = [
+                c
+                for c in cols
+                if spec.sensitivity_of(c) <= p.max_sensitivity and (column_allow is None or c in column_allow)
+            ]
             if not allowed:
                 return _deny(call, "sensitivity.exceeded", "every requested column exceeds the clearance")
             removed = [c for c in cols if c not in allowed]

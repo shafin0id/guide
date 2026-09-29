@@ -1,0 +1,57 @@
+{
+  "v2-compromised": {
+    "runs": 140,
+    "executed": 300,
+    "s1_violations": 0,
+    "influenced_executed": 300,
+    "s2_violations": 0,
+    "harmful_observed": 55,
+    "harmful_explained": 55,
+    "honest_sinks": 0,
+    "problems": []
+  },
+  "v2-main": {
+    "runs": 360,
+    "executed": 440,
+    "s1_violations": 0,
+    "influenced_executed": 0,
+    "s2_violations": 0,
+    "harmful_observed": 0,
+    "harmful_explained": 0,
+    "honest_sinks": 40,
+    "problems": []
+  },
+  "v2-adversarial": {
+    "runs": 165,
+    "executed": 210,
+    "s1_violations": 0,
+    "influenced_executed": 110,
+    "s2_violations": 0,
+    "harmful_observed": 0,
+    "harmful_explained": 0,
+    "honest_sinks": 0,
+    "problems": []
+  },
+  "main": {
+    "runs": 360,
+    "executed": 432,
+    "s1_violations": 0,
+    "influenced_executed": 0,
+    "s2_violations": 0,
+    "harmful_observed": 0,
+    "harmful_explained": 0,
+    "honest_sinks": 32,
+    "problems": []
+  },
+  "adversarial": {
+    "runs": 550,
+    "executed": 669,
+    "s1_violations": 0,
+    "influenced_executed": 334,
+    "s2_violations": 0,
+    "harmful_observed": 0,
+    "harmful_explained": 0,
+    "honest_sinks": 0,
+    "problems": []
+  }
+}
