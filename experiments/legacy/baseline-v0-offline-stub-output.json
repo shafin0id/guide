@@ -1,0 +1,1105 @@
+{
+  "summary": {
+    "evaluation_timestamp": 1788621859.70385,
+    "total_comparative_runs": 54,
+    "total_robustness_runs": 0,
+    "metrics_summary": {
+      "B1": {
+        "total_runs": 18,
+        "task_success_rate": 0.3333,
+        "intent_fidelity": {
+          "stats": {
+            "median": 0.6141,
+            "q25": 0.522,
+            "q75": 0.6141,
+            "iqr": 0.0921
+          },
+          "ci_95": [
+            0.5629,
+            0.6039
+          ]
+        },
+        "total_tokens": {
+          "stats": {
+            "median": 1308.5,
+            "q25": 833.5,
+            "q75": 1802.25,
+            "iqr": 968.75
+          },
+          "ci_95": [
+            1134.7208,
+            1710.1806
+          ]
+        },
+        "latency_seconds": {
+          "stats": {
+            "median": 1.2,
+            "q25": 1.2,
+            "q75": 1.6,
+            "iqr": 0.4
+          },
+          "ci_95": [
+            1.2444,
+            1.4224
+          ]
+        }
+      },
+      "B2": {
+        "total_runs": 18,
+        "task_success_rate": 0.6667,
+        "intent_fidelity": {
+          "stats": {
+            "median": 0.82,
+            "q25": 0.8,
+            "q75": 0.82,
+            "iqr": 0.02
+          },
+          "ci_95": [
+            0.8089,
+            0.8167
+          ]
+        },
+        "total_tokens": {
+          "stats": {
+            "median": 1405.0,
+            "q25": 1402.0,
+            "q75": 1411.5,
+            "iqr": 9.5
+          },
+          "ci_95": [
+            1401.7764,
+            1410.1667
+          ]
+        },
+        "latency_seconds": {
+          "stats": {
+            "median": 0.35,
+            "q25": 0.35,
+            "q75": 0.35,
+            "iqr": 0.0
+          },
+          "ci_95": [
+            0.35,
+            0.35
+          ]
+        }
+      },
+      "P": {
+        "total_runs": 18,
+        "task_success_rate": 1.0,
+        "intent_fidelity": {
+          "stats": {
+            "median": 0.9421,
+            "q25": 0.9283,
+            "q75": 0.9421,
+            "iqr": 0.0138
+          },
+          "ci_95": [
+            0.9344,
+            0.9406
+          ]
+        },
+        "total_tokens": {
+          "stats": {
+            "median": 2165.5,
+            "q25": 2113.25,
+            "q75": 3018.25,
+            "iqr": 905.0
+          },
+          "ci_95": [
+            2257.6431,
+            2760.5597
+          ]
+        },
+        "latency_seconds": {
+          "stats": {
+            "median": 0.452,
+            "q25": 0.452,
+            "q75": 0.602,
+            "iqr": 0.15
+          },
+          "ci_95": [
+            0.4684,
+            0.5353
+          ]
+        }
+      }
+    },
+    "hypothesis_tests": {
+      "wilcoxon_intent_fidelity_P_vs_B1": {
+        "statistic": 171.0,
+        "p_value": 5.4e-05,
+        "is_significant": true,
+        "interpretation": "Statistically significant at alpha=0.05: True"
+      },
+      "wilcoxon_intent_fidelity_P_vs_B2": {
+        "statistic": 171.0,
+        "p_value": 5.4e-05,
+        "is_significant": true,
+        "interpretation": "Statistically significant at alpha=0.05: True"
+      }
+    },
+    "robustness_summary": {
+      "condition_p_passing_pct": 0.0,
+      "condition_b2_passing_pct": 0.0,
+      "total_cases_evaluated": 0
+    }
+  },
+  "comparative_runs": [
+    {
+      "run_id": "b1_T14_rep1_1788621859601",
+      "timestamp": 1788621859.601954,
+      "task_id": "T14",
+      "condition": "B1",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.6141,
+      "policy_violations": 0,
+      "trace_completeness": 0.0,
+      "latency_seconds": 1.2,
+      "prompt_tokens": 554,
+      "completion_tokens": 274,
+      "details": {
+        "ips": 0.6141,
+        "hops": 3
+      }
+    },
+    {
+      "run_id": "b1_T08_rep1_1788621859601",
+      "timestamp": 1788621859.602051,
+      "task_id": "T08",
+      "condition": "B1",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.6141,
+      "policy_violations": 0,
+      "trace_completeness": 0.0,
+      "latency_seconds": 1.2,
+      "prompt_tokens": 1051,
+      "completion_tokens": 274,
+      "details": {
+        "ips": 0.6141,
+        "hops": 3
+      }
+    },
+    {
+      "run_id": "guide_T15_rep1_1788621859602",
+      "timestamp": 1788621859.605087,
+      "task_id": "T15",
+      "condition": "P",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.9421,
+      "policy_violations": 0,
+      "trace_completeness": 1.0,
+      "latency_seconds": 0.451,
+      "prompt_tokens": 1819,
+      "completion_tokens": 438,
+      "details": {
+        "parallel_stages": 3,
+        "ledger_nodes": 11
+      }
+    },
+    {
+      "run_id": "b1_T11_rep1_1788621859605",
+      "timestamp": 1788621859.605221,
+      "task_id": "T11",
+      "condition": "B1",
+      "repetition": 1,
+      "task_success": 0,
+      "intent_fidelity": 0.522,
+      "policy_violations": 0,
+      "trace_completeness": 0.0,
+      "latency_seconds": 1.6,
+      "prompt_tokens": 1685,
+      "completion_tokens": 365,
+      "details": {
+        "ips": 0.522,
+        "hops": 4
+      }
+    },
+    {
+      "run_id": "b2_T07_rep1_1788621859605",
+      "timestamp": 1788621859.605389,
+      "task_id": "T07",
+      "condition": "B2",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.82,
+      "policy_violations": 0,
+      "trace_completeness": 0.5,
+      "latency_seconds": 0.35,
+      "prompt_tokens": 1139,
+      "completion_tokens": 274,
+      "details": {
+        "nodes": 3
+      }
+    },
+    {
+      "run_id": "b1_T17_rep1_1788621859605",
+      "timestamp": 1788621859.606077,
+      "task_id": "T17",
+      "condition": "B1",
+      "repetition": 1,
+      "task_success": 0,
+      "intent_fidelity": 0.522,
+      "policy_violations": 0,
+      "trace_completeness": 0.0,
+      "latency_seconds": 1.601,
+      "prompt_tokens": 945,
+      "completion_tokens": 365,
+      "details": {
+        "ips": 0.522,
+        "hops": 4
+      }
+    },
+    {
+      "run_id": "b2_T06_rep1_1788621859606",
+      "timestamp": 1788621859.606205,
+      "task_id": "T06",
+      "condition": "B2",
+      "repetition": 1,
+      "task_success": 0,
+      "intent_fidelity": 0.8,
+      "policy_violations": 0,
+      "trace_completeness": 0.5,
+      "latency_seconds": 0.35,
+      "prompt_tokens": 1136,
+      "completion_tokens": 274,
+      "details": {
+        "nodes": 3
+      }
+    },
+    {
+      "run_id": "b2_T11_rep1_1788621859606",
+      "timestamp": 1788621859.6063218,
+      "task_id": "T11",
+      "condition": "B2",
+      "repetition": 1,
+      "task_success": 0,
+      "intent_fidelity": 0.8,
+      "policy_violations": 0,
+      "trace_completeness": 0.5,
+      "latency_seconds": 0.35,
+      "prompt_tokens": 1116,
+      "completion_tokens": 274,
+      "details": {
+        "nodes": 3
+      }
+    },
+    {
+      "run_id": "b2_T10_rep1_1788621859606",
+      "timestamp": 1788621859.606435,
+      "task_id": "T10",
+      "condition": "B2",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.82,
+      "policy_violations": 0,
+      "trace_completeness": 0.5,
+      "latency_seconds": 0.35,
+      "prompt_tokens": 1128,
+      "completion_tokens": 274,
+      "details": {
+        "nodes": 3
+      }
+    },
+    {
+      "run_id": "b1_T04_rep1_1788621859606",
+      "timestamp": 1788621859.6065469,
+      "task_id": "T04",
+      "condition": "B1",
+      "repetition": 1,
+      "task_success": 0,
+      "intent_fidelity": 0.6141,
+      "policy_violations": 0,
+      "trace_completeness": 0.0,
+      "latency_seconds": 1.2,
+      "prompt_tokens": 1308,
+      "completion_tokens": 657,
+      "details": {
+        "ips": 0.6141,
+        "hops": 3
+      }
+    },
+    {
+      "run_id": "guide_T04_rep1_1788621859606",
+      "timestamp": 1788621859.607949,
+      "task_id": "T04",
+      "condition": "P",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.9421,
+      "policy_violations": 0,
+      "trace_completeness": 1.0,
+      "latency_seconds": 0.451,
+      "prompt_tokens": 1838,
+      "completion_tokens": 276,
+      "details": {
+        "parallel_stages": 3,
+        "ledger_nodes": 11
+      }
+    },
+    {
+      "run_id": "guide_T08_rep1_1788621859607",
+      "timestamp": 1788621859.6093922,
+      "task_id": "T08",
+      "condition": "P",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.9421,
+      "policy_violations": 0,
+      "trace_completeness": 1.0,
+      "latency_seconds": 0.451,
+      "prompt_tokens": 1648,
+      "completion_tokens": 441,
+      "details": {
+        "parallel_stages": 3,
+        "ledger_nodes": 11
+      }
+    },
+    {
+      "run_id": "guide_T10_rep1_1788621859609",
+      "timestamp": 1788621859.611176,
+      "task_id": "T10",
+      "condition": "P",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.9421,
+      "policy_violations": 0,
+      "trace_completeness": 1.0,
+      "latency_seconds": 0.452,
+      "prompt_tokens": 1717,
+      "completion_tokens": 441,
+      "details": {
+        "parallel_stages": 3,
+        "ledger_nodes": 11
+      }
+    },
+    {
+      "run_id": "b2_T17_rep1_1788621859611",
+      "timestamp": 1788621859.611327,
+      "task_id": "T17",
+      "condition": "B2",
+      "repetition": 1,
+      "task_success": 0,
+      "intent_fidelity": 0.8,
+      "policy_violations": 0,
+      "trace_completeness": 0.5,
+      "latency_seconds": 0.35,
+      "prompt_tokens": 1136,
+      "completion_tokens": 274,
+      "details": {
+        "nodes": 3
+      }
+    },
+    {
+      "run_id": "b1_T12_rep1_1788621859611",
+      "timestamp": 1788621859.6114502,
+      "task_id": "T12",
+      "condition": "B1",
+      "repetition": 1,
+      "task_success": 0,
+      "intent_fidelity": 0.522,
+      "policy_violations": 0,
+      "trace_completeness": 0.0,
+      "latency_seconds": 1.6,
+      "prompt_tokens": 1707,
+      "completion_tokens": 365,
+      "details": {
+        "ips": 0.522,
+        "hops": 4
+      }
+    },
+    {
+      "run_id": "b1_T02_rep1_1788621859611",
+      "timestamp": 1788621859.611512,
+      "task_id": "T02",
+      "condition": "B1",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.6141,
+      "policy_violations": 0,
+      "trace_completeness": 0.0,
+      "latency_seconds": 1.2,
+      "prompt_tokens": 556,
+      "completion_tokens": 279,
+      "details": {
+        "ips": 0.6141,
+        "hops": 3
+      }
+    },
+    {
+      "run_id": "guide_T07_rep1_1788621859611",
+      "timestamp": 1788621859.613472,
+      "task_id": "T07",
+      "condition": "P",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.9421,
+      "policy_violations": 0,
+      "trace_completeness": 1.0,
+      "latency_seconds": 0.452,
+      "prompt_tokens": 1672,
+      "completion_tokens": 441,
+      "details": {
+        "parallel_stages": 3,
+        "ledger_nodes": 11
+      }
+    },
+    {
+      "run_id": "b1_T16_rep1_1788621859613",
+      "timestamp": 1788621859.613562,
+      "task_id": "T16",
+      "condition": "B1",
+      "repetition": 1,
+      "task_success": 0,
+      "intent_fidelity": 0.522,
+      "policy_violations": 0,
+      "trace_completeness": 0.0,
+      "latency_seconds": 1.6,
+      "prompt_tokens": 939,
+      "completion_tokens": 365,
+      "details": {
+        "ips": 0.522,
+        "hops": 4
+      }
+    },
+    {
+      "run_id": "b2_T02_rep1_1788621859613",
+      "timestamp": 1788621859.6136892,
+      "task_id": "T02",
+      "condition": "B2",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.82,
+      "policy_violations": 0,
+      "trace_completeness": 0.5,
+      "latency_seconds": 0.35,
+      "prompt_tokens": 1136,
+      "completion_tokens": 279,
+      "details": {
+        "nodes": 3
+      }
+    },
+    {
+      "run_id": "guide_T18_rep1_1788621859613",
+      "timestamp": 1788621859.6158772,
+      "task_id": "T18",
+      "condition": "P",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.9283,
+      "policy_violations": 0,
+      "trace_completeness": 1.0,
+      "latency_seconds": 0.602,
+      "prompt_tokens": 2703,
+      "completion_tokens": 584,
+      "details": {
+        "parallel_stages": 4,
+        "ledger_nodes": 14
+      }
+    },
+    {
+      "run_id": "b2_T04_rep1_1788621859615",
+      "timestamp": 1788621859.616056,
+      "task_id": "T04",
+      "condition": "B2",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.82,
+      "policy_violations": 0,
+      "trace_completeness": 0.5,
+      "latency_seconds": 0.35,
+      "prompt_tokens": 1136,
+      "completion_tokens": 277,
+      "details": {
+        "nodes": 3
+      }
+    },
+    {
+      "run_id": "b1_T13_rep1_1788621859616",
+      "timestamp": 1788621859.6161191,
+      "task_id": "T13",
+      "condition": "B1",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.6141,
+      "policy_violations": 0,
+      "trace_completeness": 0.0,
+      "latency_seconds": 1.2,
+      "prompt_tokens": 551,
+      "completion_tokens": 274,
+      "details": {
+        "ips": 0.6141,
+        "hops": 3
+      }
+    },
+    {
+      "run_id": "b2_T08_rep1_1788621859616",
+      "timestamp": 1788621859.616232,
+      "task_id": "T08",
+      "condition": "B2",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.82,
+      "policy_violations": 0,
+      "trace_completeness": 0.5,
+      "latency_seconds": 0.35,
+      "prompt_tokens": 1119,
+      "completion_tokens": 274,
+      "details": {
+        "nodes": 3
+      }
+    },
+    {
+      "run_id": "guide_T14_rep1_1788621859616",
+      "timestamp": 1788621859.618102,
+      "task_id": "T14",
+      "condition": "P",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.9421,
+      "policy_violations": 0,
+      "trace_completeness": 1.0,
+      "latency_seconds": 0.452,
+      "prompt_tokens": 1766,
+      "completion_tokens": 273,
+      "details": {
+        "parallel_stages": 3,
+        "ledger_nodes": 11
+      }
+    },
+    {
+      "run_id": "b1_T09_rep1_1788621859618",
+      "timestamp": 1788621859.618167,
+      "task_id": "T09",
+      "condition": "B1",
+      "repetition": 1,
+      "task_success": 0,
+      "intent_fidelity": 0.6141,
+      "policy_violations": 0,
+      "trace_completeness": 0.0,
+      "latency_seconds": 1.2,
+      "prompt_tokens": 543,
+      "completion_tokens": 274,
+      "details": {
+        "ips": 0.6141,
+        "hops": 3
+      }
+    },
+    {
+      "run_id": "b1_T01_rep1_1788621859618",
+      "timestamp": 1788621859.618274,
+      "task_id": "T01",
+      "condition": "B1",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.6141,
+      "policy_violations": 0,
+      "trace_completeness": 0.0,
+      "latency_seconds": 1.2,
+      "prompt_tokens": 1300,
+      "completion_tokens": 656,
+      "details": {
+        "ips": 0.6141,
+        "hops": 3
+      }
+    },
+    {
+      "run_id": "b2_T09_rep1_1788621859618",
+      "timestamp": 1788621859.6183949,
+      "task_id": "T09",
+      "condition": "B2",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.82,
+      "policy_violations": 0,
+      "trace_completeness": 0.5,
+      "latency_seconds": 0.35,
+      "prompt_tokens": 1118,
+      "completion_tokens": 274,
+      "details": {
+        "nodes": 3
+      }
+    },
+    {
+      "run_id": "b2_T16_rep1_1788621859618",
+      "timestamp": 1788621859.6185532,
+      "task_id": "T16",
+      "condition": "B2",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.8,
+      "policy_violations": 0,
+      "trace_completeness": 0.5,
+      "latency_seconds": 0.35,
+      "prompt_tokens": 1131,
+      "completion_tokens": 274,
+      "details": {
+        "nodes": 3
+      }
+    },
+    {
+      "run_id": "b1_T07_rep1_1788621859618",
+      "timestamp": 1788621859.6186318,
+      "task_id": "T07",
+      "condition": "B1",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.6141,
+      "policy_violations": 0,
+      "trace_completeness": 0.0,
+      "latency_seconds": 1.2,
+      "prompt_tokens": 1067,
+      "completion_tokens": 274,
+      "details": {
+        "ips": 0.6141,
+        "hops": 3
+      }
+    },
+    {
+      "run_id": "guide_T12_rep1_1788621859618",
+      "timestamp": 1788621859.621174,
+      "task_id": "T12",
+      "condition": "P",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.9283,
+      "policy_violations": 0,
+      "trace_completeness": 1.0,
+      "latency_seconds": 0.602,
+      "prompt_tokens": 2475,
+      "completion_tokens": 588,
+      "details": {
+        "parallel_stages": 4,
+        "ledger_nodes": 14
+      }
+    },
+    {
+      "run_id": "b2_T18_rep1_1788621859621",
+      "timestamp": 1788621859.621313,
+      "task_id": "T18",
+      "condition": "B2",
+      "repetition": 1,
+      "task_success": 0,
+      "intent_fidelity": 0.8,
+      "policy_violations": 0,
+      "trace_completeness": 0.5,
+      "latency_seconds": 0.35,
+      "prompt_tokens": 1131,
+      "completion_tokens": 274,
+      "details": {
+        "nodes": 3
+      }
+    },
+    {
+      "run_id": "guide_T09_rep1_1788621859621",
+      "timestamp": 1788621859.623241,
+      "task_id": "T09",
+      "condition": "P",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.9421,
+      "policy_violations": 0,
+      "trace_completeness": 1.0,
+      "latency_seconds": 0.452,
+      "prompt_tokens": 1722,
+      "completion_tokens": 441,
+      "details": {
+        "parallel_stages": 3,
+        "ledger_nodes": 11
+      }
+    },
+    {
+      "run_id": "b1_T05_rep1_1788621859623",
+      "timestamp": 1788621859.62331,
+      "task_id": "T05",
+      "condition": "B1",
+      "repetition": 1,
+      "task_success": 0,
+      "intent_fidelity": 0.6141,
+      "policy_violations": 0,
+      "trace_completeness": 0.0,
+      "latency_seconds": 1.2,
+      "prompt_tokens": 559,
+      "completion_tokens": 274,
+      "details": {
+        "ips": 0.6141,
+        "hops": 3
+      }
+    },
+    {
+      "run_id": "guide_T13_rep1_1788621859623",
+      "timestamp": 1788621859.6252,
+      "task_id": "T13",
+      "condition": "P",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.9421,
+      "policy_violations": 0,
+      "trace_completeness": 1.0,
+      "latency_seconds": 0.452,
+      "prompt_tokens": 1730,
+      "completion_tokens": 438,
+      "details": {
+        "parallel_stages": 3,
+        "ledger_nodes": 11
+      }
+    },
+    {
+      "run_id": "guide_T11_rep1_1788621859625",
+      "timestamp": 1788621859.627878,
+      "task_id": "T11",
+      "condition": "P",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.9283,
+      "policy_violations": 0,
+      "trace_completeness": 1.0,
+      "latency_seconds": 0.602,
+      "prompt_tokens": 2410,
+      "completion_tokens": 588,
+      "details": {
+        "parallel_stages": 4,
+        "ledger_nodes": 14
+      }
+    },
+    {
+      "run_id": "guide_T17_rep1_1788621859627",
+      "timestamp": 1788621859.6304598,
+      "task_id": "T17",
+      "condition": "P",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.9283,
+      "policy_violations": 0,
+      "trace_completeness": 1.0,
+      "latency_seconds": 0.602,
+      "prompt_tokens": 2584,
+      "completion_tokens": 585,
+      "details": {
+        "parallel_stages": 4,
+        "ledger_nodes": 14
+      }
+    },
+    {
+      "run_id": "b2_T05_rep1_1788621859630",
+      "timestamp": 1788621859.63061,
+      "task_id": "T05",
+      "condition": "B2",
+      "repetition": 1,
+      "task_success": 0,
+      "intent_fidelity": 0.82,
+      "policy_violations": 0,
+      "trace_completeness": 0.5,
+      "latency_seconds": 0.35,
+      "prompt_tokens": 1138,
+      "completion_tokens": 274,
+      "details": {
+        "nodes": 3
+      }
+    },
+    {
+      "run_id": "b1_T15_rep1_1788621859630",
+      "timestamp": 1788621859.630678,
+      "task_id": "T15",
+      "condition": "B1",
+      "repetition": 1,
+      "task_success": 0,
+      "intent_fidelity": 0.6141,
+      "policy_violations": 0,
+      "trace_completeness": 0.0,
+      "latency_seconds": 1.2,
+      "prompt_tokens": 557,
+      "completion_tokens": 274,
+      "details": {
+        "ips": 0.6141,
+        "hops": 3
+      }
+    },
+    {
+      "run_id": "b1_T18_rep1_1788621859630",
+      "timestamp": 1788621859.6307552,
+      "task_id": "T18",
+      "condition": "B1",
+      "repetition": 1,
+      "task_success": 0,
+      "intent_fidelity": 0.522,
+      "policy_violations": 0,
+      "trace_completeness": 0.0,
+      "latency_seconds": 1.6,
+      "prompt_tokens": 942,
+      "completion_tokens": 365,
+      "details": {
+        "ips": 0.522,
+        "hops": 4
+      }
+    },
+    {
+      "run_id": "guide_T01_rep1_1788621859630",
+      "timestamp": 1788621859.6322792,
+      "task_id": "T01",
+      "condition": "P",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.9421,
+      "policy_violations": 0,
+      "trace_completeness": 1.0,
+      "latency_seconds": 0.451,
+      "prompt_tokens": 1779,
+      "completion_tokens": 273,
+      "details": {
+        "parallel_stages": 3,
+        "ledger_nodes": 11
+      }
+    },
+    {
+      "run_id": "b1_T10_rep1_1788621859632",
+      "timestamp": 1788621859.6323688,
+      "task_id": "T10",
+      "condition": "B1",
+      "repetition": 1,
+      "task_success": 0,
+      "intent_fidelity": 0.6141,
+      "policy_violations": 0,
+      "trace_completeness": 0.0,
+      "latency_seconds": 1.2,
+      "prompt_tokens": 1060,
+      "completion_tokens": 274,
+      "details": {
+        "ips": 0.6141,
+        "hops": 3
+      }
+    },
+    {
+      "run_id": "b2_T13_rep1_1788621859632",
+      "timestamp": 1788621859.6325362,
+      "task_id": "T13",
+      "condition": "B2",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.82,
+      "policy_violations": 0,
+      "trace_completeness": 0.5,
+      "latency_seconds": 0.35,
+      "prompt_tokens": 1125,
+      "completion_tokens": 274,
+      "details": {
+        "nodes": 3
+      }
+    },
+    {
+      "run_id": "guide_T02_rep1_1788621859632",
+      "timestamp": 1788621859.6344059,
+      "task_id": "T02",
+      "condition": "P",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.9421,
+      "policy_violations": 0,
+      "trace_completeness": 1.0,
+      "latency_seconds": 0.452,
+      "prompt_tokens": 1785,
+      "completion_tokens": 279,
+      "details": {
+        "parallel_stages": 3,
+        "ledger_nodes": 11
+      }
+    },
+    {
+      "run_id": "b2_T12_rep1_1788621859634",
+      "timestamp": 1788621859.634536,
+      "task_id": "T12",
+      "condition": "B2",
+      "repetition": 1,
+      "task_success": 0,
+      "intent_fidelity": 0.8,
+      "policy_violations": 0,
+      "trace_completeness": 0.5,
+      "latency_seconds": 0.35,
+      "prompt_tokens": 1128,
+      "completion_tokens": 274,
+      "details": {
+        "nodes": 3
+      }
+    },
+    {
+      "run_id": "b2_T15_rep1_1788621859634",
+      "timestamp": 1788621859.634654,
+      "task_id": "T15",
+      "condition": "B2",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.82,
+      "policy_violations": 0,
+      "trace_completeness": 0.5,
+      "latency_seconds": 0.35,
+      "prompt_tokens": 1135,
+      "completion_tokens": 274,
+      "details": {
+        "nodes": 3
+      }
+    },
+    {
+      "run_id": "b1_T03_rep1_1788621859634",
+      "timestamp": 1788621859.6347141,
+      "task_id": "T03",
+      "condition": "B1",
+      "repetition": 1,
+      "task_success": 0,
+      "intent_fidelity": 0.6141,
+      "policy_violations": 0,
+      "trace_completeness": 0.0,
+      "latency_seconds": 1.2,
+      "prompt_tokens": 563,
+      "completion_tokens": 280,
+      "details": {
+        "ips": 0.6141,
+        "hops": 3
+      }
+    },
+    {
+      "run_id": "guide_T03_rep1_1788621859634",
+      "timestamp": 1788621859.636606,
+      "task_id": "T03",
+      "condition": "P",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.9421,
+      "policy_violations": 0,
+      "trace_completeness": 1.0,
+      "latency_seconds": 0.452,
+      "prompt_tokens": 1842,
+      "completion_tokens": 279,
+      "details": {
+        "parallel_stages": 3,
+        "ledger_nodes": 11
+      }
+    },
+    {
+      "run_id": "guide_T05_rep1_1788621859636",
+      "timestamp": 1788621859.638497,
+      "task_id": "T05",
+      "condition": "P",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.9421,
+      "policy_violations": 0,
+      "trace_completeness": 1.0,
+      "latency_seconds": 0.452,
+      "prompt_tokens": 1910,
+      "completion_tokens": 468,
+      "details": {
+        "parallel_stages": 3,
+        "ledger_nodes": 11
+      }
+    },
+    {
+      "run_id": "b1_T06_rep1_1788621859638",
+      "timestamp": 1788621859.6386518,
+      "task_id": "T06",
+      "condition": "B1",
+      "repetition": 1,
+      "task_success": 0,
+      "intent_fidelity": 0.522,
+      "policy_violations": 0,
+      "trace_completeness": 0.0,
+      "latency_seconds": 1.6,
+      "prompt_tokens": 2356,
+      "completion_tokens": 938,
+      "details": {
+        "ips": 0.522,
+        "hops": 4
+      }
+    },
+    {
+      "run_id": "guide_T06_rep1_1788621859638",
+      "timestamp": 1788621859.641191,
+      "task_id": "T06",
+      "condition": "P",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.9283,
+      "policy_violations": 0,
+      "trace_completeness": 1.0,
+      "latency_seconds": 0.602,
+      "prompt_tokens": 2567,
+      "completion_tokens": 1128,
+      "details": {
+        "parallel_stages": 4,
+        "ledger_nodes": 14
+      }
+    },
+    {
+      "run_id": "guide_T16_rep1_1788621859641",
+      "timestamp": 1788621859.6439989,
+      "task_id": "T16",
+      "condition": "P",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.9283,
+      "policy_violations": 0,
+      "trace_completeness": 1.0,
+      "latency_seconds": 0.603,
+      "prompt_tokens": 2441,
+      "completion_tokens": 584,
+      "details": {
+        "parallel_stages": 4,
+        "ledger_nodes": 14
+      }
+    },
+    {
+      "run_id": "b2_T01_rep1_1788621859644",
+      "timestamp": 1788621859.6441631,
+      "task_id": "T01",
+      "condition": "B2",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.82,
+      "policy_violations": 0,
+      "trace_completeness": 0.5,
+      "latency_seconds": 0.35,
+      "prompt_tokens": 1131,
+      "completion_tokens": 274,
+      "details": {
+        "nodes": 3
+      }
+    },
+    {
+      "run_id": "b2_T03_rep1_1788621859644",
+      "timestamp": 1788621859.64429,
+      "task_id": "T03",
+      "condition": "B2",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.82,
+      "policy_violations": 0,
+      "trace_completeness": 0.5,
+      "latency_seconds": 0.35,
+      "prompt_tokens": 1150,
+      "completion_tokens": 280,
+      "details": {
+        "nodes": 3
+      }
+    },
+    {
+      "run_id": "b2_T14_rep1_1788621859644",
+      "timestamp": 1788621859.644404,
+      "task_id": "T14",
+      "condition": "B2",
+      "repetition": 1,
+      "task_success": 1,
+      "intent_fidelity": 0.82,
+      "policy_violations": 0,
+      "trace_completeness": 0.5,
+      "latency_seconds": 0.35,
+      "prompt_tokens": 1128,
+      "completion_tokens": 274,
+      "details": {
+        "nodes": 3
+      }
+    }
+  ],
+  "robustness_runs": []
+}

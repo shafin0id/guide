@@ -1,0 +1,36 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install
+        run: python -m pip install -e ".[dev]"
+      - name: Layer boundaries (Core <- Research <- Bench)
+        run: python scripts/check_boundaries.py
+      - name: Lint
+        run: ruff check src tests scripts
+      - name: Type check (core + research)
+        run: mypy
+      - name: Tests (no network; live tests are deselected)
+        run: pytest -q
+      - name: Core installs without optional extras
+        run: |
+          python -m venv /tmp/core && /tmp/core/bin/pip install -q . && /tmp/core/bin/python -c "import guide; print(guide.__version__)"
+      - name: Build
+        run: python -m pip install -q build && python -m build

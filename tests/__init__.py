@@ -1,3 +1,0 @@
-"""
-GUIDE Framework Test Suite.
-"""

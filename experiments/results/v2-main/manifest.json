@@ -1,0 +1,57 @@
+{
+  "suite": "main",
+  "conditions": [
+    "B1",
+    "B2",
+    "P",
+    "GPLUS"
+  ],
+  "reps": 5,
+  "seed": 2026,
+  "provider": "openai-compatible",
+  "model_requested": "deepseek-chat",
+  "base_url": "https://api.deepseek.com",
+  "settings": {
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "seed": 42,
+    "json_mode": true
+  },
+  "git": {
+    "commit": "cf515c9c0d283845704af3e9a46e8c19605b2a93",
+    "dirty": false
+  },
+  "python": "3.12.13",
+  "platform": "macOS-26.5.2-arm64-arm-64bit",
+  "tasks": {
+    "T18": "42f47e34e569fd3f",
+    "T14": "b2dd29952ce5a1da",
+    "T09": "0d833e7ae3fa2da7",
+    "T10": "b4e0f0ec9fdd8893",
+    "T08": "54bad6b9b5a43b56",
+    "T01": "557f7cf8c9429c31",
+    "T11": "850eda03955f6514",
+    "T07": "c862f15b2122f354",
+    "T06": "1322d585ab601fb1",
+    "T17": "7d44c4d98269eaf3",
+    "T04": "213049650a3e7c6b",
+    "T05": "89c3c78f4a7bf784",
+    "T02": "fd9b4057490faf51",
+    "T16": "7e391abcd6e82d75",
+    "T13": "6e03824b379bdfba",
+    "T12": "d65380e6925f3db1",
+    "T15": "7848a70ec7d73470",
+    "T03": "a0c877caf9eeb443"
+  },
+  "started_utc": "2026-09-29T14:51:56Z",
+  "items_total": 360,
+  "items_resumed_skipped": 0,
+  "reportable": true,
+  "finished_utc": "2026-09-29T14:59:19Z",
+  "model_ids_observed": [
+    "deepseek-flash"
+  ],
+  "status_counts_this_session": {
+    "completed": 360
+  }
+}
