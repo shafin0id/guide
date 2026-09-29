@@ -13,7 +13,7 @@ GPLUS-<x>  ablations of GPLUS with one mechanism removed
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Callable
+from typing import Any
 
 from guide.agent import AgentSpec
 from guide.policy import Policy, RulePolicyEngine
@@ -42,26 +42,36 @@ class Condition:
     trace: bool
 
 
-CONDITIONS: dict[str, Condition] = {c.name: c for c in [
-    Condition("B1", HandoffMode.TRANSCRIPT, False, False, False, False, False),
-    Condition("B2", HandoffMode.STRUCTURED, False, False, False, False, False),
-    Condition("P", HandoffMode.SIGNED, True, True, False, False, True),
-    Condition("GPLUS", HandoffMode.SIGNED, True, True, True, True, True),
-    Condition("GPLUS-provenance", HandoffMode.SIGNED, True, True, False, True, True),
-    Condition("GPLUS-redispatch", HandoffMode.SIGNED, True, True, True, False, True),
-    Condition("GPLUS-routing", HandoffMode.SIGNED, False, True, True, True, True),
-    Condition("GPLUS-signing", HandoffMode.STRUCTURED, True, True, True, True, True),
-    Condition("GPLUS-gate", HandoffMode.SIGNED, True, False, False, True, True),
-    Condition("GPLUS-trace", HandoffMode.SIGNED, True, True, True, True, False),
-]}
+CONDITIONS: dict[str, Condition] = {
+    c.name: c
+    for c in [
+        Condition("B1", HandoffMode.TRANSCRIPT, False, False, False, False, False),
+        Condition("B2", HandoffMode.STRUCTURED, False, False, False, False, False),
+        Condition("P", HandoffMode.SIGNED, True, True, False, False, True),
+        Condition("GPLUS", HandoffMode.SIGNED, True, True, True, True, True),
+        Condition("GPLUS-provenance", HandoffMode.SIGNED, True, True, False, True, True),
+        Condition("GPLUS-redispatch", HandoffMode.SIGNED, True, True, True, False, True),
+        Condition("GPLUS-routing", HandoffMode.SIGNED, False, True, True, True, True),
+        Condition("GPLUS-signing", HandoffMode.STRUCTURED, True, True, True, True, True),
+        Condition("GPLUS-gate", HandoffMode.SIGNED, True, False, False, True, True),
+        Condition("GPLUS-trace", HandoffMode.SIGNED, True, True, True, True, False),
+    ]
+}
 
 
 def make_router(cond: Condition) -> Router:
     return BayesUCBRouter() if cond.adaptive_routing else StaticRouter()
 
 
-def build_runtime(cond: Condition, provider: ModelProvider, registry: ToolRegistry, policy: Policy,
-                  router: Router, settings: ModelSettings, transport: Any = None) -> Runtime:
+def build_runtime(
+    cond: Condition,
+    provider: ModelProvider,
+    registry: ToolRegistry,
+    policy: Policy,
+    router: Router,
+    settings: ModelSettings,
+    transport: Any = None,
+) -> Runtime:
     engine = RulePolicyEngine(policy, registry) if cond.gate else None
     observers: tuple = ()
     if cond.provenance:
@@ -69,7 +79,14 @@ def build_runtime(cond: Condition, provider: ModelProvider, registry: ToolRegist
             raise ValueError("the provenance guard wraps a policy gate")
         guard = ProvenanceGuard(engine, registry)
         engine, observers = guard, (guard,)
-    config = RuntimeConfig(handoff_mode=cond.mode, router=router, policy_engine=engine, trace=cond.trace,
-                           observers=observers, transport=transport, settings=settings,
-                           redispatch_on_failure=cond.redispatch)
+    config = RuntimeConfig(
+        handoff_mode=cond.mode,
+        router=router,
+        policy_engine=engine,
+        trace=cond.trace,
+        observers=observers,
+        transport=transport,
+        settings=settings,
+        redispatch_on_failure=cond.redispatch,
+    )
     return Runtime(provider, registry, AGENTS, policy, config)

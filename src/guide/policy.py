@@ -14,9 +14,10 @@ from __future__ import annotations
 
 import hashlib
 import json
+from collections.abc import Mapping
 from dataclasses import dataclass, field, replace
 from enum import Enum
-from typing import Any, Mapping, Protocol, runtime_checkable
+from typing import Any, Protocol, runtime_checkable
 
 from guide.tools import ToolRegistry
 from guide.types import Sensitivity, ToolCall
@@ -116,7 +117,7 @@ class RulePolicyEngine:
         if spec.column_sensitivity and spec.columns_param:
             requested = args.get(spec.columns_param)
             all_cols = list(spec.column_sensitivity)
-            cols = list(requested) if isinstance(requested, (list, tuple)) and requested else all_cols
+            cols = list(requested) if isinstance(requested, list | tuple) and requested else all_cols
             unknown = [c for c in cols if c not in spec.column_sensitivity]
             if unknown:
                 valid = [c for c in all_cols if spec.sensitivity_of(c) <= p.max_sensitivity]

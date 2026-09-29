@@ -5,8 +5,23 @@ import dataclasses
 import pytest
 
 from guide import (
-    ContentStore, Decision, IntegrityError, IntentPackage, KeyRing, Policy, PolicyContext, RulePolicyEngine,
-    Sensitivity, Step, ToolCall, ToolRegistry, TraceLedger, Workflow, WorkflowError, open_sealed, seal,
+    ContentStore,
+    Decision,
+    IntegrityError,
+    IntentPackage,
+    KeyRing,
+    Policy,
+    PolicyContext,
+    RulePolicyEngine,
+    Sensitivity,
+    Step,
+    ToolCall,
+    ToolRegistry,
+    TraceLedger,
+    Workflow,
+    WorkflowError,
+    open_sealed,
+    seal,
 )
 from guide.agent import parse_reply
 from guide.errors import MalformedOutputError
@@ -65,8 +80,12 @@ def test_static_router():
 def gate():
     env = Environment()
     reg = ToolRegistry(env.tools)
-    pol = Policy("p", {"procurement_db": frozenset({"query"}), "email": frozenset({"send"})},
-                 allow_external=True, recipient_domains=frozenset({"corp.example"}))
+    pol = Policy(
+        "p",
+        {"procurement_db": frozenset({"query"}), "email": frozenset({"send"})},
+        allow_external=True,
+        recipient_domains=frozenset({"corp.example"}),
+    )
     return RulePolicyEngine(pol, reg)
 
 
@@ -107,7 +126,10 @@ def test_unknown_column_is_denied_with_valid_names_not_silently_dropped(gate):
 def test_numeric_bound_is_projection_onto_interval(gate):
     d = gate.evaluate(call("procurement_db", "query", columns=["vendor_id"], limit=100000), CTX)
     assert d.decision is Decision.BOUND and d.call.args["limit"] == 100
-    assert gate.evaluate(call("procurement_db", "query", columns=["vendor_id"], limit="lots"), CTX).rule == "argument.invalid"
+    assert (
+        gate.evaluate(call("procurement_db", "query", columns=["vendor_id"], limit="lots"), CTX).rule
+        == "argument.invalid"
+    )
 
 
 def test_external_recipient_domain_allow_list(gate):
@@ -128,9 +150,20 @@ def test_policy_digest_is_stable_and_sensitive():
 
 
 def _pkg(**kw) -> IntentPackage:
-    base = dict(run_id="r", handoff_id="h", parent_hash="p" * 64, sender="alice", receiver="bob", objective="o",
-                constraints=("c1",), input_refs=(), permitted_tools=("t",), expected_schema={}, issued_at_ms=0,
-                expiry_ms=10**15)
+    base = dict(
+        run_id="r",
+        handoff_id="h",
+        parent_hash="p" * 64,
+        sender="alice",
+        receiver="bob",
+        objective="o",
+        constraints=("c1",),
+        input_refs=(),
+        permitted_tools=("t",),
+        expected_schema={},
+        issued_at_ms=0,
+        expiry_ms=10**15,
+    )
     base.update(kw)
     return IntentPackage(**base)
 
@@ -148,14 +181,17 @@ def test_seal_open_roundtrip(keys):
     assert open_sealed(seal(pkg, keys), keys, expected_parent="p" * 64, expected_receiver="bob") == pkg
 
 
-@pytest.mark.parametrize("mutate,reason", [
-    (lambda w: w["package"].__setitem__("constraints", []), "content"),
-    (lambda w: w["package"].pop("objective"), "schema"),
-    (lambda w: w["package"].__setitem__("extra", 1), "schema"),
-    (lambda w: w["package"].__setitem__("expiry_ms", "soon"), "schema"),
-    (lambda w: w.__setitem__("signature", "00" * 64), "signature"),
-    (lambda w: w.__setitem__("link_hash", "0" * 64), "content"),
-])
+@pytest.mark.parametrize(
+    "mutate,reason",
+    [
+        (lambda w: w["package"].__setitem__("constraints", []), "content"),
+        (lambda w: w["package"].pop("objective"), "schema"),
+        (lambda w: w["package"].__setitem__("extra", 1), "schema"),
+        (lambda w: w["package"].__setitem__("expiry_ms", "soon"), "schema"),
+        (lambda w: w.__setitem__("signature", "00" * 64), "signature"),
+        (lambda w: w.__setitem__("link_hash", "0" * 64), "content"),
+    ],
+)
 def test_tampering_is_rejected(keys, mutate, reason):
     wire = seal(_pkg(), keys)
     mutate(wire)
@@ -209,7 +245,9 @@ def test_trace_chain_and_tamper_detection():
 
 
 def test_workflow_order_and_validation():
-    wf = Workflow((Step("c", "r", "", depends_on=("a", "b")), Step("a", "r", ""), Step("b", "r", "", depends_on=("a",))))
+    wf = Workflow(
+        (Step("c", "r", "", depends_on=("a", "b")), Step("a", "r", ""), Step("b", "r", "", depends_on=("a",)))
+    )
     assert [s.step_id for s in wf.order()] == ["a", "b", "c"]
     with pytest.raises(WorkflowError, match="cycle"):
         Workflow((Step("a", "r", "", depends_on=("b",)), Step("b", "r", "", depends_on=("a",)))).order()

@@ -6,9 +6,10 @@ validation library. Mutable run bookkeeping lives in :mod:`guide.runtime.state`.
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass
 from enum import Enum, IntEnum
-from typing import Any, Mapping
+from typing import Any
 
 
 class Sensitivity(IntEnum):
@@ -20,7 +21,7 @@ class Sensitivity(IntEnum):
     RESTRICTED = 3
 
     @classmethod
-    def parse(cls, value: "str | int | Sensitivity") -> "Sensitivity":
+    def parse(cls, value: str | int | Sensitivity) -> Sensitivity:
         if isinstance(value, Sensitivity):
             return value
         if isinstance(value, int):
@@ -68,7 +69,7 @@ class Usage:
     prompt_tokens: int = 0
     completion_tokens: int = 0
 
-    def __add__(self, other: "Usage") -> "Usage":
+    def __add__(self, other: Usage) -> Usage:
         return Usage(
             self.model_calls + other.model_calls,
             self.prompt_tokens + other.prompt_tokens,

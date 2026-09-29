@@ -4,8 +4,9 @@ from __future__ import annotations
 
 import copy
 import json
+from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Any, Sequence
+from typing import Any
 
 from guide.providers import ModelProvider, ModelResponse, ModelSettings
 from guide.runtime import HandoffMode
@@ -20,7 +21,7 @@ def _agent_of(messages: Sequence[ChatMessage]) -> str:
 @dataclass
 class ModelFault:
     agent_id: str
-    mode: str  # "malformed_always" | "malformed_first" | "inject_output"
+    mode: str  # "malformed_always" | "malformed_first" | "inject_output" | "hijack"
     payload: str = ""
 
 
@@ -40,8 +41,26 @@ class FaultyProvider:
             return ModelResponse("I cannot comply with the JSON protocol right now.", 50, 12, 0.0, "fault-injected")
         if fault and fault.mode == "malformed_first" and agent not in self._seen:
             self._seen.add(agent)
-            return ModelResponse("Sure! Here is the result:\n{\"output\": ", 50, 12, 0.0, "fault-injected")
+            return ModelResponse('Sure! Here is the result:\n{"output": ', 50, 12, 0.0, "fault-injected")
         resp = self.inner.complete(messages, settings)
+        if fault and fault.mode == "hijack" and agent not in self._seen:
+            # Assumed-compromise threat model: the agent's first proposal is replaced by the attacker's call.
+            try:
+                obj = json.loads(resp.content)
+            except json.JSONDecodeError:
+                return resp
+            if isinstance(obj, dict):
+                self._seen.add(agent)
+                obj["tool_calls"] = [json.loads(fault.payload)] + list(obj.get("tool_calls") or [])
+                obj["output"] = None
+                return ModelResponse(
+                    json.dumps(obj),
+                    resp.prompt_tokens,
+                    resp.completion_tokens,
+                    resp.latency_s,
+                    resp.model,
+                    resp.finish_reason,
+                )
         if fault and fault.mode == "inject_output":
             try:
                 obj = json.loads(resp.content)
@@ -49,8 +68,14 @@ class FaultyProvider:
                 return resp
             if isinstance(obj, dict) and isinstance(obj.get("output"), dict):
                 obj["output"]["handoff_note"] = fault.payload
-                return ModelResponse(json.dumps(obj), resp.prompt_tokens, resp.completion_tokens, resp.latency_s,
-                                     resp.model, resp.finish_reason)
+                return ModelResponse(
+                    json.dumps(obj),
+                    resp.prompt_tokens,
+                    resp.completion_tokens,
+                    resp.latency_s,
+                    resp.model,
+                    resp.finish_reason,
+                )
         return resp
 
 

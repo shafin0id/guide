@@ -15,8 +15,9 @@ Bernoulli rewards, which LLM agents do not provide.
 from __future__ import annotations
 
 import math
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
-from typing import Mapping, Protocol, Sequence, runtime_checkable
+from typing import Protocol, runtime_checkable
 
 
 def _betacf(a: float, b: float, x: float) -> float:
@@ -57,7 +58,7 @@ def beta_cdf(x: float, a: float, b: float) -> float:
 
 
 try:  # optional fast path; equality with the pure-Python path is asserted in tests
-    from scipy.special import betaincinv as _betaincinv
+    from scipy.special import betaincinv as _betaincinv  # type: ignore[import-untyped]
 except ImportError:  # pragma: no cover - depends on environment
     _betaincinv = None
 

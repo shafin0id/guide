@@ -7,8 +7,9 @@ trust attributes declared by the agent that proposes a call.
 
 from __future__ import annotations
 
+from collections.abc import Iterable, Mapping
 from dataclasses import dataclass, field
-from typing import Any, Iterable, Mapping, Protocol, runtime_checkable
+from typing import Any, Protocol, runtime_checkable
 
 from guide.errors import ToolNotFoundError
 from guide.types import Sensitivity, ToolResult

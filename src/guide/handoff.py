@@ -19,10 +19,14 @@ from __future__ import annotations
 import hashlib
 import json
 import time
+from collections.abc import Mapping
 from dataclasses import asdict, dataclass
-from typing import Any, Mapping
+from typing import TYPE_CHECKING, Any
 
 from guide.errors import IntegrityError
+
+if TYPE_CHECKING:
+    from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey, Ed25519PublicKey
 
 GENESIS = "0" * 64
 
@@ -36,24 +40,35 @@ def sha256_hex(data: bytes) -> str:
 
 
 class ContentStore:
-    """Content-addressed store; references are verified on read."""
+    """Content-addressed store; references are verified on read.
 
-    def __init__(self) -> None:
+    The reference is the SHA-256 of the canonical form. With ``preserve_order`` (default) the
+    blob is kept in its original key order and re-canonicalised on read for verification, so
+    agents see data exactly as produced. Presenting canonical (sorted-key) JSON to agents
+    raised malformed-output rates in protocol-v1 (docs/experiments.md, finding D1).
+    """
+
+    def __init__(self, preserve_order: bool = True) -> None:
+        self.preserve_order = preserve_order
         self._blobs: dict[str, bytes] = {}
 
     def put(self, obj: Any) -> str:
-        data = canonical_json(obj)
-        ref = "sha256:" + sha256_hex(data)
-        self._blobs[ref] = data
+        canonical = canonical_json(obj)
+        ref = "sha256:" + sha256_hex(canonical)
+        self._blobs[ref] = json.dumps(obj, ensure_ascii=False).encode("utf-8") if self.preserve_order else canonical
         return ref
 
     def get(self, ref: str) -> Any:
         data = self._blobs.get(ref)
         if data is None:
             raise IntegrityError(f"unknown content reference {ref}")
-        if "sha256:" + sha256_hex(data) != ref:
+        try:
+            obj = json.loads(data)
+        except json.JSONDecodeError:
+            raise IntegrityError(f"content for {ref} is not valid JSON") from None
+        if "sha256:" + sha256_hex(canonical_json(obj)) != ref:
             raise IntegrityError(f"content hash mismatch for {ref}")
-        return json.loads(data)
+        return obj
 
 
 @dataclass(frozen=True)
@@ -72,9 +87,18 @@ class IntentPackage:
     expiry_ms: int
 
     _TYPES = {
-        "run_id": str, "handoff_id": str, "parent_hash": str, "sender": str, "receiver": str,
-        "objective": str, "constraints": list, "input_refs": list, "permitted_tools": list,
-        "expected_schema": dict, "issued_at_ms": int, "expiry_ms": int,
+        "run_id": str,
+        "handoff_id": str,
+        "parent_hash": str,
+        "sender": str,
+        "receiver": str,
+        "objective": str,
+        "constraints": list,
+        "input_refs": list,
+        "permitted_tools": list,
+        "expected_schema": dict,
+        "issued_at_ms": int,
+        "expiry_ms": int,
     }
 
     def to_dict(self) -> dict[str, Any]:
@@ -91,7 +115,7 @@ class IntentPackage:
         return sha256_hex(self.parent_hash.encode("ascii") + self.canonical())
 
     @classmethod
-    def from_dict(cls, data: Mapping[str, Any]) -> "IntentPackage":
+    def from_dict(cls, data: Mapping[str, Any]) -> IntentPackage:
         if not isinstance(data, Mapping):
             raise IntegrityError("schema: package is not an object")
         missing = [k for k in cls._TYPES if k not in data]
@@ -117,8 +141,8 @@ class KeyRing:
         from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
         self._gen = Ed25519PrivateKey.generate
-        self._private: dict[str, Any] = {}
-        self._public: dict[str, Any] = {}
+        self._private: dict[str, Ed25519PrivateKey] = {}
+        self._public: dict[str, Ed25519PublicKey] = {}
 
     def enroll(self, principal: str) -> None:
         if principal not in self._private:
@@ -147,7 +171,11 @@ class KeyRing:
 def seal(package: IntentPackage, keyring: KeyRing) -> dict[str, Any]:
     """Return the wire form of a sealed package: {package, link_hash, signature}."""
     link = package.link_hash()
-    return {"package": package.to_dict(), "link_hash": link, "signature": keyring.sign(package.sender, link.encode("ascii"))}
+    return {
+        "package": package.to_dict(),
+        "link_hash": link,
+        "signature": keyring.sign(package.sender, link.encode("ascii")),
+    }
 
 
 def open_sealed(

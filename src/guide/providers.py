@@ -10,8 +10,9 @@ from __future__ import annotations
 import os
 import random
 import time
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
-from typing import Callable, Protocol, Sequence, runtime_checkable
+from typing import Any, Protocol, runtime_checkable
 
 from guide.errors import ConfigurationError, ProviderError
 from guide.types import ChatMessage
@@ -80,7 +81,7 @@ class OpenAICompatibleProvider:
         self._httpx = httpx
 
     def complete(self, messages: Sequence[ChatMessage], settings: ModelSettings) -> ModelResponse:
-        body: dict = {
+        body: dict[str, Any] = {
             "model": self.model,
             "messages": [{"role": m.role, "content": m.content} for m in messages],
             "temperature": settings.temperature,
@@ -115,12 +116,10 @@ class OpenAICompatibleProvider:
                         finish_reason=str(choice.get("finish_reason") or "stop"),
                     )
                 retryable = resp.status_code == 429 or resp.status_code >= 500
-                last_error = ProviderError(
-                    f"HTTP {resp.status_code}", retryable=retryable, status=resp.status_code
-                )
+                last_error = ProviderError(f"HTTP {resp.status_code}", retryable=retryable, status=resp.status_code)
             if not last_error.retryable or attempt == self._max_retries:
                 break
-            time.sleep(self._backoff_s * (2**attempt) * (0.5 + random.random()))
+            time.sleep(self._backoff_s * (2**attempt) * (0.5 + random.random()))  # noqa: S311 - retry jitter, not security
         assert last_error is not None
         raise last_error
 
@@ -135,7 +134,7 @@ class ScriptedProvider:
     maps the message list to a response string.
     """
 
-    def __init__(self, script: "Sequence[str] | Callable[[Sequence[ChatMessage]], str]", model: str = "scripted") -> None:
+    def __init__(self, script: Sequence[str] | Callable[[Sequence[ChatMessage]], str], model: str = "scripted") -> None:
         self.name = f"scripted:{model}"
         self._script = script
         self._index = 0

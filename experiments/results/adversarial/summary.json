@@ -1,0 +1,460 @@
+{
+  "conditions": {
+    "P": {
+      "runs": 55,
+      "completed": 0.8545454545454545,
+      "halted_integrity": 5,
+      "trace_completeness": 1.0,
+      "model_calls": 4.581818181818182,
+      "tokens_iqr": [
+        2679.0,
+        2860,
+        3377.0
+      ],
+      "wall_iqr": [
+        3.61,
+        4.316,
+        4.858
+      ],
+      "denials": 0,
+      "false_denial_runs": 0,
+      "task_success": 0.8545454545454545,
+      "task_success_ci": [
+        0.6545454545454545,
+        1.0
+      ],
+      "intent_fidelity": 0.9272727272727272,
+      "intent_fidelity_ci": [
+        0.8272727272727273,
+        1.0
+      ],
+      "violation": 0.0,
+      "violation_ci": [
+        0.0,
+        0.0
+      ]
+    },
+    "B1": {
+      "runs": 55,
+      "completed": 0.9454545454545454,
+      "halted_integrity": 0,
+      "trace_completeness": 0.0,
+      "model_calls": 4.745454545454545,
+      "tokens_iqr": [
+        2511.0,
+        3087,
+        4027.0
+      ],
+      "wall_iqr": [
+        3.684,
+        4.06,
+        5.245
+      ],
+      "denials": 0,
+      "false_denial_runs": 0,
+      "task_success": 0.9454545454545454,
+      "task_success_ci": [
+        0.8727272727272727,
+        1.0
+      ],
+      "intent_fidelity": 0.9727272727272728,
+      "intent_fidelity_ci": [
+        0.9363636363636364,
+        1.0
+      ],
+      "violation": 0.0,
+      "violation_ci": [
+        0.0,
+        0.0
+      ]
+    },
+    "B2": {
+      "runs": 55,
+      "completed": 1.0,
+      "halted_integrity": 0,
+      "trace_completeness": 0.0,
+      "model_calls": 4.5636363636363635,
+      "tokens_iqr": [
+        2678.0,
+        3025,
+        3257.0
+      ],
+      "wall_iqr": [
+        3.817,
+        4.244,
+        4.789
+      ],
+      "denials": 0,
+      "false_denial_runs": 0,
+      "task_success": 1.0,
+      "task_success_ci": [
+        1.0,
+        1.0
+      ],
+      "intent_fidelity": 1.0,
+      "intent_fidelity_ci": [
+        1.0,
+        1.0
+      ],
+      "violation": 0.0,
+      "violation_ci": [
+        0.0,
+        0.0
+      ]
+    },
+    "GPLUS": {
+      "runs": 55,
+      "completed": 0.8545454545454545,
+      "halted_integrity": 5,
+      "trace_completeness": 1.0,
+      "model_calls": 4.927272727272728,
+      "tokens_iqr": [
+        2639.0,
+        2944,
+        3289.0
+      ],
+      "wall_iqr": [
+        3.734,
+        4.181,
+        4.883
+      ],
+      "denials": 0,
+      "false_denial_runs": 0,
+      "task_success": 0.8545454545454545,
+      "task_success_ci": [
+        0.6545454545454545,
+        1.0
+      ],
+      "intent_fidelity": 0.9272727272727272,
+      "intent_fidelity_ci": [
+        0.8272727272727273,
+        1.0
+      ],
+      "violation": 0.0,
+      "violation_ci": [
+        0.0,
+        0.0
+      ]
+    },
+    "GPLUS-gate": {
+      "runs": 55,
+      "completed": 0.8545454545454545,
+      "halted_integrity": 5,
+      "trace_completeness": 0.9050945454545455,
+      "model_calls": 4.745454545454545,
+      "tokens_iqr": [
+        2657.0,
+        2801,
+        3283.0
+      ],
+      "wall_iqr": [
+        3.529,
+        4.216,
+        4.624
+      ],
+      "denials": 0,
+      "false_denial_runs": 0,
+      "task_success": 0.8545454545454545,
+      "task_success_ci": [
+        0.6545454545454545,
+        1.0
+      ],
+      "intent_fidelity": 0.9272727272727272,
+      "intent_fidelity_ci": [
+        0.8272727272727273,
+        1.0
+      ],
+      "violation": 0.0,
+      "violation_ci": [
+        0.0,
+        0.0
+      ]
+    },
+    "GPLUS-trace": {
+      "runs": 55,
+      "completed": 0.8181818181818182,
+      "halted_integrity": 5,
+      "trace_completeness": 0.0,
+      "model_calls": 4.890909090909091,
+      "tokens_iqr": [
+        2651.0,
+        2864,
+        3285.0
+      ],
+      "wall_iqr": [
+        3.516,
+        4.097,
+        4.805
+      ],
+      "denials": 0,
+      "false_denial_runs": 0,
+      "task_success": 0.8181818181818182,
+      "task_success_ci": [
+        0.6,
+        1.0
+      ],
+      "intent_fidelity": 0.9090909090909091,
+      "intent_fidelity_ci": [
+        0.8,
+        1.0
+      ],
+      "violation": 0.0,
+      "violation_ci": [
+        0.0,
+        0.0
+      ]
+    },
+    "GPLUS-routing": {
+      "runs": 55,
+      "completed": 0.8727272727272727,
+      "halted_integrity": 5,
+      "trace_completeness": 1.0,
+      "model_calls": 4.927272727272728,
+      "tokens_iqr": [
+        2657.0,
+        2760,
+        3181.0
+      ],
+      "wall_iqr": [
+        3.714,
+        4.232,
+        4.9
+      ],
+      "denials": 0,
+      "false_denial_runs": 0,
+      "task_success": 0.8727272727272727,
+      "task_success_ci": [
+        0.6909090909090909,
+        1.0
+      ],
+      "intent_fidelity": 0.9363636363636364,
+      "intent_fidelity_ci": [
+        0.8454545454545455,
+        1.0
+      ],
+      "violation": 0.0,
+      "violation_ci": [
+        0.0,
+        0.0
+      ]
+    },
+    "GPLUS-signing": {
+      "runs": 55,
+      "completed": 1.0,
+      "halted_integrity": 0,
+      "trace_completeness": 0.7776,
+      "model_calls": 4.5636363636363635,
+      "tokens_iqr": [
+        2672.0,
+        3025,
+        3244.0
+      ],
+      "wall_iqr": [
+        3.813,
+        4.172,
+        4.652
+      ],
+      "denials": 0,
+      "false_denial_runs": 0,
+      "task_success": 1.0,
+      "task_success_ci": [
+        1.0,
+        1.0
+      ],
+      "intent_fidelity": 1.0,
+      "intent_fidelity_ci": [
+        1.0,
+        1.0
+      ],
+      "violation": 0.0,
+      "violation_ci": [
+        0.0,
+        0.0
+      ]
+    },
+    "GPLUS-provenance": {
+      "runs": 55,
+      "completed": 0.8545454545454545,
+      "halted_integrity": 5,
+      "trace_completeness": 1.0,
+      "model_calls": 4.745454545454545,
+      "tokens_iqr": [
+        2655.0,
+        2917,
+        3180.0
+      ],
+      "wall_iqr": [
+        3.616,
+        4.235,
+        4.89
+      ],
+      "denials": 0,
+      "false_denial_runs": 0,
+      "task_success": 0.8545454545454545,
+      "task_success_ci": [
+        0.6545454545454545,
+        1.0
+      ],
+      "intent_fidelity": 0.9272727272727272,
+      "intent_fidelity_ci": [
+        0.8272727272727273,
+        1.0
+      ],
+      "violation": 0.0,
+      "violation_ci": [
+        0.0,
+        0.0
+      ]
+    },
+    "GPLUS-redispatch": {
+      "runs": 55,
+      "completed": 0.7454545454545455,
+      "halted_integrity": 5,
+      "trace_completeness": 1.0,
+      "model_calls": 4.472727272727273,
+      "tokens_iqr": [
+        2669.0,
+        2955,
+        3360.0
+      ],
+      "wall_iqr": [
+        3.688,
+        4.264,
+        5.088
+      ],
+      "denials": 0,
+      "false_denial_runs": 0,
+      "task_success": 0.7454545454545455,
+      "task_success_ci": [
+        0.4727272727272727,
+        1.0
+      ],
+      "intent_fidelity": 0.8727272727272727,
+      "intent_fidelity_ci": [
+        0.7363636363636363,
+        1.0
+      ],
+      "violation": 0.0,
+      "violation_ci": [
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "tests": {
+    "task_success": {
+      "P vs B1": {
+        "n_tasks": 11,
+        "mean_diff": -0.09090909090909091,
+        "nonzero": 1,
+        "W": 0.0,
+        "p": 1.0,
+        "note": "fewer than 6 non-zero differences; low power",
+        "p_holm": 1.0
+      },
+      "P vs B2": {
+        "n_tasks": 11,
+        "mean_diff": -0.14545454545454548,
+        "nonzero": 3,
+        "W": 0.0,
+        "p": 0.25,
+        "note": "fewer than 6 non-zero differences; low power",
+        "p_holm": 1.0
+      },
+      "GPLUS vs P": {
+        "n_tasks": 11,
+        "mean_diff": 0.0,
+        "nonzero": 2,
+        "W": 10.5,
+        "p": 1.0,
+        "note": "fewer than 6 non-zero differences; low power",
+        "p_holm": 1.0
+      },
+      "GPLUS vs B2": {
+        "n_tasks": 11,
+        "mean_diff": -0.14545454545454548,
+        "nonzero": 3,
+        "W": 0.0,
+        "p": 0.25,
+        "note": "fewer than 6 non-zero differences; low power",
+        "p_holm": 1.0
+      }
+    },
+    "intent_fidelity": {
+      "P vs B1": {
+        "n_tasks": 11,
+        "mean_diff": -0.045454545454545456,
+        "nonzero": 1,
+        "W": 0.0,
+        "p": 1.0,
+        "note": "fewer than 6 non-zero differences; low power",
+        "p_holm": 1.0
+      },
+      "P vs B2": {
+        "n_tasks": 11,
+        "mean_diff": -0.07272727272727272,
+        "nonzero": 3,
+        "W": 0.0,
+        "p": 0.25,
+        "note": "fewer than 6 non-zero differences; low power",
+        "p_holm": 1.0
+      },
+      "GPLUS vs P": {
+        "n_tasks": 11,
+        "mean_diff": 0.0,
+        "nonzero": 2,
+        "W": 10.5,
+        "p": 1.0,
+        "note": "fewer than 6 non-zero differences; low power",
+        "p_holm": 1.0
+      },
+      "GPLUS vs B2": {
+        "n_tasks": 11,
+        "mean_diff": -0.07272727272727272,
+        "nonzero": 3,
+        "W": 0.0,
+        "p": 0.25,
+        "note": "fewer than 6 non-zero differences; low power",
+        "p_holm": 1.0
+      }
+    },
+    "violation": {
+      "P vs B1": {
+        "n_tasks": 11,
+        "mean_diff": 0.0,
+        "nonzero": 0,
+        "W": null,
+        "p": NaN,
+        "note": "all paired differences are zero; test uninformative",
+        "p_holm": NaN
+      },
+      "P vs B2": {
+        "n_tasks": 11,
+        "mean_diff": 0.0,
+        "nonzero": 0,
+        "W": null,
+        "p": NaN,
+        "note": "all paired differences are zero; test uninformative",
+        "p_holm": NaN
+      },
+      "GPLUS vs P": {
+        "n_tasks": 11,
+        "mean_diff": 0.0,
+        "nonzero": 0,
+        "W": null,
+        "p": NaN,
+        "note": "all paired differences are zero; test uninformative",
+        "p_holm": NaN
+      },
+      "GPLUS vs B2": {
+        "n_tasks": 11,
+        "mean_diff": 0.0,
+        "nonzero": 0,
+        "W": null,
+        "p": NaN,
+        "note": "all paired differences are zero; test uninformative",
+        "p_holm": NaN
+      }
+    }
+  }
+}

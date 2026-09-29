@@ -37,6 +37,7 @@ def test_E4_no_silent_offline_fallback(monkeypatch):
 
 def test_E4_core_has_no_answer_producing_stub():
     import guide.providers as providers
+
     source = inspect.getsource(providers)
     for leaked in ("Apex Cloud", "V-001", "INC-1001", "DOC-RCA"):
         assert leaked not in source

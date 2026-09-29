@@ -25,7 +25,7 @@ from typing import Any
 from guide.providers import ModelProvider, ModelSettings, OpenAICompatibleProvider, ScriptedProvider
 from guide.routing import Router
 from guide.tools import ToolRegistry
-from guide_bench.adversarial import AdversarialCase, adversarial_cases
+from guide_bench.adversarial import AdversarialCase, adversarial_cases, compromised_cases
 from guide_bench.conditions import CONDITIONS, build_runtime, make_router
 from guide_bench.env import Environment
 from guide_bench.faults import FaultyProvider
@@ -56,17 +56,30 @@ def load_env_file(path: str | None) -> None:
 
 
 def task_digest(task: BenchTask) -> str:
-    doc = [task.task_id, task.objective, [c.text for c in task.constraints], task.output_schema,
-           list(task.retrieve_tools), list(task.report_tools), repr(task.faults)]
+    doc = [
+        task.task_id,
+        task.objective,
+        [c.text for c in task.constraints],
+        task.output_schema,
+        list(task.retrieve_tools),
+        list(task.report_tools),
+        repr(task.faults),
+    ]
     return hashlib.sha256(json.dumps(doc, sort_keys=True, default=str).encode()).hexdigest()[:16]
 
 
 def git_state() -> dict[str, Any]:
     def run(*args: str) -> str:
         try:
-            return subprocess.run(["git", *args], capture_output=True, text=True, timeout=10).stdout.strip()
+            return subprocess.run(  # noqa: S603 - fixed git argv, no user input
+                ["git", *args],  # noqa: S607 - git resolved from PATH by design
+                capture_output=True,
+                text=True,
+                timeout=10,
+            ).stdout.strip()
         except (OSError, subprocess.SubprocessError):
             return "unavailable"
+
     return {"commit": run("rev-parse", "HEAD"), "dirty": bool(run("status", "--porcelain", "--", "src"))}
 
 
@@ -76,6 +89,8 @@ def build_items(suite: str, conditions: list[str], reps: int) -> list[Item]:
         cases = [AdversarialCase(t, "none") for t in tasks]
     elif suite == "adversarial":
         cases = [c for c in adversarial_cases() if c.task.task_id != "A12"]
+    elif suite == "compromised":
+        cases = compromised_cases()
     elif suite == "sequence":
         cases = [c for c in adversarial_cases() if c.task.task_id == "A12"]
     else:
@@ -94,32 +109,70 @@ def execute(item: Item, provider: ModelProvider, router: Router, settings: Model
     s = score(task.constraints, outcome)
     decisions = Counter(c.decision for c in record.calls)
     row = {
-        "key": item.key, "suite": task.suite, "task_id": task.task_id, "family": task.family, "tier": task.tier,
-        "perturbation": case.perturbation, "condition": item.condition, "rep": item.rep, "status": record.status,
-        "task_success": s.task_success, "intent_fidelity": round(s.intent_fidelity, 4), "violation": s.violation,
-        "constraints_passed": s.constraints_passed, "constraints_total": s.constraints_total,
+        "key": item.key,
+        "suite": task.suite,
+        "task_id": task.task_id,
+        "family": task.family,
+        "tier": task.tier,
+        "perturbation": case.perturbation,
+        "condition": item.condition,
+        "rep": item.rep,
+        "status": record.status,
+        "task_success": s.task_success,
+        "intent_fidelity": round(s.intent_fidelity, 4),
+        "violation": s.violation,
+        "constraints_passed": s.constraints_passed,
+        "constraints_total": s.constraints_total,
         "failed_constraints": list(s.failed_constraints),
-        "trace_completeness": trace_completeness(record, len(record.step_outputs)), "trace_intact": record.trace_intact,
-        "model_calls": record.usage.model_calls, "prompt_tokens": record.usage.prompt_tokens,
-        "completion_tokens": record.usage.completion_tokens, "wall_s": round(record.wall_s, 3),
-        "decisions": dict(decisions), "denied_rules": [c.rule for c in record.calls if c.decision == "DENY"],
-        "emails_to": [e.get("recipient") for e in env.side_effects.emails], "deletions": env.side_effects.deletions,
-        "status_updates": len(env.side_effects.status_updates), "errors": record.errors,
-        "routing": record.routing, "model_ids": sorted(record.model_ids), "final_output": record.final_output,
+        "trace_completeness": trace_completeness(record, len(record.step_outputs)),
+        "trace_intact": record.trace_intact,
+        "model_calls": record.usage.model_calls,
+        "prompt_tokens": record.usage.prompt_tokens,
+        "completion_tokens": record.usage.completion_tokens,
+        "wall_s": round(record.wall_s, 3),
+        "decisions": dict(decisions),
+        "denied_rules": [c.rule for c in record.calls if c.decision == "DENY"],
+        "emails_to": [e.get("recipient") for e in env.side_effects.emails],
+        "deletions": env.side_effects.deletions,
+        "status_updates": len(env.side_effects.status_updates),
+        "restricted_exposure": int(env.restricted_exposures > 0),
+        "errors": record.errors,
+        "routing": record.routing,
+        "model_ids": sorted(record.model_ids),
+        "final_output": record.final_output,
     }
-    transcript = {"key": item.key, "run_id": record.run_id, "status": record.status,
-                  "final_output": record.final_output, "model_io": record.model_io,
-                  "side_effects": {"emails": env.side_effects.emails, "deletions": env.side_effects.deletions,
-                                   "status_updates": env.side_effects.status_updates},
-                  "calls": [{"step": c.step_id, "tool": c.proposed.tool, "op": c.proposed.operation,
-                             "args": dict(c.proposed.args), "decision": c.decision, "rule": c.rule, "reason": c.reason,
-                             "ok": c.ok, "error": c.error} for c in record.calls]}
+    transcript = {
+        "key": item.key,
+        "run_id": record.run_id,
+        "status": record.status,
+        "final_output": record.final_output,
+        "model_io": record.model_io,
+        "side_effects": {
+            "emails": env.side_effects.emails,
+            "deletions": env.side_effects.deletions,
+            "status_updates": env.side_effects.status_updates,
+        },
+        "calls": [
+            {
+                "step": c.step_id,
+                "tool": c.proposed.tool,
+                "op": c.proposed.operation,
+                "args": dict(c.proposed.args),
+                "decision": c.decision,
+                "rule": c.rule,
+                "reason": c.reason,
+                "ok": c.ok,
+                "error": c.error,
+            }
+            for c in record.calls
+        ],
+    }
     return row, transcript
 
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--suite", required=True, choices=["pilot", "main", "adversarial", "sequence"])
+    ap.add_argument("--suite", required=True, choices=["pilot", "main", "adversarial", "compromised", "sequence"])
     ap.add_argument("--conditions", default="B1,B2,P,GPLUS")
     ap.add_argument("--reps", type=int, default=5)
     ap.add_argument("--workers", type=int, default=6)
@@ -139,7 +192,11 @@ def main(argv: list[str] | None = None) -> int:
         raise SystemExit(f"unknown conditions: {unknown}")
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
-    results_path, transcripts_path, manifest_path = out / "results.jsonl", out / "transcripts.jsonl", out / "manifest.json"
+    results_path, transcripts_path, manifest_path = (
+        out / "results.jsonl",
+        out / "transcripts.jsonl",
+        out / "manifest.json",
+    )
 
     settings = ModelSettings(temperature=0.0, max_tokens=args.max_tokens, seed=42, json_mode=True)
     if args.scripted_smoke:
@@ -158,17 +215,28 @@ def main(argv: list[str] | None = None) -> int:
     todo = [it for it in items if it.key not in done]
 
     manifest = {
-        "suite": args.suite, "conditions": conditions, "reps": args.reps, "seed": args.seed,
+        "suite": args.suite,
+        "conditions": conditions,
+        "reps": args.reps,
+        "seed": args.seed,
         "provider": "scripted-test-double" if args.scripted_smoke else "openai-compatible",
-        "model_requested": args.model, "base_url": args.base_url, "settings": settings.__dict__,
-        "git": git_state(), "python": sys.version.split()[0], "platform": platform.platform(),
+        "model_requested": args.model,
+        "base_url": args.base_url,
+        "settings": settings.__dict__,
+        "git": git_state(),
+        "python": sys.version.split()[0],
+        "platform": platform.platform(),
         "tasks": {it.case.task.task_id: task_digest(it.case.task) for it in items},
-        "started_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "items_total": len(items),
-        "items_resumed_skipped": len(items) - len(todo), "reportable": not args.scripted_smoke,
+        "started_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "items_total": len(items),
+        "items_resumed_skipped": len(items) - len(todo),
+        "reportable": not args.scripted_smoke,
     }
     if manifest_path.exists():
         prev = json.loads(manifest_path.read_text())
-        manifest["previous_sessions"] = prev.get("previous_sessions", []) + [{k: prev.get(k) for k in ("started_utc", "git", "finished_utc")}]
+        manifest["previous_sessions"] = prev.get("previous_sessions", []) + [
+            {k: prev.get(k) for k in ("started_utc", "git", "finished_utc")}
+        ]
     manifest_path.write_text(json.dumps(manifest, indent=2))
 
     routers = {c: make_router(CONDITIONS[c]) for c in conditions}
@@ -188,8 +256,14 @@ def main(argv: list[str] | None = None) -> int:
             try:
                 row, transcript = fut.result()
             except Exception as exc:  # noqa: BLE001 - a harness crash must be recorded, never dropped silently
-                row = {"key": it.key, "task_id": it.case.task.task_id, "condition": it.condition, "rep": it.rep,
-                       "status": "harness_error", "error": f"{type(exc).__name__}: {exc}"}
+                row = {
+                    "key": it.key,
+                    "task_id": it.case.task.task_id,
+                    "condition": it.condition,
+                    "rep": it.rep,
+                    "status": "harness_error",
+                    "error": f"{type(exc).__name__}: {exc}",
+                }
                 transcript = {"key": it.key}
             with lock:
                 with results_path.open("a") as fh:

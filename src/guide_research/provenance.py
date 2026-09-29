@@ -22,7 +22,8 @@ multi-agent orchestration gate, independent of which agent proposed the action.
 from __future__ import annotations
 
 import threading
-from typing import Any, Iterator
+from collections.abc import Iterator
+from typing import Any
 
 from guide.policy import Decision, PolicyContext, PolicyDecision, PolicyEngine
 from guide.tools import ToolRegistry
@@ -36,7 +37,7 @@ def _strings(obj: Any) -> Iterator[str]:
         for k, v in obj.items():
             yield str(k)
             yield from _strings(v)
-    elif isinstance(obj, (list, tuple, set, frozenset)):
+    elif isinstance(obj, list | tuple | set | frozenset):
         for v in obj:
             yield from _strings(v)
     elif obj is not None and not isinstance(obj, bool):
@@ -77,7 +78,7 @@ class ProvenanceGuard:
             untrusted = "\n".join(self._untrusted.get(context.run_id, []))
         for param in op.control_params:
             raw = decision.call.args.get(param)
-            values = raw if isinstance(raw, (list, tuple)) else [raw]
+            values = raw if isinstance(raw, list | tuple) else [raw]
             for value in values:
                 v = str(value or "").strip().lower()
                 if not v:
@@ -85,7 +86,9 @@ class ProvenanceGuard:
                 if v not in trusted:
                     origin = "untrusted content" if v in untrusted else "no source"
                     return PolicyDecision(
-                        Decision.DENY, call, "provenance.control_unsupported",
+                        Decision.DENY,
+                        call,
+                        "provenance.control_unsupported",
                         f"'{param}' value is not supported by trusted task content (found in: {origin})",
                     )
         return decision

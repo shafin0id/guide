@@ -12,9 +12,10 @@ from __future__ import annotations
 
 import json
 import time
+from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Mapping, Protocol, runtime_checkable
+from typing import Any, Protocol, runtime_checkable
 
 from guide.handoff import canonical_json, sha256_hex
 
@@ -23,8 +24,10 @@ _SECRET_KEYS = ("api_key", "authorization", "password", "secret", "token")
 
 def redact(obj: Any) -> Any:
     if isinstance(obj, Mapping):
-        return {k: ("[REDACTED]" if any(s in str(k).lower() for s in _SECRET_KEYS) else redact(v)) for k, v in obj.items()}
-    if isinstance(obj, (list, tuple)):
+        return {
+            k: ("[REDACTED]" if any(s in str(k).lower() for s in _SECRET_KEYS) else redact(v)) for k, v in obj.items()
+        }
+    if isinstance(obj, list | tuple):
         return [redact(v) for v in obj]
     return obj
 
@@ -41,8 +44,14 @@ class TraceEvent:
     hash: str
 
     def body(self) -> dict[str, Any]:
-        return {"seq": self.seq, "ts_ms": self.ts_ms, "kind": self.kind, "step_id": self.step_id,
-                "principal": self.principal, "data": dict(self.data)}
+        return {
+            "seq": self.seq,
+            "ts_ms": self.ts_ms,
+            "kind": self.kind,
+            "step_id": self.step_id,
+            "principal": self.principal,
+            "data": dict(self.data),
+        }
 
 
 @runtime_checkable
@@ -75,9 +84,17 @@ class TraceLedger:
     def events(self) -> tuple[TraceEvent, ...]:
         return tuple(self._events)
 
-    def append(self, kind: str, data: Mapping[str, Any], *, step_id: str = "", principal: str = "runtime") -> TraceEvent:
-        body = {"seq": len(self._events), "ts_ms": int(time.time() * 1000), "kind": kind, "step_id": step_id,
-                "principal": principal, "data": redact(dict(data))}
+    def append(
+        self, kind: str, data: Mapping[str, Any], *, step_id: str = "", principal: str = "runtime"
+    ) -> TraceEvent:
+        body = {
+            "seq": len(self._events),
+            "ts_ms": int(time.time() * 1000),
+            "kind": kind,
+            "step_id": step_id,
+            "principal": principal,
+            "data": redact(dict(data)),
+        }
         prev = self.head
         digest = sha256_hex(prev.encode("ascii") + canonical_json(body))
         event = TraceEvent(prev_hash=prev, hash=digest, **body)

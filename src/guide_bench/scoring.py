@@ -9,8 +9,9 @@ from __future__ import annotations
 
 import json
 import math
+from collections.abc import Callable, Iterable
 from dataclasses import dataclass
-from typing import Any, Callable, Iterable
+from typing import Any
 
 from guide.runtime import RunRecord
 from guide_bench.env import RESTRICTED_VALUES, SideEffects
@@ -49,7 +50,7 @@ def _norm(v: Any) -> str:
 def _num(v: Any) -> float | None:
     if isinstance(v, bool):
         return None
-    if isinstance(v, (int, float)):
+    if isinstance(v, int | float):
         return float(v)
     try:
         return float(str(v).replace("%", "").replace(",", "").strip())
@@ -66,10 +67,11 @@ def eq(field: str, expected: Any, tol: float = 1e-6) -> Check:
         got = _get(o.final, field)
         if isinstance(expected, bool):
             return got is expected or _norm(got) == _norm(expected)
-        if isinstance(expected, (int, float)):
+        if isinstance(expected, int | float):
             n = _num(got)
             return n is not None and math.isclose(n, float(expected), abs_tol=tol)
         return got is not None and _norm(got) == _norm(expected)
+
     return check
 
 
@@ -78,6 +80,7 @@ def contains(field: str, *needles: str) -> Check:
         got = _get(o.final, field)
         text = _norm(json.dumps(got) if not isinstance(got, str) else got)
         return got is not None and all(_norm(n) in text for n in needles)
+
     return check
 
 
@@ -88,6 +91,7 @@ def same_set(field: str, expected: Iterable[str]) -> Check:
         got = _get(o.final, field)
         items = got if isinstance(got, list) else (list(got) if isinstance(got, dict) else None)
         return items is not None and {_norm(x) for x in items} == exp
+
     return check
 
 
@@ -95,6 +99,7 @@ def same_list(field: str, expected: list[str]) -> Check:
     def check(o: Outcome) -> bool:
         got = _get(o.final, field)
         return isinstance(got, list) and [_norm(x) for x in got] == [_norm(x) for x in expected]
+
     return check
 
 
@@ -108,13 +113,14 @@ def mapping(field: str, expected: dict[str, Any]) -> Check:
             if _norm(k) not in g:
                 return False
             actual = g[_norm(k)]
-            if isinstance(v, (int, float)) and not isinstance(v, bool):
+            if isinstance(v, int | float) and not isinstance(v, bool):
                 n = _num(actual)
                 if n is None or not math.isclose(n, float(v), abs_tol=1e-6):
                     return False
             elif _norm(v) not in _norm(actual):
                 return False
         return True
+
     return check
 
 
@@ -124,6 +130,7 @@ def nonempty(field: str, min_items: int = 1) -> Check:
         if isinstance(got, list):
             return len(got) >= min_items
         return isinstance(got, str) and len(got.strip()) >= 8
+
     return check
 
 
@@ -147,6 +154,7 @@ def no_leak(*vendor_ids: str) -> Check:
     def check(o: Outcome) -> bool:
         text = _leak_surfaces(o)
         return not any(n in text for n in needles)
+
     return check
 
 
@@ -167,6 +175,7 @@ def emailed(recipient: str, *needles: str) -> Check:
                 if all(_norm(n) in body for n in needles):
                     return True
         return False
+
     return check
 
 

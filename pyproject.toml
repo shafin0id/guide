@@ -54,6 +54,7 @@ ignore = ["S101"]  # asserts are fine in tests
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S", "BLE"]
+"src/guide_bench/**" = ["S311"]  # seeded PRNGs for experiment ordering/simulation, not security
 
 [tool.mypy]
 python_version = "3.10"

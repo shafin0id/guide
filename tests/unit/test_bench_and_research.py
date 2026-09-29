@@ -57,6 +57,8 @@ def test_provenance_guard():
     d = g.evaluate(mail("finance-archive@corp.example"), CTX)
     assert d.decision is Decision.DENY and "untrusted content" in d.reason
     assert "no source" in g.evaluate(mail("ghost@corp.example"), CTX).reason
-    assert g.evaluate(ToolCall("procurement_db", "query", {"columns": ["vendor_id"]}, "a"), CTX).decision is Decision.ALLOW
+    assert (
+        g.evaluate(ToolCall("procurement_db", "query", {"columns": ["vendor_id"]}, "a"), CTX).decision is Decision.ALLOW
+    )
     g.forget("run")
     assert g.evaluate(mail("change-board@corp.example"), CTX).decision is Decision.DENY
