@@ -203,3 +203,71 @@ the policy allow-list fields, token-exact provenance, and executed-argument reco
   GPLUS-token and P-LP admit exactly 1.
 * The analysis surfaced findings F1–F3 (docs/formal_model.md §8). F1 was then confirmed live: M3 was predicted to be
   reachable under GPLUS and was realised 3/3.
+
+## Protocol v4: real-world configuration study (Task 5)
+
+**Scope note (read before citing these numbers).** This study does NOT execute or parse LangGraph,
+CrewAI, or AutoGen source code, and no external framework was installed or run. It curates 19
+workflow configurations, hand-authored directly in GUIDE's own types (`guide.workflow`, `guide.tools`,
+`guide.policy`), each reproducing one documented *structural pattern* of a framework (cited by name
+in `src/guide_bench/real_world/configs.py`):
+
+* **LangGraph** -- a linear or branching `StateGraph` of tool-bearing nodes over shared state.
+* **CrewAI** -- a sequential task chain or a manager delegating to workers, each with its own tool list.
+* **AutoGen** -- a `GroupChat` where every participant sees the full broadcast transcript (modelled with
+  `HandoffMode.TRANSCRIPT`, matching AutoGen's actual broadcast semantics).
+
+Five enterprise domains: customer support, SQL data analysis, IT change management, document
+retrieval-synthesis, and code review (3-5 configs each). This is a generalisation study of the static
+analyser over configurations in that structural style -- not an empirical study of the frameworks'
+shipped code, and not a claim that any specific LangGraph/CrewAI/AutoGen deployment behaves this way.
+
+**Design decision that drives the finding.** Tool grants default to the *whole tool object* (every
+operation it exposes), not a hand-curated per-operation allow-list -- this mirrors how a real
+integration binds a Python tool/function to a node or agent (`Agent(tools=[...])`, a `@tool`-decorated
+function passed to a `StateGraph` node, `register_function` in AutoGen). The nominal task only ever
+calls a subset of what the bound tool object can do. This is the source of the over-privilege the study
+measures, and it is stated explicitly in the module so the number is not mistaken for a claim about the
+frameworks' own default security posture (which was not tested).
+
+Run: `python -m guide_bench.real_world.audit` -> `experiments/real_world_blast_radius/{results.jsonl,summary.json}`.
+
+### Results (19 configurations, single-node compromise K = {A_i} per worker/writer agent)
+
+| Metric | Result |
+|---|---|
+| Configurations audited | 19 (LangGraph 7, CrewAI 7, AutoGen 5; 5 domains) |
+| Unconstrained reachability -- % of configs where >=1 compromised agent's BR(K) reaches a destructive or exfiltration sink beyond that agent's own nominal job | **94.7%** (18/19) |
+| ...by pattern | LangGraph 100% (7/7), AutoGen 100% (5/5), CrewAI 85.7% (6/7) |
+| Nominal-workflow preservation under the synthesised least-privilege policy | **100%** (19/19; 0 nominal calls denied) |
+| Total sink capabilities, nominal policy | 144 |
+| Total sink capabilities, least-privilege policy | 64 |
+| Aggregate sink-capability reduction | **55.6%** |
+| Mean per-config sink-capability reduction | 53.2% |
+
+### Interpretation
+
+* The near-universal unconstrained reachability (18/19) is a direct, and unsurprising, consequence of
+  granting whole tool objects: e.g. in `support-01-langgraph-linear`, the retrieval node is bound the
+  `crm` tool for a lookup, but that tool object also exposes `update_account` and `issue_refund` --
+  so a single compromised retrieval node's blast radius includes issuing refunds, which its own task
+  never does. This is exactly the class of finding the proposal's Task 5 asked the harness to surface.
+* Least-privilege synthesis (`synthesize_least_privilege`, unchanged from protocol-v3) removes exactly
+  that gap: applied to each config's own nominal calls, it cuts total reachable sink capabilities by
+  55.6% while denying zero nominal calls (100% preservation) -- consistent with Proposition 2 in
+  `docs/formal_model.md` (minimal in the policy lattice, sufficient for the observed behaviour).
+* The one config where no single agent's compromise reached an off-task sink
+  (`itsm-02-crewai-hierarchical`) delegates `change_mgmt` split so neither worker's tool object
+  contains an operation outside its own step's job -- i.e. over-privilege is a configuration choice,
+  not an inevitability, and the analyser correctly reports "constrained" when it is absent.
+* Full per-config, per-agent detail (which capabilities were over-privileged, and the exact
+  least-privilege policy synthesised) is in `experiments/real_world_blast_radius/results.jsonl`.
+
+### Limitations of this study
+
+* Synthetic configurations, not extracted from real deployed agent systems -- see the scope note above.
+* One task per configuration; the least-privilege policy is synthesised from and tested against that
+  single task's nominal calls only (as in protocol-v3's T15 study), not a corpus of varied real usage.
+* "Unconstrained reachability" is defined relative to each config's own declared nominal calls, which
+  were authored by us, not observed from a live system -- a threat to construct validity that a genuine
+  external-repository study (paused Task 5b) would remove.

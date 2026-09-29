@@ -29,6 +29,7 @@ src/
     run.py            randomised, resumable runner + manifest       stats.py  bootstrap, Wilcoxon, Holm
     integrity.py      mutation experiment (H3)                      routing_sim.py bandit simulation (H4)
     validate_bound.py soundness/tightness validation of BR(K) + least-privilege experiments
+    real_world/       19 synthetic LangGraph/CrewAI/AutoGen-pattern configs + blast-radius audit (protocol-v4)
 ```
 
 ## Execution flow (one run)
