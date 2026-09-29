@@ -1,0 +1,154 @@
+"""Model provider abstraction.
+
+GUIDE never falls back silently: a provider either returns a real completion or raises
+:class:`~guide.errors.ProviderError`. The only non-network provider is
+:class:`ScriptedProvider`, an explicit test double that must be constructed on purpose.
+"""
+
+from __future__ import annotations
+
+import os
+import random
+import time
+from dataclasses import dataclass
+from typing import Callable, Protocol, Sequence, runtime_checkable
+
+from guide.errors import ConfigurationError, ProviderError
+from guide.types import ChatMessage
+
+
+@dataclass(frozen=True)
+class ModelSettings:
+    """Generation settings held identical across experimental conditions (model invariance)."""
+
+    temperature: float = 0.0
+    max_tokens: int = 1024
+    seed: int | None = 42
+    json_mode: bool = True
+
+
+@dataclass(frozen=True)
+class ModelResponse:
+    content: str
+    prompt_tokens: int
+    completion_tokens: int
+    latency_s: float
+    model: str  # model identifier *reported by the provider*, recorded for reproducibility
+    finish_reason: str = "stop"
+
+
+@runtime_checkable
+class ModelProvider(Protocol):
+    name: str
+
+    def complete(self, messages: Sequence[ChatMessage], settings: ModelSettings) -> ModelResponse: ...
+
+
+class OpenAICompatibleProvider:
+    """Chat-completions client for any OpenAI-compatible endpoint (OpenAI, DeepSeek, vLLM, ...).
+
+    Retries only transient failures (timeouts, 429, 5xx) with jittered exponential backoff.
+    The API key is read from an environment variable at construction and never logged.
+    """
+
+    def __init__(
+        self,
+        *,
+        model: str,
+        base_url: str,
+        api_key_env: str,
+        timeout_s: float = 60.0,
+        max_retries: int = 4,
+        backoff_s: float = 1.5,
+    ) -> None:
+        try:
+            import httpx  # optional dependency: pip install guide-mas[openai]
+        except ImportError as exc:  # pragma: no cover - environment dependent
+            raise ConfigurationError("OpenAICompatibleProvider requires the 'openai' extra (httpx)") from exc
+        key = os.environ.get(api_key_env)
+        if not key:
+            raise ConfigurationError(f"environment variable {api_key_env} is not set")
+        self.name = f"openai-compatible:{model}"
+        self.model = model
+        self._max_retries = max_retries
+        self._backoff_s = backoff_s
+        self._client = httpx.Client(
+            base_url=base_url.rstrip("/"),
+            timeout=timeout_s,
+            headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
+        )
+        self._httpx = httpx
+
+    def complete(self, messages: Sequence[ChatMessage], settings: ModelSettings) -> ModelResponse:
+        body: dict = {
+            "model": self.model,
+            "messages": [{"role": m.role, "content": m.content} for m in messages],
+            "temperature": settings.temperature,
+            "max_tokens": settings.max_tokens,
+        }
+        if settings.seed is not None:
+            body["seed"] = settings.seed
+        if settings.json_mode:
+            body["response_format"] = {"type": "json_object"}
+
+        last_error: ProviderError | None = None
+        for attempt in range(self._max_retries + 1):
+            start = time.perf_counter()
+            try:
+                resp = self._client.post("/chat/completions", json=body)
+            except self._httpx.TimeoutException as exc:
+                last_error = ProviderError(f"timeout: {type(exc).__name__}", retryable=True)
+            except self._httpx.TransportError as exc:
+                last_error = ProviderError(f"transport error: {type(exc).__name__}", retryable=True)
+            else:
+                latency = time.perf_counter() - start
+                if resp.status_code == 200:
+                    payload = resp.json()
+                    choice = payload["choices"][0]
+                    usage = payload.get("usage") or {}
+                    return ModelResponse(
+                        content=choice["message"].get("content") or "",
+                        prompt_tokens=int(usage.get("prompt_tokens", 0)),
+                        completion_tokens=int(usage.get("completion_tokens", 0)),
+                        latency_s=latency,
+                        model=str(payload.get("model", self.model)),
+                        finish_reason=str(choice.get("finish_reason") or "stop"),
+                    )
+                retryable = resp.status_code == 429 or resp.status_code >= 500
+                last_error = ProviderError(
+                    f"HTTP {resp.status_code}", retryable=retryable, status=resp.status_code
+                )
+            if not last_error.retryable or attempt == self._max_retries:
+                break
+            time.sleep(self._backoff_s * (2**attempt) * (0.5 + random.random()))
+        assert last_error is not None
+        raise last_error
+
+    def close(self) -> None:
+        self._client.close()
+
+
+class ScriptedProvider:
+    """Deterministic TEST DOUBLE. Replays scripted responses; never use for reported results.
+
+    ``script`` is either a list of response strings (consumed in order) or a callable that
+    maps the message list to a response string.
+    """
+
+    def __init__(self, script: "Sequence[str] | Callable[[Sequence[ChatMessage]], str]", model: str = "scripted") -> None:
+        self.name = f"scripted:{model}"
+        self._script = script
+        self._index = 0
+        self.calls: list[list[ChatMessage]] = []
+
+    def complete(self, messages: Sequence[ChatMessage], settings: ModelSettings) -> ModelResponse:
+        self.calls.append(list(messages))
+        if callable(self._script):
+            content = self._script(messages)
+        else:
+            if self._index >= len(self._script):
+                raise ProviderError("scripted provider exhausted", retryable=False)
+            content = self._script[self._index]
+            self._index += 1
+        prompt_tokens = sum(len(m.content) for m in messages) // 4
+        return ModelResponse(content, prompt_tokens, len(content) // 4, 0.0, self.name)

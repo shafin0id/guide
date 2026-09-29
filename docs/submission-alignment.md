@@ -1,0 +1,23 @@
+# Submission Alignment Log
+
+Source of truth: `previously submitted to university/RMCE - Assignment 2 (Proposal).docx` (submitted 2026-08-01) and `RMCE - Assignment 1 (Liturature Review).docx`. Those files are never edited.
+Rule: prefer the submitted scope; every deviation is recorded here with its reason. Status: **OPEN** (deviation exists, unresolved), **REVERT** (implementation will return to the proposal), **KEEP** (justified change, report must explain it).
+
+| # | Area | Submitted version | Implemented version (fc1d4b4 / guide-bench f5642d8) | Reason for change | Impact on research | Report update needed | Status |
+|---|---|---|---|---|---|---|---|
+| A1 | Baselines | B1 fixed-role sequential (plain text); B2 static graph (structured state, no routing/signing/gate) | README headline compares against "CrewAI, LangGraph, AutoGen" that were never actually executed (emulated prompt chains) | None documented | Headline comparison invalid; B1/B2 exist in `guide_mas/baselines/` | Report uses B1/B2 only unless real libraries are run | REVERT |
+| A2 | Intent fidelity metric | Preserved constraints / initial constraints (measured) | Assigned per condition by formula (`runner.py:110-121`); bench uses keyword overlap × hop decay | None documented | RQ3 fidelity results currently meaningless | Describe measured metric and checker | REVERT |
+| A3 | Task success | Mandatory rubric passes / completed runs | Rubric pass, then baseline-specific caps by constraint count | None documented | Biased toward P | None if reverted | REVERT |
+| A4 | Execution | Live LLM, identical settings across conditions | Offline keyword stub by default; silent fallback on API error | Convenience / offline testing | Runs not evidence | State that stub is test-only | REVERT |
+| A5 | Repetitions & order | 5 reps, randomised condition/task/rep order | Runner loops in order; bench used 1 rep | None | Violates protocol | None if reverted | REVERT |
+| A6 | Pilot | 6-task pilot, excluded from results | Not implemented | Not yet reached (Oct 2026 per plan) | None yet | None | OPEN |
+| A7 | Semantic scoring | Two blinded assessors on stratified 20% sample, Cohen's kappa | Not implemented | Not yet reached | Needed for semantic items; requires ethics approval if humans used | Report assessor protocol or justify replacement | OPEN |
+| A8 | Practical significance | ≥10 pp success/fidelity gain or ≥50% fewer violations with ≤30% extra median time | Not computed | Not yet reached | Required for RQ3 conclusion | None if implemented | OPEN |
+| A9 | Robustness baseline | 12 cases run under P and stronger baseline (B2) | B2 returns `passed=False` by construction (`robustness.py:467-475`) | None | RQ4 comparison invalid | None if reverted | REVERT |
+| A10 | Policy gate description | "Allows, bounds or denies"; Appendix B Euclidean projection onto C | Rule-based allow/deny + 1-D clamp of `limit`; README markets general convex projection over categorical tuples | Marketing drift | Overclaim risk at viva/review | Describe as bounded parameter projection; categorical fields are rule checks | KEEP (wording fix) |
+| A11 | Canonicalisation | "Canonical JSON" | Claimed RFC 8785 JCS; implemented sorted-key compact JSON | — | Minor; claim inaccurate | Either implement JCS or drop the RFC claim | OPEN |
+| A12 | Security claim | "Does not claim universal security"; results are not certification | README claims 100% interception, guarantees, "Production-Grade" | Marketing drift | Contradicts proposal | Remove claims | REVERT |
+| A13 | Additional components | Four controls only | Adds DAG topology engine, content-addressed store, tiered hand-offs, trust freeze, prompt-cache structuring | Engineering additions | Fine if framed as supporting infrastructure, not contributions, unless ablated | List as implementation detail; ablate trust freeze if claimed | KEEP (frame) |
+| A14 | Extra benchmark dimensions | 3 task families (synthesis, reconciliation, planning) | Bench adds imitations of GAIA/SWE-bench/HotpotQA/ToolBench/InjecAgent/MultiAgentBench | Wider coverage | Named benchmarks misrepresented | Use official harnesses (e.g. AgentDojo, τ-bench) as external-validity study, labelled as an extension beyond the proposal | OPEN |
+| A15 | Theoretical results | Formulae in Appendix B as rules, not results | README/spec present closed-form regret/IPS/speedup numbers as findings | Marketing drift | Unsupported claims | Keep formulae as mechanism definitions only | REVERT |
+| A16 | Model | "Selected LLM service or local model", recorded in manifest | Spec names Claude 3.5 Sonnet / GPT-4o; bench ran deepseek-chat | Cost | Fine if recorded | Record exact model + version + date | OPEN |

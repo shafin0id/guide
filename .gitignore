@@ -49,3 +49,6 @@ evaluation_results*.json
 .env.*
 .env.local
 !.env.example
+
+# experiment transcripts are large; results.jsonl + manifest.json are committed
+experiments/**/transcripts.jsonl

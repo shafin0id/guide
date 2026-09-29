@@ -1,55 +1,63 @@
 [build-system]
-requires = ["setuptools>=68.0.0", "wheel"]
+requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "guide-mas"
-version = "2.4.0"
-description = "GUIDE: Policy-Aware Orchestration Framework for Enterprise LLM Multi-Agent Workflows"
+version = "0.3.0"
+description = "GUIDE: policy-aware, traceable orchestration for LLM multi-agent workflows (research prototype)"
 readme = "README.md"
 requires-python = ">=3.10"
-license = {text = "Apache-2.0"}
-authors = [
-    {name = "Shafin Ahmad", email = "tp0126417@mail.apu.edu.my"}
-]
-keywords = [
-    "multi-agent-systems",
-    "orchestration",
-    "bayesian-ucb",
-    "policy-enforcement",
-    "cryptographic-lineage",
-    "enterprise-ai",
-    "llm"
-]
+license = { text = "Apache-2.0" }
+authors = [{ name = "Shafin Ahmad" }]
+keywords = ["multi-agent-systems", "llm", "orchestration", "policy-enforcement", "provenance", "audit"]
 classifiers = [
-    "Development Status :: 5 - Production/Stable",
+    "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
     "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Topic :: Scientific/Engineering :: Artificial Intelligence"
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
-dependencies = [
-    "pydantic>=2.5.0",
-    "pydantic-settings>=2.1.0",
-    "python-dotenv>=1.0.0",
-    "cryptography>=41.0.0",
-    "scipy>=1.10.0",
-    "numpy>=1.24.0",
-    "litellm>=1.0.0"
-]
+# Core is intentionally minimal: signing is the only hard dependency.
+dependencies = ["cryptography>=42,<47"]
 
 [project.optional-dependencies]
-dev = [
-    "pytest>=7.4.0",
-    "pytest-asyncio>=0.21.0"
-]
+openai = ["httpx>=0.27,<1"]  # OpenAI-compatible HTTP provider
+bench = ["httpx>=0.27,<1", "scipy>=1.11,<2", "numpy>=1.26,<3"]
+dev = ["pytest>=8,<10", "ruff>=0.6,<1", "mypy>=1.10,<2", "scipy>=1.11,<2", "numpy>=1.26,<3", "httpx>=0.27,<1"]
 
 [project.scripts]
-guide-eval = "guide_mas.evaluation.runner:main"
+guide-bench = "guide_bench.run:main"
 
 [tool.setuptools.packages.find]
-where = ["."]
-include = ["guide_mas*"]
+where = ["src"]
+include = ["guide*", "guide_research*", "guide_bench*"]
+
+[tool.setuptools.package-data]
+guide = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+markers = ["live: requires a real model provider and credentials (deselected by default)"]
+addopts = "-m 'not live'"
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "BLE", "S"]
+ignore = ["S101"]  # asserts are fine in tests
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S", "BLE"]
+
+[tool.mypy]
+python_version = "3.10"
+packages = ["guide", "guide_research"]
+mypy_path = "src"
+strict = true
+warn_unused_ignores = true
