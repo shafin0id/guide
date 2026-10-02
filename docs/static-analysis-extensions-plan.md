@@ -496,15 +496,33 @@ Do **not** edit `docs/paper/manuscript-draft.md`. Do the following:
   about production deployments the study cannot see.
 
 ## 8. Status log (executor updates in place)
-- [ ] v7a predictor + tests, tag `protocol-v7a`
-- [ ] v7a results + mismatch analysis
-- [ ] v7c topology + monotonicity test, tag `protocol-v7c`
-- [ ] v7c frontier + Q1–Q4
+- [x] v7a predictor + tests, tag `protocol-v7a` (commit fd8acff)
+- [x] v7a results + mismatch analysis (overall accuracy 0.928, 0 fn_onpath cases)
+- [x] v7c topology + monotonicity test, tag `protocol-v7c` (commit 49d3bdc, 0 counterexamples)
+- [x] v7c frontier + Q1–Q4
 - [ ] v7b pilot, tag `protocol-v7b`
 - [ ] v7b snapshot, extraction, validation, metrics
 - [ ] `docs/experiments.md` + `docs/submission-alignment.md` updated
 - [ ] Full test suite passed (count: ___)
-- Deviations: (none yet)
+- Deviations:
+  - v7c: all 19 real-world configs turned out to be **strictly linear dependency chains**
+    (every step depends only on its immediate predecessor — the "branch"/"hierarchical"
+    labels describe the framework idiom reproduced, not an actual DAG with independent
+    branches). Consequence: WBR_1 = 1.0 for 18/19 configs under EVERY condition tested,
+    including least-privilege + SIGNED + best partition (the one exception, `sql-01`,
+    has zero write/external operations at all under its least-privilege policy, so its
+    floor is 0.0 for a different reason — no sinks exist, not a topology/mode effect).
+    Root cause confirmed structurally (not a code bug): under Definition 2 rule C, a
+    linear chain's downstream steps are always `influenced` by an upstream compromise
+    via the dependency edge itself, in BOTH transcript and signed mode (signed hand-off
+    blocks transport tampering, not a legitimately-produced malicious hand-off from a
+    compromised but honest-protocol upstream agent). This is disclosed in full in
+    `docs/static-analysis-extensions-results.md` and is itself a negative result worth
+    reporting, not a defect to hide (`pref.scientific_integrity`). It sharpens Q1–Q4: the
+    floor in this config set is set by chain length and sink placement, not by partition
+    count, because there is no actual branch point to exploit. This was not anticipated
+    when §2 was frozen, but no definition or metric was changed after seeing the data —
+    only the §2.4 narrative framing is affected, not the frozen computation.
 
 ---
 

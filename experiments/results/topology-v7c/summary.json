@@ -1,0 +1,346 @@
+{
+  "n_configs_total": 19,
+  "n_configs_skipped_too_large": 0,
+  "skipped_config_ids": [],
+  "q1_transcript_washout": {
+    "median_reduction_fraction": 0.0,
+    "n_configs": 19,
+    "interpretation": "fraction by which the best TRANSCRIPT partition reduces WBR_1 vs. the original (unpartitioned) structure"
+  },
+  "q2_least_agents_for_floor": [
+    {
+      "config_id": "support-01-langgraph-linear",
+      "n_steps": 2,
+      "m_at_floor": 1,
+      "floor_wbr": 1.0
+    },
+    {
+      "config_id": "support-02-langgraph-branch",
+      "n_steps": 3,
+      "m_at_floor": 1,
+      "floor_wbr": 1.0
+    },
+    {
+      "config_id": "support-03-crewai-sequential",
+      "n_steps": 2,
+      "m_at_floor": 1,
+      "floor_wbr": 1.0
+    },
+    {
+      "config_id": "support-04-crewai-hierarchical",
+      "n_steps": 3,
+      "m_at_floor": 1,
+      "floor_wbr": 1.0
+    },
+    {
+      "config_id": "support-05-autogen-groupchat",
+      "n_steps": 2,
+      "m_at_floor": 1,
+      "floor_wbr": 1.0
+    },
+    {
+      "config_id": "sql-01-langgraph-linear",
+      "n_steps": 2,
+      "m_at_floor": 1,
+      "floor_wbr": 0.0
+    },
+    {
+      "config_id": "sql-02-langgraph-branch",
+      "n_steps": 3,
+      "m_at_floor": 1,
+      "floor_wbr": 1.0
+    },
+    {
+      "config_id": "sql-03-crewai-sequential",
+      "n_steps": 2,
+      "m_at_floor": 1,
+      "floor_wbr": 1.0
+    },
+    {
+      "config_id": "sql-04-crewai-hierarchical",
+      "n_steps": 3,
+      "m_at_floor": 1,
+      "floor_wbr": 1.0
+    },
+    {
+      "config_id": "sql-05-autogen-groupchat",
+      "n_steps": 2,
+      "m_at_floor": 1,
+      "floor_wbr": 1.0
+    },
+    {
+      "config_id": "itsm-01-langgraph-linear",
+      "n_steps": 2,
+      "m_at_floor": 1,
+      "floor_wbr": 1.0
+    },
+    {
+      "config_id": "itsm-02-crewai-hierarchical",
+      "n_steps": 3,
+      "m_at_floor": 1,
+      "floor_wbr": 1.0
+    },
+    {
+      "config_id": "itsm-03-autogen-groupchat",
+      "n_steps": 2,
+      "m_at_floor": 1,
+      "floor_wbr": 1.0
+    },
+    {
+      "config_id": "docs-01-langgraph-branch",
+      "n_steps": 3,
+      "m_at_floor": 1,
+      "floor_wbr": 1.0
+    },
+    {
+      "config_id": "docs-02-crewai-sequential",
+      "n_steps": 2,
+      "m_at_floor": 1,
+      "floor_wbr": 1.0
+    },
+    {
+      "config_id": "docs-03-autogen-groupchat",
+      "n_steps": 2,
+      "m_at_floor": 1,
+      "floor_wbr": 1.0
+    },
+    {
+      "config_id": "code-01-langgraph-linear",
+      "n_steps": 2,
+      "m_at_floor": 1,
+      "floor_wbr": 1.0
+    },
+    {
+      "config_id": "code-02-crewai-hierarchical",
+      "n_steps": 3,
+      "m_at_floor": 1,
+      "floor_wbr": 1.0
+    },
+    {
+      "config_id": "code-03-autogen-groupchat",
+      "n_steps": 2,
+      "m_at_floor": 1,
+      "floor_wbr": 1.0
+    }
+  ],
+  "q3_irreducible_floor": [
+    {
+      "config_id": "support-01-langgraph-linear",
+      "min_wbr_achievable": 1.0
+    },
+    {
+      "config_id": "support-02-langgraph-branch",
+      "min_wbr_achievable": 1.0
+    },
+    {
+      "config_id": "support-03-crewai-sequential",
+      "min_wbr_achievable": 1.0
+    },
+    {
+      "config_id": "support-04-crewai-hierarchical",
+      "min_wbr_achievable": 1.0
+    },
+    {
+      "config_id": "support-05-autogen-groupchat",
+      "min_wbr_achievable": 1.0
+    },
+    {
+      "config_id": "sql-02-langgraph-branch",
+      "min_wbr_achievable": 1.0
+    },
+    {
+      "config_id": "sql-03-crewai-sequential",
+      "min_wbr_achievable": 1.0
+    },
+    {
+      "config_id": "sql-04-crewai-hierarchical",
+      "min_wbr_achievable": 1.0
+    },
+    {
+      "config_id": "sql-05-autogen-groupchat",
+      "min_wbr_achievable": 1.0
+    },
+    {
+      "config_id": "itsm-01-langgraph-linear",
+      "min_wbr_achievable": 1.0
+    },
+    {
+      "config_id": "itsm-02-crewai-hierarchical",
+      "min_wbr_achievable": 1.0
+    },
+    {
+      "config_id": "itsm-03-autogen-groupchat",
+      "min_wbr_achievable": 1.0
+    },
+    {
+      "config_id": "docs-01-langgraph-branch",
+      "min_wbr_achievable": 1.0
+    },
+    {
+      "config_id": "docs-02-crewai-sequential",
+      "min_wbr_achievable": 1.0
+    },
+    {
+      "config_id": "docs-03-autogen-groupchat",
+      "min_wbr_achievable": 1.0
+    },
+    {
+      "config_id": "code-01-langgraph-linear",
+      "min_wbr_achievable": 1.0
+    },
+    {
+      "config_id": "code-02-crewai-hierarchical",
+      "min_wbr_achievable": 1.0
+    },
+    {
+      "config_id": "code-03-autogen-groupchat",
+      "min_wbr_achievable": 1.0
+    }
+  ],
+  "q4_decomposition_median_wbr1": {
+    "i_original_nominal_transcript": 1.0,
+    "ii_least_privilege_only": 1.0,
+    "iii_least_privilege_plus_signed": 1.0,
+    "iv_least_privilege_plus_signed_plus_best_partition": 1.0,
+    "per_config": [
+      {
+        "config_id": "support-01-langgraph-linear",
+        "i_original": 1.0,
+        "ii_lp_only": 1.0,
+        "iii_lp_signed": 1.0,
+        "iv_lp_signed_best_partition": 1.0
+      },
+      {
+        "config_id": "support-02-langgraph-branch",
+        "i_original": 1.0,
+        "ii_lp_only": 1.0,
+        "iii_lp_signed": 1.0,
+        "iv_lp_signed_best_partition": 1.0
+      },
+      {
+        "config_id": "support-03-crewai-sequential",
+        "i_original": 1.0,
+        "ii_lp_only": 1.0,
+        "iii_lp_signed": 1.0,
+        "iv_lp_signed_best_partition": 1.0
+      },
+      {
+        "config_id": "support-04-crewai-hierarchical",
+        "i_original": 1.0,
+        "ii_lp_only": 1.0,
+        "iii_lp_signed": 1.0,
+        "iv_lp_signed_best_partition": 1.0
+      },
+      {
+        "config_id": "support-05-autogen-groupchat",
+        "i_original": 1.0,
+        "ii_lp_only": 1.0,
+        "iii_lp_signed": 1.0,
+        "iv_lp_signed_best_partition": 1.0
+      },
+      {
+        "config_id": "sql-01-langgraph-linear",
+        "i_original": 1.0,
+        "ii_lp_only": 0.0,
+        "iii_lp_signed": 0.0,
+        "iv_lp_signed_best_partition": 0.0
+      },
+      {
+        "config_id": "sql-02-langgraph-branch",
+        "i_original": 1.0,
+        "ii_lp_only": 1.0,
+        "iii_lp_signed": 1.0,
+        "iv_lp_signed_best_partition": 1.0
+      },
+      {
+        "config_id": "sql-03-crewai-sequential",
+        "i_original": 1.0,
+        "ii_lp_only": 1.0,
+        "iii_lp_signed": 1.0,
+        "iv_lp_signed_best_partition": 1.0
+      },
+      {
+        "config_id": "sql-04-crewai-hierarchical",
+        "i_original": 1.0,
+        "ii_lp_only": 1.0,
+        "iii_lp_signed": 1.0,
+        "iv_lp_signed_best_partition": 1.0
+      },
+      {
+        "config_id": "sql-05-autogen-groupchat",
+        "i_original": 1.0,
+        "ii_lp_only": 1.0,
+        "iii_lp_signed": 1.0,
+        "iv_lp_signed_best_partition": 1.0
+      },
+      {
+        "config_id": "itsm-01-langgraph-linear",
+        "i_original": 1.0,
+        "ii_lp_only": 1.0,
+        "iii_lp_signed": 1.0,
+        "iv_lp_signed_best_partition": 1.0
+      },
+      {
+        "config_id": "itsm-02-crewai-hierarchical",
+        "i_original": 1.0,
+        "ii_lp_only": 1.0,
+        "iii_lp_signed": 1.0,
+        "iv_lp_signed_best_partition": 1.0
+      },
+      {
+        "config_id": "itsm-03-autogen-groupchat",
+        "i_original": 1.0,
+        "ii_lp_only": 1.0,
+        "iii_lp_signed": 1.0,
+        "iv_lp_signed_best_partition": 1.0
+      },
+      {
+        "config_id": "docs-01-langgraph-branch",
+        "i_original": 1.0,
+        "ii_lp_only": 1.0,
+        "iii_lp_signed": 1.0,
+        "iv_lp_signed_best_partition": 1.0
+      },
+      {
+        "config_id": "docs-02-crewai-sequential",
+        "i_original": 1.0,
+        "ii_lp_only": 1.0,
+        "iii_lp_signed": 1.0,
+        "iv_lp_signed_best_partition": 1.0
+      },
+      {
+        "config_id": "docs-03-autogen-groupchat",
+        "i_original": 1.0,
+        "ii_lp_only": 1.0,
+        "iii_lp_signed": 1.0,
+        "iv_lp_signed_best_partition": 1.0
+      },
+      {
+        "config_id": "code-01-langgraph-linear",
+        "i_original": 1.0,
+        "ii_lp_only": 1.0,
+        "iii_lp_signed": 1.0,
+        "iv_lp_signed_best_partition": 1.0
+      },
+      {
+        "config_id": "code-02-crewai-hierarchical",
+        "i_original": 1.0,
+        "ii_lp_only": 1.0,
+        "iii_lp_signed": 1.0,
+        "iv_lp_signed_best_partition": 1.0
+      },
+      {
+        "config_id": "code-03-autogen-groupchat",
+        "i_original": 1.0,
+        "ii_lp_only": 1.0,
+        "iii_lp_signed": 1.0,
+        "iv_lp_signed_best_partition": 1.0
+      }
+    ]
+  },
+  "git": {
+    "commit": "49d3bdc49697546deb6ce082dcc0b07b17aa6da2",
+    "dirty": true
+  },
+  "finished_utc": "2026-10-02T15:58:19Z"
+}
