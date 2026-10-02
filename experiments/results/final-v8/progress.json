@@ -36,9 +36,9 @@
     "finished_utc": "2026-10-02T18:47:10.399103+00:00"
   },
   "M6": {
-    "done": 0,
-    "total": 0,
-    "started_utc": null,
-    "finished_utc": null
+    "done": 7,
+    "total": 7,
+    "started_utc": "2026-10-02T18:47:39.620030+00:00",
+    "finished_utc": "2026-10-02T18:52:11.248060+00:00"
   }
 }

@@ -1,4 +1,4 @@
-# GUIDE — policy-aware, traceable orchestration for LLM multi-agent workflows
+# GUIDE: policy-aware, traceable governance for LLM multi-agent workflows
 
 GUIDE is a research prototype (MSc AI dissertation artefact, APU/DMU, CT095-6-M-RMCE; author Shafin Ahmad;
 supervisors Ts. Dr. Maythem Kamal and Dr. R Logeswaran). It adds four connected controls around an existing LLM:
@@ -76,16 +76,37 @@ Dependencies point one way only (Core ← Research ← Bench), enforced by `scri
 
 ## Reproduce
 
+See [REPRODUCE.md](REPRODUCE.md) for complete instructions to reproduce every table and metric in the paper.
+
+Quick check:
+
 ```bash
-pytest -q                                                   # 99 tests, no network
-python -m guide_bench.integrity --n 500 --out experiments/results/integrity
-python -m guide_bench.routing_sim --seeds 100 --horizon 1000 --out experiments/results/routing
-guide-bench --suite main --conditions B1,B2,P,GPLUS --reps 5 --out experiments/results/main --env-file .env
-python -m guide_bench.stats experiments/results/main
+uv run pytest -q                                                   # Unit test suite, no network
+uv run python -u scripts/final/run_final.py --stage check_numbers  # Verify all 34 manuscript numbers
 ```
 
-Each run directory contains `manifest.json` (git commit, model requested/observed, settings, task digests, seed),
-`results.jsonl` (one scored row per run) and `transcripts.jsonl` (model I/O, not committed).
+## Paper artefacts
+
+The research paper evaluates GUIDE as a reference monitor for LLM multi-agent systems across formal proofs, synthetic benchmarks, and external real-world benchmarks:
+
+- [Reproduction guide](REPRODUCE.md): step-by-step commands and verification for every table and empirical finding across protocols v1 to v8.
+- [Formal model and proofs](docs/formal_model.md): complete definitions, Theorem 1 and Theorem 2 blast-radius containment, Proposition 3 topology monotonicity, and Proposition 4 linear chain closed-form bounds.
+- [Final run results](docs/final-run-results.md): authoritative execution log, verified paper numbers, and metric summaries for Protocol v8.
+- [Benchmark experiment logs](docs/experiments.md): detailed records covering protocols v1 to v8.
+
+### Experimental result directories
+
+- `experiments/results/compromise-replay-v8/`: Protocol v8 (M1) assumed-compromise replay logs across 949 AgentDojo pairs.
+- `experiments/results/final-v8/`: Protocol v8 (M1b) attributable utility loss evaluation and verified paper numbers ledger.
+- `experiments/results/topology-v8/`: Protocol v8 (M2) structural census and Proposition 4 evaluation over 55 acyclic workflows.
+- `experiments/results/agentdojo-v6/`: Protocol v6 defended benchmark execution traces on DeepSeek-V3.
+- `experiments/results/agentdojo-v6b-undefended/`: Protocol v6b paired undefended benchmark execution traces on DeepSeek-V3.
+- `experiments/results/predict-utility-v7a/`: Protocol v7a static utility loss prediction against benign traces.
+- `experiments/results/topology-v7c/`: Protocol v7c topology refinement property tests.
+- `experiments/mining/`: Protocol v7b public multi-agent configuration mining funnel and capability audits.
+- `experiments/real_world_blast_radius/`: Protocol v4 static capability audit across 19 real-world configurations.
+- `experiments/results/v2-main/`, `v2-compromised/`: Protocol v2 multi-agent benchmark traces on DeepSeek-V3.
+- `experiments/results/v5-main-*/`, `v5-compromised-*/`: Protocol v5 multi-model evaluation traces across Gemini and Groq.
 
 ## Documentation
 
@@ -96,3 +117,4 @@ Each run directory contains `manifest.json` (git commit, model requested/observe
 ## License
 
 Apache-2.0.
+

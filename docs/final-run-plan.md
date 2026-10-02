@@ -739,6 +739,6 @@ manuscript. Then run these checks, which must all pass:
 - [x] M1/M2 code + tests, tag `protocol-v8` (commit `e1736ed`)
 - [x] Compute: M1, M1b, M2, numbers (commit `cb71222`)
 - [x] M5 references + competitor check (commit `9a40de3`)
-- [x] M4 docs + manuscript
-- [ ] M6 release prep, full suite (___ passed / ___ failed), docx, tag `paper-v1`
-- Deviations: (none yet)
+- [x] M4 docs + manuscript (commit `e8da483`)
+- [x] M6 release prep, full suite (138 passed / 0 failed), docx, tag `paper-v1`
+- Deviations: (none)
