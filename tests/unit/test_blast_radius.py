@@ -210,7 +210,7 @@ def gate_cases(draw):
 COVERAGE: dict[str, int] = {}
 
 
-@settings(max_examples=1500, deadline=None, suppress_health_check=[HealthCheck.too_slow])
+@settings(max_examples=4000, deadline=None, derandomize=True, database=None, suppress_health_check=[HealthCheck.too_slow])
 @given(
     case=gate_cases(),
     gate=st.sampled_from(["rule", "rule+provenance"]),
@@ -253,6 +253,8 @@ def test_property_auth_is_exact_wrt_real_gate(case, gate, match, trusted):
 
 def test_property_coverage_is_not_vacuous():
     """Runs after the property test in file order: every gate outcome class must have been exercised."""
+    if not COVERAGE:
+        test_property_auth_is_exact_wrt_real_gate()
     executed = COVERAGE.get("ALLOW", 0) + COVERAGE.get("BOUND", 0)
     assert executed >= 200, COVERAGE
     for rule in (
