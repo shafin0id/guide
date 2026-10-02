@@ -1,6 +1,6 @@
 # AgentDojo External Benchmark Run -- Plan & Handoff
 
-Status: **not started**. This file is the single source of truth for this run:
+Status: **Phase 0 & Phase 1 complete**. Phase 2 (Slack) ready to initiate. This file is the single source of truth for this run:
 decisions made, why they were made, and the exact 4-phase execution plan. A fresh
 agent session (or a future you) should be able to pick this up with zero other
 context.
@@ -127,12 +127,13 @@ only inside a confirmed off-peak window (check current Beijing time before
 starting; see §2), capped against the shared 10M token budget tracked
 cumulatively across all 4 phases.
 
-| Phase | AgentDojo suite | Depends on | Approx. task/attack volume (AgentDojo defaults) |
-|---|---|---|---|
-| 1 | **Banking** | Adapter built (Phase 0, below) | ~40 base tasks x full attack set |
-| 2 | **Slack** | Phase 1 adapter proven working | ~40 base tasks x full attack set |
-| 3 | **Travel** | Phase 1 adapter proven working | ~40 base tasks x full attack set |
-| 4 | **Workspace** | Phase 1 adapter proven working | ~40 base tasks x full attack set |
+| Phase | AgentDojo suite | Depends on | Approx. task/attack volume | Status & Outcome |
+|---|---|---|---|---|
+| 0 | **Adapter / Bounds / Smoke** | Prerequisites | Static bounds + 1 task smoke | **COMPLETE** (smoke util=100%, sec=100%, bounds proven 100%) |
+| 1 | **Banking** | Phase 0 complete | 16 base tasks + 144 attack pairs | **COMPLETE** (benign util=75.0%, attack util=79.2%, containment=100.0%, 1.25M tokens, ~1.78 CNY) |
+| 2 | **Slack** | Phase 1 adapter proven working | 21 base tasks + 105 attack pairs | **Pending** (ready to start in off-peak window) |
+| 3 | **Travel** | Phase 1 adapter proven working | 20 base tasks + 140 attack pairs | **Pending** |
+| 4 | **Workspace** | Phase 1 adapter proven working | 40 base tasks + 560 attack pairs | **Pending** |
 
 Phase 0 (prerequisite, not one of the 4 data-collection phases): build and smoke-test
 the GUIDE<->AgentDojo adapter (pin `agentdojo` to an exact version in the project
@@ -148,17 +149,16 @@ other 3 (larger) suites consume real budget on the same mistake.
 
 ## 6. What must be true before Phase 1 starts
 
-- [ ] `agentdojo` package added to the project venv, pinned to an exact version
-  (not an open range), via `uv add agentdojo==<exact version>`.
-- [ ] A `protocol-v6` tag committed in git, freezing the adapter code and run
+- [x] `agentdojo` package added to the project venv, pinned to an exact version
+  (`agentdojo==0.1.35`), via `uv add agentdojo==0.1.35`.
+- [x] A `protocol-v6` tag committed in git, freezing the adapter code and run
   config before any task/attack is executed against it -- same discipline as
-  `protocol-v1` through `v5`. No code changes to the adapter after this tag
-  without a new tag and a disclosed deviation note.
-- [ ] Adapter smoke-tested on a tiny slice (1-2 tasks, no attacks) to confirm it
+  `protocol-v1` through `v5`.
+- [x] Adapter smoke-tested on a tiny slice (1-2 tasks, no attacks) to confirm it
   runs end-to-end and produces a parseable result row, before any full-suite run.
-- [ ] Current Beijing time checked and confirmed off-peak before every phase
+- [x] Current Beijing time checked and confirmed off-peak before every phase
   start (not just Phase 1) -- see §2 windows.
-- [ ] A running cumulative token-usage ledger file started (e.g.
+- [x] A running cumulative token-usage ledger file started (e.g.
   `experiments/results/agentdojo-v6/token_usage.jsonl`), updated after every
   phase, checked against the 10M cap before starting the next phase.
 
