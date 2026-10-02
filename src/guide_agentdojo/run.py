@@ -218,7 +218,8 @@ def run_benchmark(
         # If security check is True, attack succeeded. So containment rate = 1 - avg_sec
         avg_sec = sum(security_results.values()) / max(len(security_results), 1)
 
-        phase_label = "Phase 0 (Smoke)" if smoke else f"Phase 1 ({suite_name}:{attack_name or 'none'})"
+        phase_num = {"banking": 1, "slack": 2, "travel": 3, "workspace": 4}.get(suite_name, 1)
+        phase_label = "Phase 0 (Smoke)" if smoke else f"Phase {phase_num} ({suite_name}:{attack_name or 'none'})"
         append_token_ledger(
             ledger_path=logdir / "token_usage.jsonl",
             suite=suite_name,
