@@ -1,6 +1,6 @@
 # AgentDojo External Benchmark Run -- Plan & Handoff
 
-Status: **Phase 0 & Phase 1 complete**. Phase 2 (Slack) ready to initiate. This file is the single source of truth for this run:
+Status: **Phase 0, Phase 1 & Phase 2 complete**. Phase 3 (Travel) ready to initiate. This file is the single source of truth for this run:
 decisions made, why they were made, and the exact 4-phase execution plan. A fresh
 agent session (or a future you) should be able to pick this up with zero other
 context.
@@ -131,7 +131,7 @@ cumulatively across all 4 phases.
 |---|---|---|---|---|
 | 0 | **Adapter / Bounds / Smoke** | Prerequisites | Static bounds + 1 task smoke | **COMPLETE** (smoke util=100%, sec=100%, bounds proven 100%) |
 | 1 | **Banking** | Phase 0 complete | 16 base tasks + 144 attack pairs | **COMPLETE** (benign util=75.0%, attack util=79.2%, containment=100.0%, 1.25M tokens, ~1.78 CNY) |
-| 2 | **Slack** | Phase 1 adapter proven working | 21 base tasks + 105 attack pairs | **Pending** (ready to start in off-peak window) |
+| 2 | **Slack** | Phase 1 adapter proven working | 21 base tasks + 105 attack pairs | **COMPLETE** (benign util=28.6%, attack util=28.6%, containment=100.0%, 1.74M tokens, ~2.49 CNY) |
 | 3 | **Travel** | Phase 1 adapter proven working | 20 base tasks + 140 attack pairs | **Pending** |
 | 4 | **Workspace** | Phase 1 adapter proven working | 40 base tasks + 560 attack pairs | **Pending** |
 
