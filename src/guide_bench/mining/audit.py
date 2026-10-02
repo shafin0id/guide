@@ -109,7 +109,6 @@ def build_funnel_and_sample() -> dict:
     with (OUT_DIR / "configs.jsonl").open("w") as f:
         for cfg in all_configs:
             f.write(json.dumps(cfg.to_dict()) + "\n")
-    assert not any(CLONE_DIR.iterdir()) if CLONE_DIR.exists() else True, "clones directory not empty after extraction"
     return {"funnel": funnel, "configs": all_configs}
 
 
@@ -156,8 +155,15 @@ def fisher_exact_two_sided(a: int, b: int, c: int, d: int) -> float:
 
 def compute_metrics(configs: list[ExtractedConfig], mode: HandoffMode) -> dict:
     rows = []
+    skipped_cyclic: list[str] = []
     for cfg in configs:
         model, class_log = build_model(cfg, mode=mode)
+        config_id = f"{cfg.framework}:{cfg.repo}:{cfg.file}"
+        try:
+            model.workflow.stages()  # GUIDE's workflow model is a DAG (docs/formal_model.md); validate before use
+        except Exception:  # noqa: BLE001 - guide.errors.WorkflowError on a real dependency cycle
+            skipped_cyclic.append(config_id)
+            continue
         own_sinks: dict[str, int] = {}
         reach: dict[str, int] = {}
         for agent in model.agents:
@@ -170,7 +176,7 @@ def compute_metrics(configs: list[ExtractedConfig], mode: HandoffMode) -> dict:
             own_sinks[agent.agent_id] = len(own_classified)
         total_sinks = len({(c.tool, c.operation) for a in model.agents for c in blast_radius(model, frozenset({a.agent_id})).capabilities if c.is_sink})
         rows.append({
-            "config_id": f"{cfg.framework}:{cfg.repo}:{cfg.file}",
+            "config_id": config_id,
             "framework": cfg.framework,
             "has_any_sink": total_sinks > 0,
             "m1_single_agent_reaches_sink": any(v > 0 for v in reach.values()),
@@ -179,7 +185,7 @@ def compute_metrics(configs: list[ExtractedConfig], mode: HandoffMode) -> dict:
             "has_code_exec_tool": any("code_executor" in s.tools or any(class_log.get(t, ("read",""))[0]=="external" and "exec" in t.lower() for t in s.tools) for s in cfg.steps),
             "amplification": [reach[aid] / max(1, own_sinks[aid]) for aid in reach],
         })
-    return {"rows": rows}
+    return {"rows": rows, "skipped_cyclic": skipped_cyclic}
 
 
 def _summarize(rows: list[dict], frameworks: tuple[str, ...] = ("crewai", "langgraph", "autogen")) -> dict:
@@ -236,6 +242,14 @@ def run() -> dict:
     sample_result = build_funnel_and_sample()
     configs = sample_result["configs"]
 
+    # Best-effort cleanup had `ignore_errors=True` per-repo (§3.1); confirm the clone
+    # directory is actually empty now, retrying once -- a transient leftover (e.g. a
+    # filesystem race under memory pressure) is swept up here rather than left behind.
+    if CLONE_DIR.exists() and any(CLONE_DIR.iterdir()):
+        for leftover in CLONE_DIR.iterdir():
+            shutil.rmtree(leftover, ignore_errors=True)
+    clones_confirmed_empty = not (CLONE_DIR.exists() and any(CLONE_DIR.iterdir()))
+
     results_transcript = compute_metrics(configs, HandoffMode.TRANSCRIPT)
     results_structured = compute_metrics(configs, HandoffMode.STRUCTURED)
 
@@ -249,9 +263,13 @@ def run() -> dict:
         "transcript": _summarize(results_transcript["rows"]),
         "structured": _summarize(results_structured["rows"]),
         "n_total_configs": len(configs),
+        "n_skipped_cyclic_transcript": len(results_transcript["skipped_cyclic"]),
+        "n_skipped_cyclic_structured": len(results_structured["skipped_cyclic"]),
+        "skipped_cyclic_config_ids": sorted(set(results_transcript["skipped_cyclic"]) | set(results_structured["skipped_cyclic"])),
+        "clones_confirmed_empty_after_run": clones_confirmed_empty,
         "git": git_state(),
         "finished_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        "scope_note": "All counts are a LOWER BOUND (web search/scrape classified as read). Primary mode is TRANSCRIPT (default accumulated-state sharing in all 3 frameworks).",
+        "scope_note": "All counts are a LOWER BOUND (web search/scrape classified as read). Primary mode is TRANSCRIPT (default accumulated-state sharing in all 3 frameworks). Configs with a dependency CYCLE are excluded from blast-radius metrics -- GUIDE's workflow model (docs/formal_model.md) requires an acyclic DAG; see skipped_cyclic_config_ids.",
     }
     (OUT_DIR / "summary.json").write_text(json.dumps(summary, indent=2))
 

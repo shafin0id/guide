@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from guide.runtime import HandoffMode
-from guide_bench.mining.audit import fisher_exact_two_sided, wilson_interval
+from guide_bench.mining.audit import compute_metrics, fisher_exact_two_sided, wilson_interval
 from guide_bench.mining.common import ExtractedAgent, ExtractedConfig, ExtractedStep
 from guide_bench.mining.to_model import build_model
 
@@ -44,3 +44,20 @@ def test_build_model_two_agent_shared_tool_creates_state_flow() -> None:
     model, log = build_model(cfg, mode=HandoffMode.TRANSCRIPT)
     assert model.registry.get("shared_db").spec.resource_class == "shared_db"
     assert log["shared_db"] == ("read", "default_read")  # "shared_db" tokenises to no write/external keyword
+
+
+def test_compute_metrics_skips_cyclic_workflow_without_crashing() -> None:
+    """A mined LangGraph config can be genuinely cyclic (a retry/revision loop). GUIDE's
+    workflow model (docs/formal_model.md) requires an acyclic DAG; compute_metrics must
+    detect this via Workflow.stages() and skip the config, not crash or silently drop the cycle."""
+    cyclic_cfg = ExtractedConfig(
+        framework="langgraph", repo="x/y", sha="abc", file="g.py",
+        agents=[ExtractedAgent("a", "a", ["tool_a"]), ExtractedAgent("b", "b", ["tool_b"])],
+        steps=[
+            ExtractedStep("a", "a", ["tool_a"], ["b"]),
+            ExtractedStep("b", "b", ["tool_b"], ["a"]),  # a <-> b: genuine cycle
+        ],
+    )
+    result = compute_metrics([cyclic_cfg], HandoffMode.TRANSCRIPT)
+    assert result["rows"] == []
+    assert "langgraph:x/y:g.py" in result["skipped_cyclic"]
