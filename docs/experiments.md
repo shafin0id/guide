@@ -400,3 +400,83 @@ Static blast-radius bounds: 100% control-parameter bounding across all 74 tools 
 3. **Utility vs. Containment Policy Trade-Off (Slack)**:
    In Slack, benign utility dropped to 28.6% because tasks required extracting channel names and user handles from untrusted chat messages to pass to write sinks (`send_direct_message`, `send_channel_message`). GUIDE strictly denied these control parameters (`provenance.control_unsupported`), illustrating the trade-off between permissive dynamic data execution and rigorous security guarantees.
 
+## Protocol v7: static-analysis extensions (tags `protocol-v7a`, `protocol-v7c`, `protocol-v7b`)
+
+Three static, zero-API-cost analyses extending GUIDE's multi-agent contribution. Full
+specification: `docs/static-analysis-extensions-plan.md`. Full results, deviations and
+soundness-critical items: `docs/static-analysis-extensions-results.md` (the authoritative,
+auditable record — this section summarises it).
+
+### v7a: static utility-cost prediction (tag `protocol-v7a`, commit `fd8acff`)
+
+Does the static blast-radius bound predict, from the ground-truth call path alone (no
+model calls), which AgentDojo benign tasks the enforcing runtime will deny? Compared
+against the 97 protocol-v6 benign traces.
+
+| suite | n | accuracy | 95% CI | predicted utility ceiling | observed benign utility |
+|---|---|---|---|---|---|
+| banking | 16 | 0.812 | [0.570, 0.934] | 0.875 | 0.750 |
+| slack | 21 | 0.952 | [0.773, 0.992] | 0.286 | 0.286 |
+| travel | 20 | 0.950 | [0.764, 0.991] | 1.000 | 0.800 |
+| workspace | 40 | 0.950 | [0.835, 0.986] | 0.650 | 0.650 |
+| **overall** | 97 | **0.928** | [0.858, 0.965] | — | — |
+
+Zero `fn_onpath` cases (a denial on a ground-truth call the bound predicted admissible,
+which would bear on the soundness claim). The predicted ceiling matches observed utility
+exactly for slack and workspace; the gap in banking/travel is `model_error` (task failures
+unrelated to GUIDE), correctly not attributed to a block.
+
+### v7c: blast-radius-minimal agent topology (tag `protocol-v7c`, commit `49d3bdc`)
+
+Proposition 3 (refinement monotonicity — added to `docs/formal_model.md`): splitting one
+agent's steps into two never increases worst-case blast radius, for fixed mode/policy/k.
+Verified by property test across all 19 real-world configs, k∈{1,2}, both hand-off modes,
+200 Hypothesis examples: **zero counterexamples**.
+
+Pre-registered Q1–Q4 answered on the 19 self-authored real-world-pattern configs. Key
+disclosed finding: **all 19 configs are strictly linear dependency chains** (not actual
+branching DAGs, despite "branch"/"hierarchical" labels describing the framework idiom
+reproduced). Consequence: WBR₁ = 1.000 for 18/19 configs under EVERY condition tested
+(nominal/least-privilege policy × transcript/signed hand-off × any partition) — neither
+hand-off signing nor topology lowers the floor in a linear chain; only a policy change that
+removes the sink entirely does (the one exception, `sql-01`, has zero write/external
+operations under its least-privilege policy for that unrelated reason). This is a genuine
+negative result about linear pipelines, not a null computation — see
+`docs/static-analysis-extensions-results.md` for the full Q1–Q4 tables and the formal
+mechanism (Definition 2 rule C: a dependency edge propagates influence under BOTH
+transcript and signed mode, since signing blocks transport tampering, not a legitimately
+produced hand-off from a compromised-but-protocol-honest upstream agent).
+
+### v7b: real-world MAS mining (tag `protocol-v7b`, commit `234b7ce`)
+
+Mined public GitHub CrewAI/LangGraph/AutoGen repos (unauthenticated search, frozen queries
+and exclusion rules, §3 of the plan). **Plan §5 stop condition triggered** for langgraph (1
+of 90 candidates included) and autogen (0 of 70) — reported per the plan's explicit
+instruction rather than widening the queries; spot-checked confirmation that top
+"autogen"-matching repos do not actually construct a `GroupChat`. crewai reached 21 included
+repos / 36 configs.
+
+36 of 37 mined configs scored (1 LangGraph config excluded as genuinely cyclic — a real
+retry/revision loop GUIDE's current DAG-based formal model cannot represent; disclosed, not
+silently mishandled).
+
+| metric | value (95% Wilson CI) |
+|---|---|
+| M1 (single agent's BR contains a sink) | 0.056 [0.015, 0.181] (2/36) |
+| M2 (zero-own-sink agent reaches a sink) | 0.028 [0.005, 0.142] (1/36) |
+| M3 median WBR₁ (sink-bearing configs only) | 1.000 (n=2; 34 excluded, no sinks) |
+| M5 (code-execution tool present) | 0.000 [0.0, 0.096] (0/36) |
+
+**Headline finding**: 94% of mined configs (34/36) have no write/external tool at all under
+the frozen tool classifier — of 49 distinct tool identifiers found, only 2 classify as
+write and 0 as external. Public GitHub example/demo CrewAI code is overwhelmingly
+read-tool-heavy (search, scrape, file/CSV read, generic placeholder tools), unlike GUIDE's
+own self-authored 19 configs (deliberately designed with write/external sinks). The two
+configs that do have a sink confirm the containment mechanism's propagation logic exactly:
+`kid0317/crewai_mas_demo` shows a zero-tool `researcher` reaching a downstream
+`FileWriterTool` sink via context propagation (the M2 case). Extraction validation: 100%
+(10/10) structurally exact against source. Two further classifier undercounts ("add",
+"writer" vs. the frozen "insert", "write" tokens) were found but deliberately NOT
+fixed — the rule set is frozen; disclosed only, further supporting the "lower bound" framing
+already stated for every count in this section.
+

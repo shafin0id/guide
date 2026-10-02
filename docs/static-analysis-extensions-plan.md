@@ -505,7 +505,9 @@ Do **not** edit `docs/paper/manuscript-draft.md`. Do the following:
 - [x] v7b snapshot, extraction, validation, metrics (commits 6e946bc, 34be9a8
       for two disclosed pre-main-run fixes; §5 stop condition triggered for
       langgraph n=1 and autogen n=0 — reported, queries NOT widened)
-- [ ] `docs/experiments.md` + `docs/submission-alignment.md` updated
+- [x] `docs/experiments.md` + `docs/submission-alignment.md` updated (Protocol v7
+      section added to experiments.md; rows A31/A32/A33 added to submission-alignment.md;
+      Proposition 3 added to docs/formal_model.md with its property-test citation)
 - [ ] Full test suite passed (count: ___)
 - Deviations:
   - v7c: all 19 real-world configs turned out to be **strictly linear dependency chains**

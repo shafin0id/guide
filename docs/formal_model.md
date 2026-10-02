@@ -182,6 +182,29 @@ adversary whose agent is selected for s: propose a well-formed call admitted by 
 Hence BR restricted to Direct(K) is exact. On Infl ∖ Direct, BR over-approximates: realising it requires honest
 agents to be manipulated.
 
+**Proposition 3 (Refinement monotonicity, protocol-v7c)**. Fix a workflow's step set, mode m, policy P and k. Let
+Π′ refine Π (every block of Π′ is a subset of some block of Π — i.e. Π′ reassigns the same steps to a finer-grained
+set of agents, splitting one or more of Π's agents into several). Then for every k:
+
+WBR_k(Π′, m, P) ≤ WBR_k(Π, m, P)
+
+where WBR_k is the worst-case blast-radius fraction over every size-k subset of agents (`guide_research.topology.wbr`).
+
+*Proof sketch.* Any k agents under Π′ are each a subset of the steps some single agent of Π would hold (refinement
+only ever splits a Π-block, never merges across blocks). The set of steps directly compromised by k agents of Π′ is
+therefore contained in the set of steps some k agents of Π could directly compromise. `influenced` (Definition 2)
+is the least fixpoint of monotone rules over the compromised set — the same argument as Lemma 3's first part, but
+holding the compromised STEP set fixed and varying which AGENT boundary it is viewed through — so Infl and
+therefore BR can only shrink or stay the same, never grow, as the agent partition is refined. ∎
+
+Verified by property test (`test_refinement_monotonicity`, protocol-v7c): every (coarse, fine) partition pair
+reachable by splitting one block in two, over every real-world config with ≤ 6 steps, k ∈ {1,2}, both TRANSCRIPT and
+SIGNED mode, 200 Hypothesis examples — zero counterexamples. See `docs/static-analysis-extensions-results.md` §v7c
+for the disclosed caveat that this proposition is about the WORST-CASE FRACTION over a fixed workflow's partition
+space; it does not by itself guarantee a lower floor is reachable when every step in a config shares the same
+downstream sink (observed in 18 of 19 self-authored configs, which are linear chains with no independent branch to
+exploit).
+
 ## 5. Least-privilege synthesis
 
 Given observed executed nominal calls O = {⟨s, t, o, args⟩} (`synthesize_least_privilege`), define P* and W*:
