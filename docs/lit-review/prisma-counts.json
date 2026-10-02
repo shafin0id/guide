@@ -1,0 +1,33 @@
+{
+ "identified_database": 3600,
+ "duplicates_removed": 834,
+ "unique": 2766,
+ "prefilter_excluded": 1054,
+ "prefilter_reasons": {
+  "E3": 99,
+  "E6": 917,
+  "E2": 7,
+  "E1": 31
+ },
+ "title_screened": 1712,
+ "title_excluded": 1081,
+ "title_reasons": {
+  "E3": 135,
+  "E6": 894,
+  "E1": 33,
+  "E2": 19
+ },
+ "abstract_assessed": 631,
+ "abstract_excluded": 24,
+ "abstract_reasons": {
+  "E3": 18,
+  "E6": 5,
+  "E5": 1
+ },
+ "included_database": 607,
+ "snowball_identified": 615,
+ "snowball_prefilter_excluded": 353,
+ "snowball_title_excluded": 148,
+ "included_snowball": 114,
+ "included_total": 721
+}

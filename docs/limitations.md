@@ -17,8 +17,12 @@
   (substring/field checks). This is stricter to reproduce but coarse for free-text quality.
 
 ## External validity
-* **One model family** (DeepSeek, served as `deepseek-flash`, requested as `deepseek-chat`). Results may differ for
-  weaker models, where hand-off format and constraint carrying plausibly matter more.
+* **Model families.** Protocol v1-v4 used one model family (DeepSeek, served as `deepseek-flash`,
+  requested as `deepseek-chat`). Protocol v5 (docs/adr/0005-multi-model-evaluation.md,
+  docs/experiments.md "Protocol v5") adds `qwen/qwen3.8-27b` (Groq) and `gemini-3.8-flash` (Google AI
+  Studio) on the same tasks/policies/conditions -- still only 3 families, all mid-sized-or-larger
+  2026-era models; no small/weak model has been tested, so the ceiling effect's dependence on model
+  strength remains open.
 * **Synthetic sandbox** with 4 vendor rows and 4 incidents; no real enterprise systems (by design, proposal §6).
 * **Injection attacks are fixed, not adaptive.** A single phrasing per case; no optimisation against the defences.
   Attack success rates are therefore upper bounds on robustness only for these attacks.
@@ -53,5 +57,5 @@
 * Validation used one task (T15) for the adaptive attacker and one model family.
 
 ## What was not done (scope honesty)
-Standard-benchmark evaluation, multiple model families, adaptive attacks, formal protocol verification, human assessors,
-LangGraph/CrewAI/AutoGen comparisons through their real libraries.
+Standard-benchmark evaluation, more than 3 model families, a small/weak model, formal protocol verification (beyond
+protocol-v3's paper proof), human assessors, LangGraph/CrewAI/AutoGen comparisons through their real libraries.

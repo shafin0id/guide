@@ -38,12 +38,20 @@ context, shared state, injectable tools and the transport. It comes with:
 4. analysis findings, i.e. bugs the bound exposed that testing had not: substring provenance admits 692 recipients
    including a different mailbox (realised 3/3), and data arguments are unconstrained (F1–F4).
 
-**Novelty status.** The closest work found is Agent Audit (arXiv:2603.22853 ✓): static analysis of agent *code* for
-privilege risks, without a runtime-backed soundness guarantee or compromise-set reachability. No paper was found that
-gives a sound, compromise-parametric reachability bound tied to the enforcing runtime, plus lattice-minimal
-synthesis. This rests on targeted searches on 2026-09-29, **not a systematic review** (A22). It must be re-checked
-before submission. The IAM-policy analogue is SMT-based reasoning about AWS access policies (Backes et al., FMCAD 2018),
-which is prior art for the *method family*, not for multi-agent LLM systems.
+**Novelty status (systematic review, 2026-10-01; `docs/lit-review/literature-review.md` §5.5, §7).**
+Partial overlap. Parisel, *A Theory of Least Autonomy in AI* (arXiv:2607.09744) gives a static influence
+graph over agents with conservative "effective autonomy" reachability and a blast-radius metric, but no
+enforcement theorem, runtime, synthesis or evaluation. Muruaga, *Bounded Agents* (arXiv:2608.15888)
+proves runtime blast-radius monotonicity along delegation chains and uses the same compromised-model
+evaluation as K1–K4. Moon & Varshney, *Containment Verification* (arXiv:2605.09045) mechanise in Dafny
+that one framework contains every model output (stronger soundness evidence than ours, but not
+parametric in K and without synthesis). Least-privilege synthesis has prior art in MiniScope
+(arXiv:2512.11147) and Aethelgard (arXiv:2604.11839), neither claiming lattice minimality. The
+contribution is therefore stated as an **extension** of these works: an effect-level, compromise-
+parametric bound proved sound against the enforcing gate and runtime, live-validated, with
+lattice-minimal synthesis. Agent Audit (arXiv:2603.22853) remains relevant as code-level static
+analysis. The IAM-policy analogue is SMT-based reasoning about AWS access policies (Backes et al.,
+FMCAD 2018), prior art for the *method family*. Re-run the static-analysis search before submission.
 
 ## 2. What the evidence actually supports (see docs/experiments.md)
 

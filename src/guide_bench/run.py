@@ -194,13 +194,43 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--workers", type=int, default=6)
     ap.add_argument("--seed", type=int, default=2026)
     ap.add_argument("--out", required=True)
-    ap.add_argument("--model", default="deepseek-chat")
+    ap.add_argument("--model", default=os.environ.get("DEEPSEEK_MODEL", "deepseek-v4-flash"))
     ap.add_argument("--base-url", default="https://api.deepseek.com")
     ap.add_argument("--key-env", default="DEEPSEEK_API_KEY")
     ap.add_argument("--env-file", default=None)
     ap.add_argument("--max-tokens", type=int, default=4096)
+    ap.add_argument(
+        "--model-seed",
+        default="42",
+        help="ModelSettings.seed sent to the provider (default 42, matching protocol-v1..v4). "
+        "Pass 'none' to omit the field -- required for providers whose OpenAI-compat layer rejects "
+        "it (e.g. Gemini: HTTP 400 'Unknown name \"seed\"'). Disclosed per-model in the manifest and "
+        "in docs/adr/0005-multi-model-evaluation.md; do not use to silently paper over a real failure.",
+    )
+    ap.add_argument(
+        "--call-interval-s",
+        type=float,
+        default=0.0,
+        help="minimum seconds between successive model calls FROM THE SAME provider instance "
+        "(default 0, no-op, matches all prior protocols byte-for-byte). Unlike --pace-s (which "
+        "gaps between tasks), this gaps between individual model calls WITHIN a task -- needed "
+        "when one task's own multi-agent call sequence alone can exceed a tight per-minute token "
+        "cap (e.g. Groq free tier: 8000 TPM) before the provider's post-429 retry backoff ever "
+        "gets a chance to help. Only meaningful with --workers 1.",
+    )
     ap.add_argument("--scripted-smoke", action="store_true", help="plumbing check with a test double; never reportable")
+    ap.add_argument(
+        "--pace-s",
+        type=float,
+        default=0.0,
+        help="fixed sleep (seconds) before each task starts, in addition to --workers serialization. "
+        "Default 0 (no-op, matches all prior protocols byte-for-byte). Use for free-tier providers whose "
+        "per-minute token/request cap is tighter than the harness's natural per-task call burst -- the "
+        "provider's own retry backoff only fires AFTER a 429, so it cannot prevent bursting past the cap "
+        "in the first place; this adds headroom before each task instead.",
+    )
     args = ap.parse_args(argv)
+    model_seed: int | None = None if args.model_seed.strip().lower() in ("none", "", "null") else int(args.model_seed)
 
     conditions = [c.strip() for c in args.conditions.split(",") if c.strip()]
     unknown = [c for c in conditions if c not in CONDITIONS]
@@ -214,12 +244,14 @@ def main(argv: list[str] | None = None) -> int:
         out / "manifest.json",
     )
 
-    settings = ModelSettings(temperature=0.0, max_tokens=args.max_tokens, seed=42, json_mode=True)
+    settings = ModelSettings(temperature=0.0, max_tokens=args.max_tokens, seed=model_seed, json_mode=True)
     if args.scripted_smoke:
         provider: ModelProvider = ScriptedProvider(lambda m: '{"tool_calls": [], "output": {}, "confidence": 0.5}')
     else:
         load_env_file(args.env_file)
-        provider = OpenAICompatibleProvider(model=args.model, base_url=args.base_url, api_key_env=args.key_env)
+        provider = OpenAICompatibleProvider(
+            model=args.model, base_url=args.base_url, api_key_env=args.key_env, min_interval_s=args.call_interval_s
+        )
 
     items = build_items(args.suite, conditions, args.reps)
     rng = random.Random(args.seed)
@@ -261,6 +293,8 @@ def main(argv: list[str] | None = None) -> int:
     status = Counter()
 
     def work(item: Item) -> dict:
+        if args.pace_s > 0:
+            time.sleep(args.pace_s)
         return execute(item, provider, routers[item.condition], settings)
 
     workers = 1 if args.suite == "sequence" else max(1, args.workers)
@@ -288,7 +322,7 @@ def main(argv: list[str] | None = None) -> int:
                     fh.write(json.dumps(transcript, default=str) + "\n")
                 model_ids.update(row.get("model_ids", []))
                 status[row["status"]] += 1
-            if n % 20 == 0 or n == len(todo):
+            if n % 5 == 0 or n == len(todo):
                 print(f"[{n}/{len(todo)}] {dict(status)} {time.time()-t0:.0f}s", flush=True)
 
     manifest["finished_utc"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())

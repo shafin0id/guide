@@ -1,4 +1,4 @@
-"""Run the frozen search strings (protocol.md §3) against OpenAlex, arXiv and DBLP.
+"""Run the frozen search strings (protocol.md §3) against OpenAlex, arXiv and Semantic Scholar.
 
 Writes raw records to ../data/raw_records.jsonl and one log row per (string, source) to
 ../search-log.csv. Standard library only, so it runs without the project venv.
@@ -27,32 +27,32 @@ STRINGS = {
     "S1": {
         "openalex": '("multi-agent" OR "multi agent" OR agentic) AND ("large language model" OR LLM) AND (orchestration OR routing OR delegation OR "hand-off" OR handoff)',
         "arxiv": '(abs:"multi-agent" OR abs:"multi agent" OR abs:agentic) AND (abs:"large language model" OR abs:LLM) AND (abs:orchestration OR abs:routing OR abs:delegation OR abs:"hand-off" OR abs:handoff)',
-        "dblp": "multi-agent|agentic llm|language orchestration|routing|delegation|handoff",
+        "s2": '("multi-agent" | "multi agent" | agentic) + ("large language model" | LLM) + (orchestration | routing | delegation | "hand-off" | handoff)',
     },
     "S2": {
         "openalex": '(LLM OR "language model") AND agent AND ("prompt injection" OR "tool misuse" OR privilege OR "confused deputy" OR "compromised agent")',
         "arxiv": '(abs:LLM OR abs:"language model") AND abs:agent AND (abs:"prompt injection" OR abs:"tool misuse" OR abs:privilege OR abs:"confused deputy" OR abs:"compromised agent")',
-        "dblp": "agent|agents injection|privilege|deputy|compromised llm|language",
+        "s2": '(LLM | "language model") + agent* + ("prompt injection" | "tool misuse" | privilege | "confused deputy" | "compromised agent")',
     },
     "S3": {
         "openalex": '(LLM OR agent) AND ("information flow" OR taint OR capability OR "least privilege" OR "access control" OR "policy enforcement")',
         "arxiv": '(abs:LLM OR abs:agent) AND (abs:"information flow" OR abs:taint OR abs:capability OR abs:"least privilege" OR abs:"access control" OR abs:"policy enforcement")',
-        "dblp": "llm|agent|agents information-flow|taint|privilege|access-control|policy-enforcement",
+        "s2": '(LLM | agent*) + ("information flow" | taint | capability | "least privilege" | "access control" | "policy enforcement")',
     },
     "S4": {
         "openalex": '(LLM OR agent) AND ("static analysis" OR reachability OR "blast radius" OR "formal verification" OR soundness)',
         "arxiv": '(abs:LLM OR abs:agent) AND (abs:"static analysis" OR abs:reachability OR abs:"blast radius" OR abs:"formal verification" OR abs:soundness)',
-        "dblp": "llm|agent|agents static-analysis|reachability|blast|verification|soundness",
+        "s2": '(LLM | agent*) + ("static analysis" | reachability | "blast radius" | "formal verification" | soundness)',
     },
     "S5": {
         "openalex": '("LLM agent" OR "tool use") AND (benchmark OR evaluation) AND (security OR "policy compliance" OR safety)',
         "arxiv": '(abs:"LLM agent" OR abs:"tool use") AND (abs:benchmark OR abs:evaluation) AND (abs:security OR abs:"policy compliance" OR abs:safety)',
-        "dblp": "agent|agents|tool benchmark|evaluation security|safety|compliance llm|language",
+        "s2": '("LLM agent" | "tool use") + (benchmark | evaluation) + (security | "policy compliance" | safety)',
     },
     "S6": {
         "openalex": '(LLM OR agent) AND (provenance OR "audit trail" OR traceability OR "tamper-evident" OR signature)',
         "arxiv": '(abs:LLM OR abs:agent) AND (abs:provenance OR abs:"audit trail" OR abs:traceability OR abs:"tamper-evident" OR abs:signature)',
-        "dblp": "llm|agent|agents provenance|audit|traceability|tamper|signature",
+        "s2": '(LLM | agent*) + (provenance | "audit trail" | traceability | "tamper-evident" | signature)',
     },
 }
 
@@ -125,26 +125,28 @@ def arxiv(q: str) -> tuple[list[dict], int]:
     return recs, total
 
 
-def dblp(q: str) -> tuple[list[dict], int]:
-    url = "https://dblp.org/search/publ/api?" + urllib.parse.urlencode({"q": q, "format": "json", "h": CAP})
-    d = json.loads(get(url))["result"]["hits"]
+def s2(q: str) -> tuple[list[dict], int]:
+    """Semantic Scholar bulk search (boolean syntax); ordered by citation count, desc (bulk has no
+    relevance order). Replaces DBLP, whose API began serving a bot challenge (amendment A1)."""
+    url = "https://api.semanticscholar.org/graph/v1/paper/search/bulk?" + urllib.parse.urlencode({
+        "query": q, "year": "2022-", "sort": "citationCount:desc",
+        "fields": "title,year,externalIds,venue,abstract,authors,publicationTypes"})
+    for i in range(8):
+        try:
+            d = json.loads(get(url))
+            break
+        except Exception:
+            time.sleep(10 * (i + 1))
     recs = []
-    for h in d.get("hit", []):
-        i = h["info"]
-        y = int(i.get("year", 0) or 0)
-        if y < 2022:
-            continue
-        au = i.get("authors", {}).get("author", [])
-        au = au if isinstance(au, list) else [au]
-        ee = i.get("ee", "")
-        ee = ee[0] if isinstance(ee, list) else ee
-        arx = ee.rsplit("/abs/", 1)[-1] if "arxiv.org/abs/" in ee else ""
-        recs.append({"title": i.get("title", "").rstrip("."), "year": y,
-                     "doi": i.get("doi", "").lower(), "openalex": "", "venue": i.get("venue", ""),
-                     "type": i.get("type", ""), "abstract": "", "arxiv": arx, "pmid": "",
-                     "authors": "; ".join(a.get("text", "") for a in au[:6])})
-    time.sleep(2)
-    return recs, int(d.get("@total", 0))
+    for p in d.get("data", [])[:CAP]:
+        ex = p.get("externalIds") or {}
+        recs.append({"title": p.get("title") or "", "year": p.get("year"),
+                     "doi": (ex.get("DOI") or "").lower(), "openalex": "", "s2": p.get("paperId"),
+                     "venue": p.get("venue") or "", "type": ",".join(p.get("publicationTypes") or []),
+                     "abstract": p.get("abstract") or "", "arxiv": ex.get("ArXiv") or "", "pmid": "",
+                     "authors": "; ".join(a.get("name", "") for a in (p.get("authors") or [])[:6])})
+    time.sleep(5)
+    return recs, int(d.get("total", 0))
 
 
 def main() -> None:
@@ -153,7 +155,7 @@ def main() -> None:
     log = []
     with (DATA / "raw_records.jsonl").open("w") as fh:
         for sid, per in STRINGS.items():
-            for src, fn in (("openalex", openalex), ("arxiv", arxiv), ("dblp", dblp)):
+            for src, fn in (("openalex", openalex), ("arxiv", arxiv), ("s2", s2)):
                 recs, total = fn(per[src])
                 for r in recs:
                     r.update(string=sid, source=src)

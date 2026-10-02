@@ -9,13 +9,37 @@ from __future__ import annotations
 
 import os
 import random
+import re
 import time
 from collections.abc import Callable, Sequence
-from dataclasses import dataclass
 from typing import Any, Protocol, runtime_checkable
+from dataclasses import dataclass
 
 from guide.errors import ConfigurationError, ProviderError
 from guide.types import ChatMessage
+
+
+def _parse_retry_after(resp: Any) -> float:
+    for h in ("retry-after", "x-ratelimit-reset-tokens"):
+        val = resp.headers.get(h)
+        if not val:
+            continue
+        try:
+            return min(float(val), 20.0)
+        except (ValueError, TypeError):
+            pass
+        total = 0.0
+        for part in re.finditer(r"(\d+(?:\.\d+)?)(ms|m|s)", str(val)):
+            num, unit = float(part.group(1)), part.group(2)
+            if unit == "m":
+                total += num * 60.0
+            elif unit == "s":
+                total += num
+            elif unit == "ms":
+                total += num / 1000.0
+        if total > 0:
+            return min(total, 20.0)
+    return 0.0
 
 
 @dataclass(frozen=True)
@@ -59,28 +83,38 @@ class OpenAICompatibleProvider:
         base_url: str,
         api_key_env: str,
         timeout_s: float = 60.0,
-        max_retries: int = 4,
+        max_retries: int = 8,
         backoff_s: float = 1.5,
+        min_interval_s: float = 0.0,
     ) -> None:
         try:
             import httpx  # optional dependency: pip install guide-mas[openai]
         except ImportError as exc:  # pragma: no cover - environment dependent
             raise ConfigurationError("OpenAICompatibleProvider requires the 'openai' extra (httpx)") from exc
-        key = os.environ.get(api_key_env)
-        if not key:
+        raw_key = os.environ.get(api_key_env)
+        if not raw_key:
             raise ConfigurationError(f"environment variable {api_key_env} is not set")
+        self._keys = [k.strip() for k in raw_key.split(",") if k.strip()]
+        self._key_idx = 0
         self.name = f"openai-compatible:{model}"
         self.model = model
         self._max_retries = max_retries
         self._backoff_s = backoff_s
+        self._min_interval_s = min_interval_s
+        self._last_call_t: float | None = None
         self._client = httpx.Client(
             base_url=base_url.rstrip("/"),
             timeout=timeout_s,
-            headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
         )
         self._httpx = httpx
 
     def complete(self, messages: Sequence[ChatMessage], settings: ModelSettings) -> ModelResponse:
+        if self._min_interval_s > 0 and self._last_call_t is not None:
+            elapsed = time.perf_counter() - self._last_call_t
+            wait = self._min_interval_s - elapsed
+            if wait > 0:
+                time.sleep(wait)
+        self._last_call_t = time.perf_counter()
         body: dict[str, Any] = {
             "model": self.model,
             "messages": [{"role": m.role, "content": m.content} for m in messages],
@@ -92,11 +126,17 @@ class OpenAICompatibleProvider:
         if settings.json_mode:
             body["response_format"] = {"type": "json_object"}
 
+        active_key_idx = self._key_idx
+        self._key_idx = (self._key_idx + 1) % len(self._keys)
+
         last_error: ProviderError | None = None
         for attempt in range(self._max_retries + 1):
+            key = self._keys[active_key_idx]
+            headers = {"Authorization": f"Bearer {key}", "Content-Type": "application/json"}
             start = time.perf_counter()
+            wait_s = 0.0
             try:
-                resp = self._client.post("/chat/completions", json=body)
+                resp = self._client.post("/chat/completions", json=body, headers=headers)
             except self._httpx.TimeoutException as exc:
                 last_error = ProviderError(f"timeout: {type(exc).__name__}", retryable=True)
             except self._httpx.TransportError as exc:
@@ -116,10 +156,17 @@ class OpenAICompatibleProvider:
                         finish_reason=str(choice.get("finish_reason") or "stop"),
                     )
                 retryable = resp.status_code == 429 or resp.status_code >= 500
-                last_error = ProviderError(f"HTTP {resp.status_code}", retryable=retryable, status=resp.status_code)
+                wait_s = _parse_retry_after(resp) if resp.status_code == 429 else 0.0
+                last_error = ProviderError(f"HTTP {resp.status_code}: {resp.text}", retryable=retryable, status=resp.status_code)
             if not last_error.retryable or attempt == self._max_retries:
                 break
-            time.sleep(self._backoff_s * (2**attempt) * (0.5 + random.random()))  # noqa: S311 - retry jitter, not security
+            if len(self._keys) > 1 and last_error.status == 429:
+                active_key_idx = (active_key_idx + 1) % len(self._keys)
+                if attempt < len(self._keys) - 1:
+                    time.sleep(0.5)
+                    continue
+            backoff = self._backoff_s * (2**attempt) * (0.5 + random.random())
+            time.sleep(min(max(backoff, wait_s + 0.5), 25.0))  # noqa: S311 - retry jitter, not security
         assert last_error is not None
         raise last_error
 

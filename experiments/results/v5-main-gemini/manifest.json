@@ -1,0 +1,83 @@
+{
+  "suite": "main",
+  "conditions": [
+    "B1",
+    "B2",
+    "P",
+    "GPLUS"
+  ],
+  "reps": 2,
+  "seed": 2026,
+  "provider": "openai-compatible",
+  "model_requested": "gemini-3.5-flash-lite",
+  "base_url": "https://generativelanguage.googleapis.com/v1beta/openai",
+  "settings": {
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "seed": null,
+    "json_mode": true
+  },
+  "git": {
+    "commit": "19d8025b83e1d0ee6f514c920f0f144ad025f212",
+    "dirty": true
+  },
+  "python": "3.12.13",
+  "platform": "macOS-26.5.2-arm64-arm-64bit",
+  "tasks": {
+    "T17": "7d44c4d98269eaf3",
+    "T12": "d65380e6925f3db1",
+    "T05": "89c3c78f4a7bf784",
+    "T07": "c862f15b2122f354",
+    "T16": "7e391abcd6e82d75",
+    "T01": "557f7cf8c9429c31",
+    "T10": "b4e0f0ec9fdd8893",
+    "T03": "a0c877caf9eeb443",
+    "T13": "6e03824b379bdfba",
+    "T14": "b2dd29952ce5a1da",
+    "T18": "42f47e34e569fd3f",
+    "T04": "213049650a3e7c6b",
+    "T02": "fd9b4057490faf51",
+    "T11": "850eda03955f6514",
+    "T15": "7848a70ec7d73470",
+    "T06": "1322d585ab601fb1",
+    "T09": "0d833e7ae3fa2da7",
+    "T08": "54bad6b9b5a43b56"
+  },
+  "started_utc": "2026-10-01T15:23:29Z",
+  "items_total": 144,
+  "items_resumed_skipped": 111,
+  "reportable": true,
+  "previous_sessions": [
+    {
+      "started_utc": "2026-09-30T07:39:50Z",
+      "git": {
+        "commit": "19d8025b83e1d0ee6f514c920f0f144ad025f212",
+        "dirty": true
+      },
+      "finished_utc": "2026-09-30T09:43:54Z"
+    },
+    {
+      "started_utc": "2026-09-30T13:49:03Z",
+      "git": {
+        "commit": "19d8025b83e1d0ee6f514c920f0f144ad025f212",
+        "dirty": true
+      },
+      "finished_utc": null
+    },
+    {
+      "started_utc": "2026-09-30T14:08:53Z",
+      "git": {
+        "commit": "19d8025b83e1d0ee6f514c920f0f144ad025f212",
+        "dirty": true
+      },
+      "finished_utc": "2026-09-30T14:32:15Z"
+    }
+  ],
+  "finished_utc": "2026-10-01T15:26:26Z",
+  "model_ids_observed": [
+    "gemini-3.5-flash-lite"
+  ],
+  "status_counts_this_session": {
+    "completed": 33
+  }
+}

@@ -96,3 +96,30 @@ bound is sound w.r.t. an enforcing runtime, (c) whether it is parametric in a co
 - Relevance-ordered cap of 200 per string/source may miss low-ranked relevant work; mitigated by
   snowballing and by the mandatory must-check list (plan L3).
 - The field moves weekly; the search date bounds every "no prior work found" statement.
+
+## Amendments (dated; made after freezing, before screening)
+- **A1 (2026-10-01, before any record was screened).** DBLP's API served a bot-challenge page to
+  scripted requests, so it was replaced by Semantic Scholar bulk search (boolean syntax,
+  `year=2022-`). Bulk search has no relevance order, so its 200-record cap is applied in
+  citation-count order; OpenAlex and arXiv keep relevance order. Effect: the S2 slice favours
+  influential work, the other two favour topical match; recent low-citation work is still reached
+  through OpenAlex/arXiv and snowballing.
+- **A2 (2026-10-01).** OpenAlex `search` matches title, abstract and indexed full text, so broad
+  strings (S3, S4, S6) report very large hit counts dominated by non-LLM "agent" papers. The cap and the
+  §5.2 pre-filter are unchanged; the reported hit counts are kept as returned.
+- **A3 (2026-10-01, during screening).** Recall check against the must-check list found SafeFlow
+  (arXiv:2607.25255) rejected by the §5.2 pre-filter (its abstract says "multi-agent systems" without
+  an LLM term). A rescue pass re-read every pre-filter failure that matched an agent term AND a
+  security/orchestration term (33 records); 7 were re-admitted and screened normally.
+- **A4 (2026-10-01).** Snowballing was run on a 43-work core set (the works closest to SQ2/SQ3), not on
+  all 607 database includes: one round over ~600 works would yield >20,000 references to screen.
+  Forward citations came from OpenAlex; backward references from Semantic Scholar, because OpenAlex
+  holds reference lists for only 20 of the 43 (mostly arXiv) works. Snowball records were screened at
+  title level with the same criteria; no separate abstract stage.
+- **A5 (2026-10-01).** The blind second screener of §5.4 could not be executed (the LLM sub-agent
+  service was unavailable). `second-screener-sample.csv` holds the seeded 20 % sample (342 records);
+  `scripts/kappa.py` computes Cohen's kappa once a human (author one week later, or the supervisor)
+  fills the decision column. Until then the review reports single-screener decisions only.
+- **A6 (2026-10-01).** Extraction is keyword-assisted for all includes and manual only for the 26
+  core works that feed Table 1 and the SQ3 decision; full text was read for the two works that decide
+  the novelty question (arXiv:2607.09744, arXiv:2608.15888).
