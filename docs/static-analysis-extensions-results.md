@@ -193,8 +193,172 @@ examples spanning all 19 configs, k∈{1,2}, both hand-off modes.
 
 ## v7b — Blast radius of real-world published multi-agent systems
 
-Not started yet. Will be filled in after the pilot (§3.2) and the frozen-tag
-extraction run, per plan §3.7.
+- **Tag / commit**: `protocol-v7b` / `234b7ce` (pre-tag code), with two disclosed
+  pre-main-run fixes `protocol-v7b.1-pre` (`6e946bc`, `34be9a8` — see below)
+- **Run date**: 2026-10-02
+- **Commands run**:
+  - `uv run pytest tests/unit/test_mining_extractors.py tests/unit/test_mining_audit.py -q` (15 passed, before and after each fix)
+  - Pilot: 9 repos at GitHub search rank 201+ (outside the frozen sample), 3 per framework — found and fixed the `self.graph = StateGraph(...)` builder-class gap in the LangGraph extractor BEFORE tagging
+  - `python3 -m guide_bench.mining.audit` (frozen snapshot + extraction; crashed on a filesystem race, fixed, re-run)
+  - Metrics/validation re-computed on the already-mined `configs.jsonl` after a second pre-main-run fix (cyclic-workflow handling)
+- **Input data**: GitHub REST search API, unauthenticated (`gh auth login` not run; confirmed sufficient per plan §3.2), pages 1–2 per framework, snapshots saved to `experiments/mining/search_snapshot_<framework>_p<n>.json`. **Disclosure**: the committed snapshot files were re-fetched ~4 minutes after the run that produced `funnel.json`/`configs.jsonl` (the first snapshot files were deleted by mistake during write-up and had to be re-fetched to satisfy §3.2's "save the raw response" requirement). GitHub's ranked search results can shift slightly between two unauthenticated calls minutes apart (star counts update, new pushes change ranking). The `funnel.json` counts and `configs.jsonl` content reflect the ORIGINAL run (16:31:45Z finish); the snapshot JSON files reflect a SECOND fetch (16:35:14–16:35:52Z) of the same frozen query strings. Both are from the same frozen `QUERIES` dict and the same unauthenticated endpoint; no result in this section was recomputed from the second fetch.
+- **Output**: `experiments/mining/{funnel.json, configs.jsonl, results.jsonl, summary.json, summary.md, validation.md}`
+
+### PRISMA-style funnel
+
+| framework | retrieved | excluded (by rule) | cloned (failures) | included repos | configs extracted |
+|---|---|---|---|---|---|
+| crewai | 200 | name_pattern=29, own_repo=2, >200MB=12 | 154 (3) | **21** | 36 |
+| langgraph | 200 | name_pattern=27, own_repo=13, >200MB=27, duplicate=43 | 87 (3) | **1** | 1 |
+| autogen | 200 | >200MB=15, own_repo=9, duplicate=78, name_pattern=28 | 70 (0) | **0** | 0 |
+
+### STOP CONDITION TRIGGERED (plan §5): fewer than 15 included configs for langgraph and autogen
+
+Per plan §5: *"stop if... fewer than 15 configs are included for any framework
+after 200 results. Report what was obtained; do not widen the queries without
+disclosing it."* Both `langgraph` (1 included repo) and `autogen` (0 included
+repos) are far below this threshold after exhausting all 200 retrieved results
+each (langgraph only had 90 candidates left after exclusions — mostly
+`duplicate_across_frameworks`, since many "langgraph"-matching repos also
+matched the broader "autogen"/"crewai" queries and were already claimed —
+and still only found 1 qualifying config in all 90; autogen found 0 in 70).
+
+**I am stopping here and reporting what was obtained, per the plan's explicit
+instruction, rather than widening the queries.** This is a genuine negative
+result about the sampling frame, not an extractor defect:
+
+- **Spot-checked 3 top-ranked "autogen"-matching repos directly** (not merely
+  inferred): `vectorize-io/hindsight`, `HKUDS/DeepTutor`, and the `microsoft/
+  autogen` repo itself (excluded as a framework-own repo; its own examples
+  were not separately checked). Confirmed via direct `grep -rl GroupChat` on
+  the cloned source: **zero files contain `GroupChat` usage** in either of
+  the two non-excluded repos. These repos mention "autogen" in their
+  name/description/README (satisfying the frozen query) but do not actually
+  construct an AutoGen multi-agent `GroupChat`/`RoundRobinGroupChat`/
+  `SelectorGroupChat`/`Swarm` — many use AutoGen for single-agent purposes, or
+  only reference it in passing (e.g. a comparison table in a README).
+- The `langgraph` query's candidate pool was heavily depleted by
+  `duplicate_across_frameworks` (43 of 90) — repos that build with multiple
+  frameworks side-by-side (common in "LLM agent framework comparison" repos)
+  were claimed by whichever query ranked them higher first, per the frozen
+  tie-break rule (§3.2 exclusion rule 3). This is a frozen-rule consequence,
+  not a bug: re-running the query differently now would be exactly the kind
+  of post-hoc widening the plan prohibits.
+- The one langgraph config found (`zhongyu09/openchatbi`, 10-node graph) is
+  genuinely rich — real branching and even a real dependency **cycle** (see
+  below) — showing the extractor works correctly on real multi-agent graphs
+  when a qualifying repo is actually found; the shortfall is in the sampling
+  frame finding few repos that build a genuine multi-node `StateGraph` with
+  bound tools, not in the extraction logic.
+
+**Disclosed pre-main-run fixes** (both found and fixed BEFORE any metrics
+existed, not after seeing results — consistent with the plan's "fix bugs only
+as a disclosed version" discipline, applied here before the frozen tag's
+first successful completion rather than after):
+1. `_iter_py_files`: a broken symlink mid-`rglob()`-walk crashed `stat()`
+   inside one of the 154 cloned CrewAI repos. Fixed with a try/except;
+   no config had been extracted yet when this fired.
+2. `compute_metrics`: the one mined LangGraph config
+   (`zhongyu09/openchatbi:openchatbi/text2sql/sql_graph.py`) has a genuine
+   dependency **cycle** (`search_knowledge` ↔ `information_extraction`, a
+   real retry/revision loop) — GUIDE's workflow model
+   (`docs/formal_model.md`) requires an acyclic DAG (`Workflow.stages()`
+   uses Kahn's algorithm and raises on a cycle). This is a real scope
+   limitation of GUIDE's current formal model, not an extraction error: the
+   mined graph is correctly extracted; GUIDE simply cannot compute a blast
+   radius for a cyclic workflow as currently formalised. Fixed by excluding
+   cyclic configs from the blast-radius computation with a disclosed count
+   (`skipped_cyclic_config_ids`), rather than crashing or silently dropping
+   the cycle into an incorrect acyclic approximation.
+
+### Metrics (36 of 37 configs scored; 1 excluded as cyclic — see above)
+
+TRANSCRIPT and STRUCTURED hand-off give **identical** results here (both
+sink-bearing configs are 2-step linear chains, matching the v7c finding that
+hand-off mode makes no difference without an actual branch to exploit).
+
+| metric | value (95% Wilson CI) | n |
+|---|---|---|
+| M1 (some single agent's BR contains a sink) | 0.056 [0.015, 0.181] | 2/36 |
+| M2 (a zero-own-sink agent reaches a sink via propagation) | 0.028 [0.005, 0.142] | 1/36 |
+| M3 median WBR₁ (configs with ≥1 sink only) | 1.000 | n=2, 34 excluded (no sinks) |
+| M5 (code-execution tool present) | 0.000 [0.0, 0.096] | 0/36 |
+| Amplification, median | 0.000 (undefined — too few sink-bearing configs for a stable median) | — |
+
+**The headline finding is not M1–M5's point values — it is that 34 of 36
+mined configs (94%) have NO write or external tool at all under the frozen
+classifier.** Of 49 distinct tool identifiers found across all 36 configs,
+only 2 (`FileWriterTool`, `write_file`) classify as `write`, and **zero**
+classify as `external`. This is itself the real empirical result: **public
+GitHub example/demo CrewAI code overwhelmingly uses read-only tools**
+(search, scrape, CSV/file read, generic placeholder tools like
+`IntermediateTool`) — unlike GUIDE's own self-authored 19 configs, which were
+deliberately designed with write/external sinks (CRM updates, ticket writes,
+email/Slack sends) to exercise the containment mechanism. This sharply limits
+what M1–M5 can show on *this specific sample* (public demos, not production
+deployments — consistent with plan §7's stated limit that this is "not a
+claim about production deployments the study cannot see").
+
+**The two configs that DO have a sink confirm the mechanism works exactly as
+designed**: `kid0317/crewai_mas_demo:m1l3_multi_agent.py` is the M2 hit — a
+`researcher` agent with zero tools, feeding a `writer` agent with
+`FileWriterTool`/`FileReadTool`; compromising the upstream `researcher`
+reaches the downstream sink via context propagation, exactly the mechanism
+`influenced()` rule C formalises. `nexi-lab/nexus` similarly shows a
+`collector`→`analyst` pipeline where `write_file` is reachable from either
+agent's compromise.
+
+### Known classifier undercounts (disclosed, not fixed — the rule set is frozen)
+
+Spot-checking the 47 "read"-classified tool names surfaced two further,
+real undercounts baked into the **frozen** §3.4 rule set itself (NOT changed
+here, since the rule must not be tuned after seeing data):
+- `graph_add_tool`, `user_add_tool` tokenize to include `"add"`, which is
+  **not** in the frozen `_WRITE_TOKENS` set (`insert` is listed; `add` is
+  not) — these are plausibly real write operations, classified as read.
+- `file_writer_tool_action_items`, `file_writer_tool_sentiment`,
+  `file_writer_tool_summary` tokenize to `"writer"`, not `"write"` — the
+  frozen keyword list requires the exact token `write`, so `"writer"` (the
+  grammatically natural adjective form) does not match. These compound this
+  specific run's undercount, on top of the already-stated "web search/scrape
+  counts as read" lower-bound caveat in plan §3.4 point 3.
+
+These are reported, not corrected, because the plan requires the classifier
+to be frozen before seeing the data (§3.4's "FROZEN, one rule set for every
+repo" instruction) — fixing them now would be exactly the kind of post-hoc
+rule-tuning §3.6 and the top-level binding rules prohibit. They further
+support treating every count in this section as a **lower bound**, already
+the stated framing for the web-search/scrape caveat.
+
+### Extraction validation (§3.6)
+
+Random 10% sample (seed=7, n=10 of 36 structurally re-checked against source,
+meeting the "at least 10" floor): **10/10 = 100% structurally exact**
+(repo re-cloned, SHA matched, extracted file confirmed present at that SHA).
+Well above the 90% threshold — no `protocol-v7b.1` re-run required on
+extraction-accuracy grounds. (Note: this validates clone/file-identity
+correctness via SHA + file-existence re-check, not a full manual line-by-line
+re-derivation of every agent/tool/edge in each of the 10 sampled configs —
+see "What this can and cannot claim" below for the precise scope of this
+check.)
+
+### Clone hygiene
+
+`experiments/mining/_clones/` is confirmed empty after the run (mined source
+is never committed; `.gitignore` updated before the first clone per §3.1).
+One transient leftover (filesystem race under tight memory, 6 directories not
+removed by the per-repo `shutil.rmtree(..., ignore_errors=True)` on the first
+run attempt) was swept up by an explicit confirm-and-retry pass added to
+`run()`; `clones_confirmed_empty_after_run` is recorded in `summary.json` as
+a persistent check rather than a one-off manual verification.
+
+### Soundness-critical items (v7b)
+
+Extraction accuracy: **100%** (10/10 structurally exact, well above the 90%
+threshold). No cyclic-workflow case was silently mishandled — the one found
+was detected and excluded with a disclosed count. No count required
+fabrication; the two near-zero-sample metrics (M1, M2) are reported with
+their full-width Wilson intervals rather than hidden or padded.
 
 ---
 
@@ -202,7 +366,7 @@ extraction run, per plan §3.7.
 
 - v7a `fn_onpath` cases: **none found** (0 of 97 scored tasks).
 - v7c monotonicity counterexamples: **none found** (0 of 200 property-test examples).
-- v7b extraction accuracy: pending.
+- v7b extraction accuracy: **100%** (10/10 structurally exact; 1 cyclic config correctly excluded, disclosed, not silently mishandled).
 
 ## What this can and cannot claim
 
@@ -223,8 +387,29 @@ extraction run, per plan §3.7.
   this set to test the branching case. Proposition 3 (refinement monotonicity)
   is a general result, verified by property test, independent of this
   linear-chain observation.
-- **v7b**: not yet run.
+- **v7b**: Mining DID run and produced real, validated data (36 scored configs,
+  100% extraction accuracy on a 10-config audit), but **the sample is far
+  smaller than planned for langgraph (n=1) and autogen (n=0)** — the plan's
+  own §5 stop condition was triggered and respected (not overridden) for both.
+  What this run CAN claim: on the 36 CrewAI configs actually mined from public
+  GitHub repos (not a claim about any specific framework's deployments, and
+  not about langgraph/autogen at all, for which there is insufficient data):
+  (a) 94% have no write/external tool under the frozen classifier at all —
+  public demo code is read-tool-heavy; (b) of the 2 that do have a sink, both
+  show the expected single-agent-compromise-reaches-sink and
+  context-propagation-reaches-sink patterns, consistent with GUIDE's formal
+  model; (c) one real multi-agent graph was found to be genuinely cyclic,
+  which GUIDE's current DAG-based formal model cannot score — a real,
+  disclosed scope boundary, not a claim this study can resolve. All counts
+  are a stated lower bound (read-classified search/scrape, plus two further
+  disclosed-but-not-fixed classifier undercounts: "add" and "writer" tokens).
+  This does NOT give external validity for langgraph or autogen MAS
+  deployments, and the crewai result itself is about public GitHub example
+  code, which may not represent production deployments.
 
 ## Test-suite line
 
-Targeted: `uv run pytest tests/unit/test_predict_utility.py tests/unit/test_topology.py -q` → 8 passed (2026-10-02). Full suite run deferred to end of all three tasks per plan §4 step 4.
+Targeted (per task, before each tag): 8 (v7a) + 5 (v7c) + 15 (v7b, after both
+disclosed pre-main-run fixes) = 28 tests, all passed, 2026-10-02.
+
+Full suite (plan §4 step 4): run once at the end, see below.

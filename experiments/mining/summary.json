@@ -1,0 +1,194 @@
+{
+  "transcript": {
+    "crewai": {
+      "n_configs": 36,
+      "n_with_sinks": 2,
+      "m1_pct": 0.05555555555555555,
+      "m1_wilson95": [
+        0.015369986664161854,
+        0.18144657208647252
+      ],
+      "m2_pct": 0.027777777777777776,
+      "m2_wilson95": [
+        0.004920407139810455,
+        0.14169718653273855
+      ],
+      "m3_median_wbr1": 1.0,
+      "m3_n_excluded_no_sinks": 34,
+      "m5_code_exec_pct": 0.0,
+      "m5_wilson95": [
+        0.0,
+        0.09641862859446367
+      ],
+      "amplification_median": 0.0
+    },
+    "langgraph": {
+      "n_configs": 0,
+      "n_with_sinks": 0,
+      "m1_pct": NaN,
+      "m1_wilson95": [
+        0.0,
+        0.0
+      ],
+      "m2_pct": NaN,
+      "m2_wilson95": [
+        0.0,
+        0.0
+      ],
+      "m3_median_wbr1": NaN,
+      "m3_n_excluded_no_sinks": 0,
+      "m5_code_exec_pct": NaN,
+      "m5_wilson95": [
+        0.0,
+        0.0
+      ],
+      "amplification_median": NaN
+    },
+    "autogen": {
+      "n_configs": 0,
+      "n_with_sinks": 0,
+      "m1_pct": NaN,
+      "m1_wilson95": [
+        0.0,
+        0.0
+      ],
+      "m2_pct": NaN,
+      "m2_wilson95": [
+        0.0,
+        0.0
+      ],
+      "m3_median_wbr1": NaN,
+      "m3_n_excluded_no_sinks": 0,
+      "m5_code_exec_pct": NaN,
+      "m5_wilson95": [
+        0.0,
+        0.0
+      ],
+      "amplification_median": NaN
+    },
+    "pooled": {
+      "n_configs": 36,
+      "n_with_sinks": 2,
+      "m1_pct": 0.05555555555555555,
+      "m1_wilson95": [
+        0.015369986664161854,
+        0.18144657208647252
+      ],
+      "m2_pct": 0.027777777777777776,
+      "m2_wilson95": [
+        0.004920407139810455,
+        0.14169718653273855
+      ],
+      "m3_median_wbr1": 1.0,
+      "m3_n_excluded_no_sinks": 34,
+      "m5_code_exec_pct": 0.0,
+      "m5_wilson95": [
+        0.0,
+        0.09641862859446367
+      ],
+      "amplification_median": 0.0
+    }
+  },
+  "structured": {
+    "crewai": {
+      "n_configs": 36,
+      "n_with_sinks": 2,
+      "m1_pct": 0.05555555555555555,
+      "m1_wilson95": [
+        0.015369986664161854,
+        0.18144657208647252
+      ],
+      "m2_pct": 0.027777777777777776,
+      "m2_wilson95": [
+        0.004920407139810455,
+        0.14169718653273855
+      ],
+      "m3_median_wbr1": 1.0,
+      "m3_n_excluded_no_sinks": 34,
+      "m5_code_exec_pct": 0.0,
+      "m5_wilson95": [
+        0.0,
+        0.09641862859446367
+      ],
+      "amplification_median": 0.0
+    },
+    "langgraph": {
+      "n_configs": 0,
+      "n_with_sinks": 0,
+      "m1_pct": NaN,
+      "m1_wilson95": [
+        0.0,
+        0.0
+      ],
+      "m2_pct": NaN,
+      "m2_wilson95": [
+        0.0,
+        0.0
+      ],
+      "m3_median_wbr1": NaN,
+      "m3_n_excluded_no_sinks": 0,
+      "m5_code_exec_pct": NaN,
+      "m5_wilson95": [
+        0.0,
+        0.0
+      ],
+      "amplification_median": NaN
+    },
+    "autogen": {
+      "n_configs": 0,
+      "n_with_sinks": 0,
+      "m1_pct": NaN,
+      "m1_wilson95": [
+        0.0,
+        0.0
+      ],
+      "m2_pct": NaN,
+      "m2_wilson95": [
+        0.0,
+        0.0
+      ],
+      "m3_median_wbr1": NaN,
+      "m3_n_excluded_no_sinks": 0,
+      "m5_code_exec_pct": NaN,
+      "m5_wilson95": [
+        0.0,
+        0.0
+      ],
+      "amplification_median": NaN
+    },
+    "pooled": {
+      "n_configs": 36,
+      "n_with_sinks": 2,
+      "m1_pct": 0.05555555555555555,
+      "m1_wilson95": [
+        0.015369986664161854,
+        0.18144657208647252
+      ],
+      "m2_pct": 0.027777777777777776,
+      "m2_wilson95": [
+        0.004920407139810455,
+        0.14169718653273855
+      ],
+      "m3_median_wbr1": 1.0,
+      "m3_n_excluded_no_sinks": 34,
+      "m5_code_exec_pct": 0.0,
+      "m5_wilson95": [
+        0.0,
+        0.09641862859446367
+      ],
+      "amplification_median": 0.0
+    }
+  },
+  "n_total_configs": 37,
+  "n_skipped_cyclic_transcript": 1,
+  "n_skipped_cyclic_structured": 1,
+  "skipped_cyclic_config_ids": [
+    "langgraph:zhongyu09/openchatbi:openchatbi/text2sql/sql_graph.py"
+  ],
+  "git": {
+    "commit": "34be9a82ce71b8ba6442277f7d960a1d723d96db",
+    "dirty": false
+  },
+  "finished_utc": "2026-10-02T16:31:45Z",
+  "scope_note": "All counts are a LOWER BOUND (web search/scrape classified as read). Primary mode is TRANSCRIPT. Cyclic configs excluded from blast-radius metrics."
+}

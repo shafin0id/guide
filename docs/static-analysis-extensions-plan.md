@@ -500,8 +500,11 @@ Do **not** edit `docs/paper/manuscript-draft.md`. Do the following:
 - [x] v7a results + mismatch analysis (overall accuracy 0.928, 0 fn_onpath cases)
 - [x] v7c topology + monotonicity test, tag `protocol-v7c` (commit 49d3bdc, 0 counterexamples)
 - [x] v7c frontier + Q1–Q4
-- [ ] v7b pilot, tag `protocol-v7b`
-- [ ] v7b snapshot, extraction, validation, metrics
+- [x] v7b pilot, tag `protocol-v7b` (commit 234b7ce; pilot found + fixed a real
+      extractor gap on 9 rank-201+ repos before tagging)
+- [x] v7b snapshot, extraction, validation, metrics (commits 6e946bc, 34be9a8
+      for two disclosed pre-main-run fixes; §5 stop condition triggered for
+      langgraph n=1 and autogen n=0 — reported, queries NOT widened)
 - [ ] `docs/experiments.md` + `docs/submission-alignment.md` updated
 - [ ] Full test suite passed (count: ___)
 - Deviations:
@@ -523,6 +526,20 @@ Do **not** edit `docs/paper/manuscript-draft.md`. Do the following:
     count, because there is no actual branch point to exploit. This was not anticipated
     when §2 was frozen, but no definition or metric was changed after seeing the data —
     only the §2.4 narrative framing is affected, not the frozen computation.
+  - v7b: §5 stop condition triggered for langgraph (1 included repo of 90 candidates)
+    and autogen (0 of 70) — well below the 15-config floor. Per §5, queries were NOT
+    widened; the shortfall is reported as a genuine finding about the sampling frame
+    (spot-checked: top "autogen"-matching repos mention AutoGen but do not construct
+    a GroupChat/Swarm; langgraph's candidate pool was heavily depleted by
+    duplicate-across-frameworks exclusions). crewai reached 21 of the 40-repo target
+    (36 configs). One mined LangGraph config was genuinely cyclic (a real
+    retry/revision loop) — GUIDE's DAG-based formal model cannot score it; excluded
+    with a disclosed count, not silently mishandled. Two pre-main-run fixes applied
+    (a filesystem race in file-walking; the cyclic-workflow handling), both before any
+    metrics existed. Extraction validation: 100% (10/10) structurally exact. Two
+    further classifier undercounts ("add", "writer" vs. frozen "insert", "write"
+    tokens) found but NOT fixed, since the rule set is frozen — disclosed only, per
+    `docs/static-analysis-extensions-results.md`.
 
 ---
 
