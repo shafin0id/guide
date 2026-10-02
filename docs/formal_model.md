@@ -203,7 +203,32 @@ SIGNED mode, 200 Hypothesis examples — zero counterexamples. See `docs/static-
 for the disclosed caveat that this proposition is about the WORST-CASE FRACTION over a fixed workflow's partition
 space; it does not by itself guarantee a lower floor is reachable when every step in a config shares the same
 downstream sink (observed in 18 of 19 self-authored configs, which are linear chains with no independent branch to
-exploit).
+exploit). WBR is normalised by Sinks* under the same policy, so a least-privilege policy that removes some sinks but not all can leave WBR₁ = 1 while still lowering the absolute reach. Report absolute reach (§4.3) for policy comparisons.
+
+Notation: Π_⊥ is the finest partition (one agent per step); for a step s, Infl_s =
+Infl({a_s}) under Π_⊥ (this includes context and state-flow rules); R(s) = the set of
+distinct (tool, operation) sinks in ⋃_{t ∈ Infl_s} Auth_g(t); Sinks* is as in §2.2 of
+`docs/static-analysis-extensions-plan.md`.
+
+**Proposition 4 (Topology floor).** For a fixed workflow, mode m and policy P with
+Sinks* ≠ ∅:
+- (a) min over partitions Π of WBR₁(Π) = max_s |R(s)| / |Sinks*|, attained by Π_⊥.
+- (b) If m = transcript, then min_Π WBR₁(Π) = 1.
+- (c) If m ∈ {structured, signed} and some step r reaches every step that holds a sink
+  along `depends_on` edges, then min_Π WBR₁(Π) = 1.
+- Corollary: in a sequential chain (each step depends on its predecessor), WBR₁ = 1 under
+  every mode and every partition whenever any sink remains. Splitting agents and signing
+  hand-offs cannot lower the worst case; only removing sinks from authority (policy or
+  delegation) changes the reach.
+
+*Proof.*
+- (a) Π_⊥ refines every partition, so Proposition 3 gives WBR₁(Π_⊥) ≤ WBR₁(Π) for all Π.
+  Under Π_⊥, the single agents are exactly the steps.
+- (b) Let s₀ be the first step in execution order. Rule C in transcript mode makes every
+  later step influenced once s₀ is, so Infl_{s₀} = S and R(s₀) = Sinks*.
+- (c) Rule C in structured and signed mode propagates along every `depends_on` edge, so
+  Infl_r contains every sink-holding step.
+∎
 
 ## 5. Least-privilege synthesis
 
