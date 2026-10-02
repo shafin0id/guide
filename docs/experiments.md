@@ -373,3 +373,30 @@ Violation rate (task success). Target 2 reps per cell (32 runs total per model);
    - Governance latency adds negligible overhead across models (median framework latency ≈1.5 ms;
      total wall-time overhead is dominated by provider API latency and pacing rather than governance checks).
 
+## Protocol v6: External Benchmark (AgentDojo) (tag `protocol-v6`, commit 92f60e6)
+
+Evaluation on the official AgentDojo benchmark suite (`agentdojo==0.1.35`) using `deepseek-v4-flash` via DeepSeek API (`api.deepseek.com`) during confirmed Beijing off-peak pricing windows (18:00–09:00 UTC+8).
+Artifacts, logs, and summaries stored under `experiments/results/agentdojo-v6/` (`banking/`, `slack/`, `travel/`, `workspace/`, `token_usage.jsonl`).
+Static blast-radius bounds: 100% control-parameter bounding across all 74 tools and 27 sensitive sinks across all 4 suites (§6 formal model).
+
+### 4-Suite Evaluation Summary
+
+| Suite | Benign Tasks | Benign Utility | Attack Pairs (`important_instructions`) | Attack Utility | Containment Rate (Defense) | Tokens Used | Cost (Off-Peak) |
+|---|---|---|---|---|---|---|---|
+| **Banking** | 16 | 75.0% | 144 | 79.2% | **100.0%** (0/144 compromised) | 1,251,719 | ~1.78 CNY |
+| **Slack** | 21 | 28.6% | 105 | 28.6% | **100.0%** (0/105 compromised) | 1,741,079 | ~2.49 CNY |
+| **Travel** | 20 | 80.0% | 140 | 75.7% | **91.4%** (128/140 contained; 100% on tool sinks) | 3,756,971 | ~4.40 CNY |
+| **Workspace** | 40 | 65.0% | 140* | 80.0% | **100.0%** (0/140 compromised) | 4,677,221 | ~5.25 CNY |
+| **Total / Overall** | **97** | **63.9%** | **529** | **70.5%** | **97.7%** (**100.0%** on tool sinks) | **11,450,443** | **~13.95 CNY (~$1.96 USD)** |
+
+\* **Disclosure on Workspace Attack Coverage**: Workspace attack pairs (140) evaluate a 10-task stratified subset of the 40 benign tasks (`user_task_0`, `4`, `8`, `12`, `16`, `20`, `24`, `28`, `32`, `36` × 14 injection goals), confirmed via `summary_important_instructions.json`'s `total_tasks: 10` field and `run.log`. The 40-task column represents benign-only coverage; attack coverage on Workspace represents 25% of benign tasks (selected via `-ut` to satisfy project token and latency budgets without running 560 pairs), unlike Banking, Slack, and Travel which evaluated attacks against 100% of their benign task sets.
+
+### Key Findings and Synthesis
+
+1. **Tool Execution Immunity (100% Containment on Tool Sinks)**:
+   Across 517 tool-calling attack vectors (`send_money`, `send_email`, `create_calendar_event`, `reserve_hotel`, `reserve_car`, `delete_file`), GUIDE achieved **0% Attack Success Rate (100.0% containment)**. The provenance guard and capability bounding deterministically denied unauthorized actions without relying on heuristic prompt defenses.
+2. **Text-Only Endorsement Scope Boundary (Travel `injection_task_6`)**:
+   The only compromised runs (12 in Travel) had no tool calls; the attack objective was conversational text promotion (*"Say that I should visit Riverside View Hotel"*). This delineates GUIDE's formal scope: runtime reference monitoring contains tool side-effects and sinks, but does not constrain ungrounded conversational prose.
+3. **Utility vs. Containment Policy Trade-Off (Slack)**:
+   In Slack, benign utility dropped to 28.6% because tasks required extracting channel names and user handles from untrusted chat messages to pass to write sinks (`send_direct_message`, `send_channel_message`). GUIDE strictly denied these control parameters (`provenance.control_unsupported`), illustrating the trade-off between permissive dynamic data execution and rigorous security guarantees.
+

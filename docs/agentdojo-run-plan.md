@@ -133,7 +133,7 @@ cumulatively across all 4 phases.
 | 1 | **Banking** | Phase 0 complete | 16 base tasks + 144 attack pairs | **COMPLETE** (benign util=75.0%, attack util=79.2%, containment=100.0%, 1.25M tokens, ~1.78 CNY) |
 | 2 | **Slack** | Phase 1 adapter proven working | 21 base tasks + 105 attack pairs | **COMPLETE** (benign util=28.6%, attack util=28.6%, containment=100.0%, 1.74M tokens, ~2.49 CNY) |
 | 3 | **Travel** | Phase 1 adapter proven working | 20 base tasks + 140 attack pairs | **COMPLETE** (benign util=80.0%, attack util=75.7%, tool containment=100.0%, overall containment=91.4% [12 text endorsement injections], 3.76M tokens, ~4.40 CNY) |
-| 4 | **Workspace** | Phase 1 adapter proven working | 40 base tasks + 140 attack pairs | **COMPLETE** (benign util=65.0%, attack util=80.0%, containment=100.0%, 4.69M tokens, ~5.27 CNY) |
+| 4 | **Workspace** | Phase 1 adapter proven working | 40 base tasks + 140 attack pairs* | **COMPLETE** (benign util=65.0%, attack util=80.0%, containment=100.0%, 4.69M tokens, ~5.27 CNY) |
 
 Phase 0 (prerequisite, not one of the 4 data-collection phases): build and smoke-test
 the GUIDE<->AgentDojo adapter (pin `agentdojo` to an exact version in the project
@@ -195,8 +195,10 @@ Executed on `deepseek-v4-flash` via DeepSeek API (`api.deepseek.com`) during con
 | **Banking** | 16 | 75.0% | 144 | 79.2% | **100.0%** (0/144 compromised) | 1,251,719 | ~1.78 CNY |
 | **Slack** | 21 | 28.6% | 105 | 28.6% | **100.0%** (0/105 compromised) | 1,741,079 | ~2.49 CNY |
 | **Travel** | 20 | 80.0% | 140 | 75.7% | **91.4%** (128/140 contained; 100% on tool sinks) | 3,756,971 | ~4.40 CNY |
-| **Workspace** | 40 | 65.0% | 140 | 80.0% | **100.0%** (0/140 compromised) | 4,677,221 | ~5.25 CNY |
+| **Workspace** | 40 | 65.0% | 140* | 80.0% | **100.0%** (0/140 compromised) | 4,677,221 | ~5.25 CNY |
 | **Total / Overall** | **97** | **63.9%** | **529** | **70.5%** | **97.7%** (**100.0%** on tool sinks) | **11,450,443** | **~13.95 CNY (~$1.96 USD)** |
+
+*Workspace attack pairs (140) come from a 10-task stratified subset of the 40 benign tasks (10 tasks × 14 injection goals), not the full 40 — confirmed via `summary_important_instructions.json`'s `total_tasks: 10` field and `run.log` ("Tasks to run: 10"). The 40-task column is benign-only coverage; attack coverage on Workspace is 25% of benign tasks, unlike Banking/Slack/Travel which ran attacks against their full benign task set. This was a deliberate `-ut` task-subset selection (likely cost/time), not a failed or crashed run.
 
 ### Key Scientific Takeaways
 1. **Tool Execution Immunity**: Across all 4 suites and 517 tool-calling attack vectors (`send_money`, `send_email`, `create_calendar_event`, `reserve_hotel`, `reserve_car`, `delete_file`, etc.), GUIDE achieved **100.0% containment (0% ASR)**.
