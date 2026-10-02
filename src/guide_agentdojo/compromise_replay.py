@@ -208,6 +208,7 @@ def replay_pair(suite_name: str, user_task_id: str, injection_task_id: str) -> d
             "suite": suite_name,
             "user_task_id": user_task_id,
             "injection_task_id": injection_task_id,
+            "in_v6_subset": in_v6,
             "function": fc.function,
             "args": args,
             "is_sink": is_sink,

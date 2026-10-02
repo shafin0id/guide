@@ -736,7 +736,7 @@ manuscript. Then run these checks, which must all pass:
 ## 10. Status log (executor ticks in place)
 - [x] Setup: progress.py, run_final.py
 - [x] M3 flaky test fixed (final max_examples: 4000, executed count: 294)
-- [ ] M1/M2 code + tests, tag `protocol-v8` (commit ___)
+- [x] M1/M2 code + tests, tag `protocol-v8` (commit `e1736ed`)
 - [ ] Compute: M1, M1b, M2, numbers (commit ___)
 - [ ] M5 references + competitor check (commit ___)
 - [ ] M4 docs + manuscript (commit ___)

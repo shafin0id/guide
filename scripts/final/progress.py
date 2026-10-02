@@ -113,9 +113,10 @@ class Progress:
             data[stage] = {"done": 0, "total": 0, "started_utc": None, "finished_utc": None}
         if total is not None:
             data[stage]["total"] = total
+        data[stage]["done"] = 0
         now_iso = datetime.datetime.now(datetime.timezone.utc).isoformat()
-        if not data[stage].get("started_utc"):
-            data[stage]["started_utc"] = now_iso
+        data[stage]["started_utc"] = now_iso
+        data[stage]["finished_utc"] = None
         self._save_ledger(data)
         self._stage_start_times[stage] = time.time()
         stage_total = data[stage].get("total", 0)
