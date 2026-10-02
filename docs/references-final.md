@@ -7,9 +7,9 @@ This is the paper's bibliography. The 721-study corpus in `docs/lit-review/liter
 
 | | n | % |
 |---|---|---|
-| Peer-reviewed (journal / conference / workshop) | 91 | 82.0% |
-| Non-peer-reviewed (arXiv preprints + 1 technical report) | 20 | 18.0% |
-| **Total** | **111** | |
+| Peer-reviewed (journal / conference / workshop) | 93 | 80.9% |
+| Non-peer-reviewed (arXiv preprints + 1 technical report) | 22 | 19.1% |
+| **Total** | **115** | |
 
 ## Selection rules
 1. Kept all peer-reviewed entries of the 81-entry verified bib (41).
@@ -105,8 +105,8 @@ This is the paper's bibliography. The 721-study corpus in `docs/lit-review/liter
 | `ajar2026` | Ajar: Measuring Open Privilege in Agent Defenses | 2026 | arXiv / grey | PP | open-privilege metric (RQ evaluation) |
 | `fiducia2026` | Governance at the Boundary: How Agent Decomposition Degrades Policy Compliance | 2026 | arXiv / grey | PP | hand-off attenuation evidence (RQ3 discussion) |
 | `proposesdisposes2026` | The Model Proposes, the Code Disposes: A Pre-Registered Ablation of a Verifier-and-Accepta | 2026 | arXiv / grey | PP | pre-registered ablation exemplar (Method) |
-| `triedman2025` | Multi-Agent Systems Execute Arbitrary Malicious Code | 2025 | arXiv / grey | PP | MAS arbitrary-code execution (Intro); COLM venue unverified |
-| `yao2024` | $τ$-bench: A Benchmark for Tool-Agent-User Interaction in Real-World Domains | 2024 | arXiv / grey | PP | tau-bench (Evaluation); venue unverified |
+| `triedman2025` | Multi-Agent Systems Execute Arbitrary Malicious Code | 2025 | arXiv / grey | PR (proceedings-URL)| MAS arbitrary-code execution (Intro); COLM venue unverified |
+| `yao2024` | $τ$-bench: A Benchmark for Tool-Agent-User Interaction in Real-World Domains | 2024 | arXiv / grey | PR (proceedings-URL)| tau-bench (Evaluation); venue unverified |
 | `kitchenham2007` | Guidelines for performing Systematic Literature Reviews in Software Engineering | 2007 | arXiv / grey | PP | SLR guideline (technical report) |
 
 ### LLM agents & multi-agent systems
@@ -114,11 +114,11 @@ This is the paper's bibliography. The 721-study corpus in `docs/lit-review/liter
 | Key | Title | Year | Venue | Status | Use / reason |
 |---|---|---|---|---|---|
 | `yue2025masrouter` | MasRouter: Learning to Route LLMs for Multi-Agent Systems | 2025 | Annual Meeting of the Association for Computational Linguist | PR (DOI-verified) | §1 Intro, §2.1 |
-| `zhuge2024language` | Language Agents as Optimizable Graphs | 2024 | International Conference on Machine Learning | PR (venue-from-OpenAlex) | §1 Intro, §2.1 |
+| `zhuge2024language` | Language Agents as Optimizable Graphs | 2024 | International Conference on Machine Learning | PR (proceedings-URL)| §1 Intro, §2.1 |
 | `yang2025agentnet` | AgentNet: Decentralized Evolutionary Coordination for LLM-based Multi-Agent Systems | 2025 | Neural Information Processing Systems | PR (DOI-verified) | §1 Intro, §2.1 |
 | `su2025difficultyaware` | Difficulty-Aware Agentic Orchestration for Query-Specific Multi-Agent Workflows | 2025 | The Web Conference | PR (DOI-verified) | §1 Intro, §2.1 |
 | `chang2025sagallm` | SagaLLM: Context Management, Validation, and Transaction Guarantees for Multi-Agent LLM Pl | 2025 | Proceedings of the VLDB Endowment | PR (DOI-verified) | §1 Intro, §2.1 |
-| `cemri2025why` | Why Do Multi-Agent LLM Systems Fail? | 2025 | Neural Information Processing Systems | PR (venue-from-OpenAlex) | §1 Intro, §2.1 |
+| `cemri2025why` | Why Do Multi-Agent LLM Systems Fail? | 2025 | Neural Information Processing Systems | PR (DOI-verified)| §1 Intro, §2.1 |
 
 ### Agent security: attacks, defences, benchmarks
 
@@ -129,9 +129,9 @@ This is the paper's bibliography. The 721-study corpus in `docs/lit-review/liter
 | `shi2026prompt` | Prompt Injection Attack to Tool Selection in LLM Agents | 2026 | Network and Distributed System Security Symposium | PR (DOI-verified) | §2.2-2.4, §5 Evaluation |
 | `liu2025datasentinel` | DataSentinel: A Game-Theoretic Detection of Prompt Injection Attacks | 2025 | IEEE Symposium on Security and Privacy | PR (DOI-verified) | §2.2-2.4, §5 Evaluation |
 | `an2025ipiguard` | IPIGuard: A Novel Tool Dependency Graph-Based Defense Against Indirect Prompt Injection in | 2025 | Conference on Empirical Methods in Natural Language Processi | PR (DOI-verified) | §2.2-2.4, §5 Evaluation |
-| `li2025drift` | DRIFT: Dynamic Rule-Based Defense with Injection Isolation for Securing LLM Agents | 2025 | Neural Information Processing Systems | PR (venue-from-OpenAlex) | §2.2-2.4, §5 Evaluation |
+| `li2025drift` | DRIFT: Dynamic Rule-Based Defense with Injection Isolation for Securing LLM Agents | 2025 | Neural Information Processing Systems | PR (DOI-verified)| §2.2-2.4, §5 Evaluation |
 | `wang2025defending` | Defending Against Prompt Injection with DataFilter | 2025 | 2026 IEEE Conference on Secure and Trustworthy Machine Learn | PR (DOI-verified) | §2.2-2.4, §5 Evaluation |
-| `zhu2025melon` | MELON: Provable Defense Against Indirect Prompt Injection Attacks in AI Agents | 2025 | International Conference on Machine Learning | PR (venue-from-OpenAlex) | §2.2-2.4, §5 Evaluation |
+| `zhu2025melon` | MELON: Provable Defense Against Indirect Prompt Injection Attacks in AI Agents | 2025 | International Conference on Machine Learning | PR (proceedings-URL)| §2.2-2.4, §5 Evaluation |
 | `li2025ace` | ACE: A Security Architecture for LLM-Integrated App Systems | 2025 | Network and Distributed System Security Symposium | PR (DOI-verified) | §2.2-2.4, §5 Evaluation |
 | `wang2025attntrace` | AttnTrace: Contextual Attribution of Prompt Injection and Knowledge Corruption | 2025 | IEEE Symposium on Security and Privacy | PR (DOI-verified) | §2.2-2.4, §5 Evaluation |
 | `abdelnabi2024get` | Get My Drift? Catching LLM Task Drift with Activation Deltas | 2024 | 2025 IEEE Conference on Secure and Trustworthy Machine Learn | PR (DOI-verified) | §2.2-2.4, §5 Evaluation |
@@ -140,31 +140,35 @@ This is the paper's bibliography. The 721-study corpus in `docs/lit-review/liter
 | `wu2025towards` | Towards Automating Data Access Permissions in AI Agents | 2025 | IEEE Symposium on Security and Privacy | PR (DOI-verified) | §2.2-2.4, §5 Evaluation |
 | `li2025we` | We Urgently Need Privilege Management in MCP: A Measurement of API Usage in MCP Ecosystems | 2025 | IEEE International Conference on Mobile Adhoc and Sensor Sys | PR (DOI-verified) | §2.2-2.4, §5 Evaluation |
 | `wang2025mcptox` | MCPTox: A Benchmark for Tool Poisoning Attack on Real-World MCP Servers | 2025 | AAAI Conference on Artificial Intelligence | PR (DOI-verified) | §2.2-2.4, §5 Evaluation |
-| `mo2025attractive` | Attractive Metadata Attack: Inducing LLM Agents to Invoke Malicious Tools | 2025 | Neural Information Processing Systems | PR (venue-from-OpenAlex) | §2.2-2.4, §5 Evaluation |
+| `mo2025attractive` | Attractive Metadata Attack: Inducing LLM Agents to Invoke Malicious Tools | 2025 | Neural Information Processing Systems | PR (DOI-verified)| §2.2-2.4, §5 Evaluation |
 | `li2025les` | Les Dissonances: Cross-Tool Harvesting and Polluting in Pool-of-Tools Empowered LLM Agents | 2025 | Network and Distributed System Security Symposium | PR (DOI-verified) | §2.2-2.4, §5 Evaluation |
 | `song2025beyond` | Beyond the Protocol: Unveiling Attack Vectors in the Model Context Protocol (MCP) Ecosyste | 2025 | IEEE Transactions on Software Engineering | PR (DOI-verified) | §2.2-2.4, §5 Evaluation |
-| `anon2025make` | Make Agent Defeat Agent: Automatic Detection of Taint-Style Vulnerabilities in LLM-based A | 2025 | USENIX Security Symposium | PR (VERIFY) | §2.2-2.4, §5 Evaluation |
-| `xiang2024guardagent` | GuardAgent: Safeguard LLM Agents by a Guard Agent via Knowledge-Enabled Reasoning | 2024 | International Conference on Machine Learning | PR (venue-from-OpenAlex) | §2.2-2.4, §5 Evaluation |
-| `chen2025shieldagent` | ShieldAgent: Shielding Agents via Verifiable Safety Policy Reasoning | 2025 | International Conference on Machine Learning | PR (venue-from-OpenAlex) | §2.2-2.4, §5 Evaluation |
+| `anon2025make` | Make Agent Defeat Agent: Automatic Detection of Taint-Style Vulnerabilities in LLM-based A | 2025 | USENIX Security Symposium | PR (proceedings-URL)| §2.2-2.4, §5 Evaluation |
+| `xiang2024guardagent` | GuardAgent: Safeguard LLM Agents by a Guard Agent via Knowledge-Enabled Reasoning | 2024 | International Conference on Machine Learning | PR (proceedings-URL)| §2.2-2.4, §5 Evaluation |
+| `chen2025shieldagent` | ShieldAgent: Shielding Agents via Verifiable Safety Policy Reasoning | 2025 | International Conference on Machine Learning | PR (proceedings-URL)| §2.2-2.4, §5 Evaluation |
 | `yang2023plug` | Plug in the Safety Chip: Enforcing Constraints for LLM-driven Robot Agents | 2023 | IEEE International Conference on Robotics and Automation | PR (DOI-verified) | §2.2-2.4, §5 Evaluation |
-| `abdelnabi2025firewalls` | Firewalls to Secure Dynamic LLM Agentic Networks | 2025 | Trans. Mach. Learn. Res. | PR (venue-from-OpenAlex) | §2.2-2.4, §5 Evaluation |
+| `abdelnabi2025firewalls` | Firewalls to Secure Dynamic LLM Agentic Networks | 2025 | Trans. Mach. Learn. Res. | PR (proceedings-URL)| §2.2-2.4, §5 Evaluation |
 | `liu2025processcentric` | Process-Centric Analysis of Agentic Software Systems | 2025 | Proc. ACM Program. Lang. | PR (DOI-verified) | §2.2-2.4, §5 Evaluation |
 | `zheng2025agentsight` | AgentSight: System-Level Observability for AI Agents Using eBPF | 2025 | PACMI@SOSP | PR (DOI-verified) | §2.2-2.4, §5 Evaluation |
-| `huang2024on` | On the Resilience of LLM-Based Multi-Agent Collaboration with Faulty Agents | 2024 | International Conference on Machine Learning | PR (venue-from-OpenAlex) | §2.2-2.4, §5 Evaluation |
+| `huang2024on` | On the Resilience of LLM-Based Multi-Agent Collaboration with Faulty Agents | 2024 | International Conference on Machine Learning | PR (proceedings-URL)| §2.2-2.4, §5 Evaluation |
 | `motwani2024secret` | Secret Collusion among AI Agents: Multi-Agent Deception via Steganography | 2024 | Neural Information Processing Systems | PR (DOI-verified) | §2.2-2.4, §5 Evaluation |
-| `peignelefebvre2025multiagent` | Multi-Agent Security Tax: Trading Off Security and Collaboration Capabilities in Multi-Age | 2025 | AAAI Conference on Artificial Intelligence | PR (venue-from-OpenAlex) | §2.2-2.4, §5 Evaluation |
-| `wang2025shadows` | Shadows in the Code: Exploring the Risks and Defenses of LLM-based Multi-Agent Software De | 2025 | AAAI Conference on Artificial Intelligence | PR (venue-from-OpenAlex) | §2.2-2.4, §5 Evaluation |
-| `khan2025agents` | Agents Under Siege: Breaking Pragmatic Multi-Agent LLM Systems with Optimized Prompt Attac | 2025 | Annual Meeting of the Association for Computational Linguist | PR (venue-from-OpenAlex) | §2.2-2.4, §5 Evaluation |
-| `amayuelas2024multiagent` | MultiAgent Collaboration Attack: Investigating Adversarial Attacks in Large Language Model | 2024 | Conference on Empirical Methods in Natural Language Processi | PR (venue-from-OpenAlex) | §2.2-2.4, §5 Evaluation |
-| `zhang2024psysafe` | PsySafe: A Comprehensive Framework for Psychological-based Attack, Defense, and Evaluation | 2024 | Annual Meeting of the Association for Computational Linguist | PR (venue-from-OpenAlex) | §2.2-2.4, §5 Evaluation |
+| `peignelefebvre2025multiagent` | Multi-Agent Security Tax: Trading Off Security and Collaboration Capabilities in Multi-Age | 2025 | AAAI Conference on Artificial Intelligence | PR (DOI-verified)| §2.2-2.4, §5 Evaluation |
+| `wang2025shadows` | Shadows in the Code: Exploring the Risks and Defenses of LLM-based Multi-Agent Software De | 2025 | AAAI Conference on Artificial Intelligence | PR (DOI-verified)| §2.2-2.4, §5 Evaluation |
+| `khan2025agents` | Agents Under Siege: Breaking Pragmatic Multi-Agent LLM Systems with Optimized Prompt Attac | 2025 | Annual Meeting of the Association for Computational Linguist | PR (DOI-verified)| §2.2-2.4, §5 Evaluation |
+| `amayuelas2024multiagent` | MultiAgent Collaboration Attack: Investigating Adversarial Attacks in Large Language Model | 2024 | Conference on Empirical Methods in Natural Language Processi | PR (DOI-verified)| §2.2-2.4, §5 Evaluation |
+| `zhang2024psysafe` | PsySafe: A Comprehensive Framework for Psychological-based Attack, Defense, and Evaluation | 2024 | Annual Meeting of the Association for Computational Linguist | PR (DOI-verified)| §2.2-2.4, §5 Evaluation |
 | `ju2024flooding` | Flooding spread of manipulated knowledge in LLM-based multi-agent communities | 2024 | Science China Information Sciences | PR (DOI-verified) | §2.2-2.4, §5 Evaluation |
-| `gomaa2025converse` | ConVerse: Benchmarking Contextual Safety in Agent-to-Agent Conversations | 2025 | Conference of the European Chapter of the Association for Co | PR (venue-from-OpenAlex) | §2.2-2.4, §5 Evaluation |
-| `andriushchenko2024agentharm` | AgentHarm: A Benchmark for Measuring Harmfulness of LLM Agents | 2024 | International Conference on Learning Representations | PR (venue-from-OpenAlex) | §2.2-2.4, §5 Evaluation |
-| `ruan2023identifying` | Identifying the Risks of LM Agents with an LM-Emulated Sandbox | 2023 | International Conference on Learning Representations | PR (venue-from-OpenAlex) | §2.2-2.4, §5 Evaluation |
+| `gomaa2025converse` | ConVerse: Benchmarking Contextual Safety in Agent-to-Agent Conversations | 2025 | Conference of the European Chapter of the Association for Co | PR (DOI-verified)| §2.2-2.4, §5 Evaluation |
+| `andriushchenko2024agentharm` | AgentHarm: A Benchmark for Measuring Harmfulness of LLM Agents | 2024 | International Conference on Learning Representations | PR (proceedings-URL)| §2.2-2.4, §5 Evaluation |
+| `ruan2023identifying` | Identifying the Risks of LM Agents with an LM-Emulated Sandbox | 2023 | International Conference on Learning Representations | PR (proceedings-URL)| §2.2-2.4, §5 Evaluation |
 | `yuan2024rjudge` | R-Judge: Benchmarking Safety Risk Awareness for LLM Agents | 2024 | Conference on Empirical Methods in Natural Language Processi | PR (DOI-verified) | §2.2-2.4, §5 Evaluation |
-| `guo2024redcode` | RedCode: Risky Code Execution and Generation Benchmark for Code Agents | 2024 | Neural Information Processing Systems | PR (venue-from-OpenAlex) | §2.2-2.4, §5 Evaluation |
+| `guo2024redcode` | RedCode: Risky Code Execution and Generation Benchmark for Code Agents | 2024 | Neural Information Processing Systems | PR (DOI-verified)| §2.2-2.4, §5 Evaluation |
 | `dong2025memory` | Memory Injection Attacks on LLM Agents via Query-Only Interaction | 2025 | Neural Information Processing Systems | PR (DOI-verified) | §2.2-2.4, §5 Evaluation |
-| `zou2025security` | Security Challenges in AI Agent Deployment: Insights from a Large Scale Public Competition | 2025 | Neural Information Processing Systems | PR (venue-from-OpenAlex) | §2.2-2.4, §5 Evaluation |
+| `zou2025security` | Security Challenges in AI Agent Deployment: Insights from a Large Scale Public Competition | 2025 | Neural Information Processing Systems | PR (DOI-verified)| §2.2-2.4, §5 Evaluation |
 | `calboreanu2026trace` | TRACE: Runtime Governance, Containment, and Evidence for Autonomous AI Agent Operations | 2026 | IEEE Access | PR (DOI-verified) | §2.2-2.4, §5 Evaluation |
 | `gilllakhowal2026deterministic` | Deterministic Runtime Enforcement: The Execution Authority for Autonomous AI Agents | 2026 | IEEE Access | PR (DOI-verified) | §2.2-2.4, §5 Evaluation |
 | `le2026crosslayer` | Cross-layer contagion of prompt injections in multi-agent swarms: a multiplex microscopic  | 2026 | Cybersecurity | PR (DOI-verified) | §2.2-2.4, §5 Evaluation |
+| `chinaei2026causality` | Causality Laundering: Denial-Feedback Leakage in Tool-Calling LLM Agents | 2026 | arXiv | PP | §2.2 Single-agent tool-call reference monitors (ARM) |
+| `chen2026cordon` | Cordon: Semantic Transactions for Tool-Using LLM Agents | 2026 | arXiv | PP | §2.2 Single-agent tool-call reference monitors (Cordon) |
+| `narisetty2026adaptive` | Adaptive Evaluation of Out-of-Band Defenses Against Prompt Injection in LLM Agents | 2026 | arXiv | PP | §2.2 Out-of-band adaptive defense evaluation |
+| `wang2026killchain` | Kill-Chain Canaries: Stage-Level Tracking of Prompt Injection Across Attack Surfaces and Five Production LLMs | 2026 | arXiv | PP | §2.3 Multi-agent prompt-injection pipeline tracking |

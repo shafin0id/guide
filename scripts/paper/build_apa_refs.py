@@ -195,7 +195,6 @@ def venue_string(fields, etype):
 # field (so this is reading the project's own prior verification, not inventing new facts).
 KNOWN_CORRECTIONS = {
     "lamalfa2025": {"doi": "10.52202/085713-4663", "venue_override": "Advances in Neural Information Processing Systems 38 (NeurIPS 2025)"},
-    "khan2025agents": {"doi": None, "note_only": "arXiv:2504.00218; venue per OpenAlex as ACL, proceedings DOI unconfirmed"},
 }
 
 

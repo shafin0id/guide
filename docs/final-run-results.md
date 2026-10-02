@@ -90,14 +90,13 @@ Outputs: `experiments/results/topology-v8/`
 | total | 55 | 49/55 (89.1%) | 55/55 (100.0%) | 21/55 (38.2%; 21/21 sink configs) |
 
 ## M5 — References and competitor check
-- Venue entries fixed: ___/19 (DOI ___, proceedings URL ___); manual list: ___ (with links)
-- `anon2025make` authors: found / still [VERIFY]
-- Preprints upgraded to peer-reviewed: ___ (list)
-- Comparators added: ARM, Cordon, 2606.26479, 2603.28013 — yes/no each
-- Preprints dropped to keep ≤ 20% (with reason): ___
-- Final bibliography: ___ total, ___ peer-reviewed / ___ preprint (___%)
-- Competitor search: ___ hits; `NOVELTY-CRITICAL`: ___ (list, or "none found")
-  — details in `docs/lit-review/final-competitor-check.md`
+- Venue entries fixed: 19/19 (DOI 11, proceedings URL 8); manual list: 0 (all resolved)
+- `anon2025make` authors: found (Liu, Fengyu and Zhang, Yuan and Luo, Jiaqi and Dai, Jiarun and Chen, Tian and Yuan, Letian and Yu, Zhengmin and Shi, Youkun and Li, Ke and Zhou, Chengyuan and Chen, Hao and Yang, Min from USENIX Security 25 presentation page)
+- Preprints upgraded to peer-reviewed: 2 (`triedman2025` -> COLM 2025; `yao2024` -> ICLR 2025)
+- Comparators added: ARM (`chinaei2026causality`, arXiv:2604.04035: yes), Cordon (`chen2026cordon`, arXiv:2606.17573: yes), 2606.26479 (`narisetty2026adaptive`: yes), 2603.28013 (`wang2026killchain`: yes)
+- Preprints dropped to keep ≤ 20%: 0 dropped (preprints: 22/115 = 19.1%, ≤ 20.0%)
+- Final bibliography: 115 total, 93 peer-reviewed (80.9%) / 22 preprint (19.1%)
+- Competitor search: 55 hits (submitted >= 2026-07-01); `NOVELTY-CRITICAL`: 1 (arXiv:2608.15888, "Bounded Agents: Delegation Security for Multi-Agent AI Systems", proving Blast Radius Monotonicity for dynamic principal chains; honestly contrasted against GUIDE's static DAG bound and pre-deployment cost prediction) — details in `docs/lit-review/final-competitor-check.md`
 - Lookup log: `experiments/results/final-v8/ref_lookup.jsonl`
 - Citation/reference cross-check mismatches: ___
 
