@@ -1,7 +1,10 @@
 # Static-Analysis Extensions Plan (Protocol v7a / v7b / v7c)
 
-Status: **NOT STARTED.** Single source of truth for three static, zero-API-cost
-analyses that strengthen GUIDE's multi-agent contribution. Written to be executed
+Status: **DONE.** All three tasks executed, frozen, and reported. See §8 for the
+full status log and `docs/static-analysis-extensions-results.md` for the complete,
+auditable record of commands, inputs, outputs, tables and disclosures.
+Single source of truth for three static, zero-API-cost analyses that strengthen GUIDE's
+multi-agent contribution. Written to be executed
 by a different agent (Sonnet) and produce the same outputs the planning agent
 would have produced. Every choice that could vary between executors (paths,
 function names, metric definitions, tie-breaks, sampling queries, classifier
@@ -508,7 +511,7 @@ Do **not** edit `docs/paper/manuscript-draft.md`. Do the following:
 - [x] `docs/experiments.md` + `docs/submission-alignment.md` updated (Protocol v7
       section added to experiments.md; rows A31/A32/A33 added to submission-alignment.md;
       Proposition 3 added to docs/formal_model.md with its property-test citation)
-- [ ] Full test suite passed (count: ___)
+- [x] Full test suite passed (count: 131 passed, 1 failed, 132 total)
 - Deviations:
   - v7c: all 19 real-world configs turned out to be **strictly linear dependency chains**
     (every step depends only on its immediate predecessor — the "branch"/"hierarchical"
@@ -542,6 +545,16 @@ Do **not** edit `docs/paper/manuscript-draft.md`. Do the following:
     further classifier undercounts ("add", "writer" vs. frozen "insert", "write"
     tokens) found but NOT fixed, since the rule set is frozen — disclosed only, per
     `docs/static-analysis-extensions-results.md`.
+  - Full test suite (end of all 3 tasks): 131 passed, 1 failed, 132 total.
+    `tests/unit/test_blast_radius.py::test_property_coverage_is_not_vacuous` fails —
+    PRE-EXISTING, unrelated to v7a/v7c/v7b (confirmed: fails identically with none of
+    this session's files involved, last touched 8 commits before v7a started; it is a
+    Hypothesis-randomized property test whose coverage-floor assertion depends on
+    which gate-outcome branches the random examples happen to hit, and it ALSO fails
+    in isolation because `COVERAGE` is a module-level dict populated only by the
+    PRECEDING property test in file order — a test-execution-order dependency, not a
+    v7 regression). Not fixed here: it predates this task and fixing a pre-existing,
+    unrelated flaky test is out of this plan's scope.
 
 ---
 

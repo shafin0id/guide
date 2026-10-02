@@ -412,4 +412,16 @@ their full-width Wilson intervals rather than hidden or padded.
 Targeted (per task, before each tag): 8 (v7a) + 5 (v7c) + 15 (v7b, after both
 disclosed pre-main-run fixes) = 28 tests, all passed, 2026-10-02.
 
-Full suite (plan §4 step 4): run once at the end, see below.
+Full suite (plan §4 step 4): `uv run pytest -q` → **131 passed, 1 failed, 132
+total** (2026-10-02). The 1 failure
+(`tests/unit/test_blast_radius.py::test_property_coverage_is_not_vacuous`) is
+**pre-existing and unrelated to v7a/v7c/v7b** — verified by running it in
+isolation and against the pre-v7 commit, where it fails identically with none
+of this task's files involved. Root cause: it is a Hypothesis-randomized
+property test whose coverage-floor assertion (`executed >= 200`) depends on
+which gate-outcome branches the random examples happen to hit, and the test
+also has a module-level `COVERAGE` dict populated only by the PRECEDING
+property test in file execution order — a pre-existing test-ordering fragility,
+not a regression introduced by this work. Not fixed here, since it is out of
+this plan's scope (the plan's own stated prior baseline was "104" tests; v7
+added 28 new ones, mostly independent of this file).
