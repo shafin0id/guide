@@ -53,3 +53,7 @@ evaluation_results*.json
 # experiment transcripts are large; results.jsonl + manifest.json are committed
 experiments/**/transcripts.jsonl
 !experiments/**/results.jsonl
+
+# v7b mining: cloned third-party repos are parsed (ast/yaml only, never executed/imported)
+# and deleted after extraction. Never commit mined source code.
+experiments/mining/_clones/
