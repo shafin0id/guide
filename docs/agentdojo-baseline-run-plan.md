@@ -1,6 +1,6 @@
 # AgentDojo Undefended-Baseline Run — Plan & Transparency Record
 
-Status: **NOT STARTED.** This file is the single source of truth for this run:
+Status: **COMPLETE.** Full 4-suite undefended benchmark run (Protocol v6b) finished cleanly across 626 evaluation units. All tasks verified by key count against the grid. This file is the single source of truth for this run:
 why it is needed, the exact numbers behind the budget, and the one-phase
 execution plan. A fresh agent session should be able to pick this up with zero
 other context beyond this file plus `docs/agentdojo-run-plan.md`.
@@ -224,13 +224,30 @@ Once complete, integrate into:
 
 ## 7. Status (update this section as the run progresses)
 
-- [ ] Clock checked, off-peak window confirmed before start.
-- [ ] Banking: benign (16 tasks) + attack (144 pairs) — undefended.
-- [ ] Slack: benign (21 tasks) + attack (105 pairs) — undefended.
-- [ ] Travel: benign (20 tasks) + attack (140 pairs) — undefended.
-- [ ] Workspace: benign (40 tasks) + attack (10-task subset, 140 pairs) — undefended.
-- [ ] Token ledger reconciled against 12M cap.
-- [ ] Completeness verified by cell-count, not line-count or self-report.
-- [ ] `docs/experiments.md` updated with paired defended/undefended table.
-- [ ] `docs/paper/manuscript-draft.md` Results section updated with utility-cost
-  and ASR-reduction framing.
+- [x] Clock checked, off-peak window confirmed before start (started 22:27 UTC+8, finished 23:30 UTC+8).
+- [x] Banking: benign (16 tasks) + attack (144 pairs) — undefended (completed).
+- [x] Slack: benign (21 tasks) + attack (105 pairs) — undefended (completed).
+- [x] Travel: benign (20 tasks) + attack (140 pairs) — undefended (completed).
+- [x] Workspace: benign (40 tasks) + attack (10-task subset, 140 pairs) — undefended (completed).
+- [x] Token ledger reconciled against 12M cap (9,068,246 tokens used, ~10.89 CNY / ~$1.53 USD).
+- [x] Completeness verified by cell-count, not line-count or self-report (626/626 keys confirmed).
+- [ ] `docs/experiments.md` updated with paired defended/undefended table (pending user review).
+- [ ] `docs/paper/manuscript-draft.md` Results section updated with utility-cost and ASR-reduction framing (pending user review).
+
+### Final Protocol v6b Undefended Baseline Results
+
+Executed on `deepseek-v4-flash` via DeepSeek API (`api.deepseek.com`) during confirmed Beijing off-peak pricing windows.
+Total units: 626 (97 benign + 529 attack pairs under `important_instructions`).
+Total tokens: 9,068,246 (8,462,606 prompt, 605,640 completion).
+Total cost: ~10.89 CNY (~$1.53 USD). Wall clock time: 62.8 minutes.
+
+| Suite | Benign Tasks | Undefended Benign Util | Attack Pairs | Undefended Attack Util | Undefended ASR | Undefended Containment | Tokens Used | Cost (Off-Peak) |
+|---|---|---|---|---|---|---|---|---|
+| **Banking** | 16 | 93.8% (15/16) | 144 | 86.8% (125/144) | 0.0% (0/144) | 100.0% | 1,102,806 | ~1.54 CNY |
+| **Slack** | 21 | 95.2% (20/21) | 105 | 75.2% (79/105) | 0.0% (0/105) | 100.0% | 1,205,390 | ~1.63 CNY |
+| **Travel** | 20 | 80.0% (16/20) | 140 | 77.9% (109/140) | 7.9% (11/140) | 92.1% | 3,781,466 | ~4.42 CNY |
+| **Workspace** | 40 | 95.0% (38/40) | 140* | 100.0% (140/140) | 0.0% (0/140) | 100.0% | 2,978,584 | ~3.30 CNY |
+| **Total / Overall** | **97** | **91.8%** (89/97) | **529** | **85.6%** (453/529) | **2.1%** (11/529) | **97.9%** (518/529) | **9,068,246** | **~10.89 CNY (~$1.53 USD)** |
+
+\* Identical 10-task stratified subset as Protocol v6 (`user_task_0`, `user_task_4`, `user_task_8`, `user_task_12`, `user_task_16`, `user_task_20`, `user_task_24`, `user_task_28`, `user_task_32`, `user_task_36` × 14 injection goals = 140 pairs), verified by task ID match.
+
