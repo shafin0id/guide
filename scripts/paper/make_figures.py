@@ -250,6 +250,40 @@ fig.tight_layout(rect=[0, 0, 1, 0.90])
 fig.savefig(os.path.join(OUT, "figS2_routing_regret.png"), dpi=600)
 plt.close(fig)
 
+# ---------------------------------------------------------------------------
+# Fig 9: AgentDojo utility vs. containment (v6b vs. v6 benign utility, M1 containment)
+# Source: docs/experiments.md Protocol v6, v6b, and v8 (M1)
+# ---------------------------------------------------------------------------
+suites = ["Banking", "Slack", "Travel", "Workspace", "Overall"]
+v6b_util = [1.000, 0.952, 0.950, 0.850, 0.918]
+v6_util  = [0.750, 0.286, 0.800, 0.650, 0.619]
+m1_cont  = [0.889, 0.940, 0.825, 0.988, 0.923]
+
+fig, ax = plt.subplots(figsize=(140 / 25.4, 65 / 25.4))
+w = 0.25
+xs = list(range(len(suites)))
+
+bars1 = ax.bar([x - w for x in xs], v6b_util, width=w, label="v6b benign utility (undefended)",
+               color="0.85", edgecolor="black")
+bars2 = ax.bar(xs, v6_util, width=w, label="v6 benign utility (defended)",
+               color="0.55", edgecolor="black", hatch="//")
+bars3 = ax.bar([x + w for x in xs], m1_cont, width=w, label="M1 containment (assumed compromise)",
+               color="0.15", edgecolor="black")
+
+ax.set_xticks(xs)
+ax.set_xticklabels(suites, fontsize=7)
+ax.set_ylabel("rate")
+ax.set_ylim(0, 1.12)
+ax.yaxis.set_major_formatter(mticker.PercentFormatter(1.0))
+ax.legend(fontsize=6, loc="upper right")
+ax.grid(axis="y", linestyle=":", linewidth=0.5, color="0.7")
+
+fig.suptitle("Fig. 9. AgentDojo benign utility (v6b undefended vs. v6 defended) and M1 containment", fontsize=8)
+fig.tight_layout(rect=[0, 0, 1, 0.92])
+fig.savefig(os.path.join(OUT, "fig9_agentdojo_utility_containment.png"), dpi=600)
+plt.close(fig)
+
 print("Figures written to", OUT)
 for f in sorted(os.listdir(OUT)):
     print(" -", f)
+

@@ -738,7 +738,7 @@ manuscript. Then run these checks, which must all pass:
 - [x] M3 flaky test fixed (final max_examples: 4000, executed count: 294)
 - [x] M1/M2 code + tests, tag `protocol-v8` (commit `e1736ed`)
 - [x] Compute: M1, M1b, M2, numbers (commit `cb71222`)
-- [x] M5 references + competitor check (commit e0d9... to be recorded)
-- [ ] M4 docs + manuscript (commit ___)
+- [x] M5 references + competitor check (commit `9a40de3`)
+- [x] M4 docs + manuscript
 - [ ] M6 release prep, full suite (___ passed / ___ failed), docx, tag `paper-v1`
 - Deviations: (none yet)
