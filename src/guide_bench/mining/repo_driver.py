@@ -19,8 +19,11 @@ MAX_FILE_BYTES = 2_000_000  # skip pathologically large files; mined repos can c
 
 def _iter_py_files(repo_root: Path):
     for p in repo_root.rglob("*.py"):
-        if p.stat().st_size > MAX_FILE_BYTES:
-            continue
+        try:
+            if not p.is_file() or p.stat().st_size > MAX_FILE_BYTES:
+                continue
+        except OSError:
+            continue  # broken symlink or file removed mid-walk; skip
         if any(part in {".git", "node_modules", "venv", ".venv", "test", "tests"} for part in p.parts):
             continue
         yield p
