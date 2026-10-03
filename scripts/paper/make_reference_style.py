@@ -41,6 +41,17 @@ title_style.font.name = "Times New Roman"
 title_style.font.size = Pt(16)
 title_style.font.bold = True
 
+# strip any default paragraph borders (e.g. solid colored lines under Title or headings)
+for s in doc.styles:
+    try:
+        pPr = s.element.pPr
+        if pPr is not None:
+            pBdr = pPr.find("{http://schemas.openxmlformats.org/wordprocessingml/2006/main}pBdr")
+            if pBdr is not None:
+                pPr.remove(pBdr)
+    except Exception:
+        pass
+
 # page setup: standard A4, moderate margins, matching the look of the shared template
 for section in doc.sections:
     section.page_width = Cm(21.0)

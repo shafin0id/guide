@@ -1,7 +1,7 @@
-# GUIDE: policy-aware, traceable governance for LLM multi-agent workflows
+# GUIDE: an external reference monitor for LLM multi-agent workflows
 
-GUIDE is a research prototype (MSc AI dissertation artefact, APU/DMU, CT095-6-M-RMCE; author Shafin Ahmad;
-supervisors Ts. Dr. Maythem Kamal and Dr. R Logeswaran). It adds four connected controls around an existing LLM:
+GUIDE is an external reference monitor for LLM multi-agent workflows (MSc AI dissertation, APU/DMU, CT095-6-M-RMCE; author Shafin Ahmad;
+supervisors Ts. Dr. Maythem Kamal and Dr. R Logeswaran). It sits outside the model and the agents and applies four connected controls to every proposed tool call and delegation:
 
 1. **Outcome-based routing:** Bayes-UCB over per-agent success evidence, with optional re-dispatch on step failure.
 2. **Signed, hash-linked hand-offs:** each agent has its own Ed25519 key; packages are checked for lineage, receiver and expiry.
@@ -87,7 +87,7 @@ uv run python -u scripts/final/run_final.py --stage check_numbers  # Verify all 
 
 ## Paper artefacts
 
-The research paper evaluates GUIDE as a reference monitor for LLM multi-agent systems across formal proofs, synthetic benchmarks, and external real-world benchmarks:
+The research paper evaluates GUIDE as an external reference monitor for LLM multi-agent systems across formal proofs, synthetic benchmarks, and external real-world benchmarks:
 
 - [Reproduction guide](REPRODUCE.md): step-by-step commands and verification for every table and empirical finding across protocols v1 to v8.
 - [Formal model and proofs](docs/formal_model.md): complete definitions, Theorem 1 and Theorem 2 blast-radius containment, Proposition 3 topology monotonicity, and Proposition 4 linear chain closed-form bounds.

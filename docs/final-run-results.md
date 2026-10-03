@@ -130,8 +130,8 @@ Outputs: `experiments/results/topology-v8/`
 ## Deviations
 (none yet)
 
-## Owner decisions pending
-- CITATION.cff full name / ORCID
-- LICENSE choice
-- Manual reference checks (list)
-- Confirm the title and the GUIDE expansion ("Intent-pinned Delegation Enforcer")
+## Owner decisions resolved
+- [x] CITATION.cff full name / ORCID: Shafin Ahmad (https://orcid.org/0009-0008-7351-1609)
+- [x] LICENSE choice: Apache-2.0 confirmed
+- [x] Manual reference checks: No changes needed (115 verified references intact)
+- [x] Title and GUIDE expansion: "GUIDE: Bounding the Blast Radius of Compromised Agents in LLM Multi-Agent Systems with Sound Static Analysis and Runtime Enforcement" / "Governed, Uncertainty-aware, Intent-pinned Delegation Enforcer (GUIDE)"

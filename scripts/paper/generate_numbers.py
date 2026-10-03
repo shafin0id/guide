@@ -171,12 +171,23 @@ def generate_paper_numbers(progress: Any | None = None) -> dict[str, dict[str, A
             "source": "experiments/results/final-v8/v7a_attributable_loss.json",
             "manuscript": True,
         }
-        numbers["m1b_predicted_cost"] = {
-            "value": f"{m1b_data['predicted_cost_pp']:.1f}",
+        tp, fp = m1b_data["tp"], m1b_data["fp"]
+        numbers["m1b_pred_blocked"] = {
+            "value": str(tp + fp),
             "source": "experiments/results/final-v8/v7a_attributable_loss.json",
             "manuscript": True,
         }
-        numbers["m1b_observed_cost"] = {
+        numbers["m1b_pred_blocked_pp"] = {
+            "value": f"{(tp + fp) / m1b_data['n'] * 100:.1f}",
+            "source": "experiments/results/final-v8/v7a_attributable_loss.json",
+            "manuscript": True,
+        }
+        numbers["m1b_lost_pp"] = {
+            "value": f"{m1b_data['lost_count'] / m1b_data['n'] * 100:.1f}",
+            "source": "experiments/results/final-v8/v7a_attributable_loss.json",
+            "manuscript": True,
+        }
+        numbers["m1b_net_cost_pp"] = {
             "value": f"{m1b_data['observed_cost_pp']:.1f}",
             "source": "experiments/results/final-v8/v7a_attributable_loss.json",
             "manuscript": True,

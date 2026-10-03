@@ -1,9 +1,10 @@
 cff-version: 1.2.0
 message: "If you use this software or research artefact, please cite it as below."
 authors:
-  - family-names: "Shafin"
-    given-names: "" # TODO: Owner to complete given names, full legal name, and ORCID
-title: "Bounding the Blast Radius of Compromised Agents: Sound Static Analysis and Runtime Enforcement for LLM Multi-Agent Systems"
+  - family-names: "Ahmad"
+    given-names: "Shafin"
+    orcid: "https://orcid.org/0009-0008-7351-1609"
+title: "GUIDE: An External Reference Monitor Bounding the Blast Radius of Compromised Agents in LLM Multi-Agent Systems"
 version: "paper-v1"
 date-released: "2026-10-03"
 url: "https://github.com/shafin0id/guide"

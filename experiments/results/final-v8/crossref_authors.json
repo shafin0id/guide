@@ -1,0 +1,596 @@
+{
+ "10.1023/A:1013689704352": [
+  [
+   "Auer",
+   "Peter"
+  ],
+  [
+   "Cesa-Bianchi",
+   "Nicol\u00f2"
+  ],
+  [
+   "Fischer",
+   "Paul"
+  ]
+ ],
+ "10.18653/v1/2026.findings-eacl.268": [
+  [
+   "Becker",
+   "Jonas"
+  ],
+  [
+   "Kaesberg",
+   "Lars Benedikt"
+  ],
+  [
+   "Stephan",
+   "Andreas"
+  ],
+  [
+   "Wahle",
+   "Jan Philip"
+  ],
+  [
+   "Ruas",
+   "Terry"
+  ],
+  [
+   "Gipp",
+   "Bela"
+  ]
+ ],
+ "10.1007/s13389-012-0027-1": [
+  [
+   "Bernstein",
+   "Daniel J."
+  ],
+  [
+   "Duif",
+   "Niels"
+  ],
+  [
+   "Lange",
+   "Tanja"
+  ],
+  [
+   "Schwabe",
+   "Peter"
+  ],
+  [
+   "Yang",
+   "Bo-Yin"
+  ]
+ ],
+ "10.1561/1900000006": [
+  [
+   "Cheney",
+   "James"
+  ],
+  [
+   "Chiticariu",
+   "Laura"
+  ],
+  [
+   "Tan",
+   "Wang-Chiew"
+  ]
+ ],
+ "10.1145/360051.360056": [
+  [
+   "Denning",
+   "Dorothy E."
+  ]
+ ],
+ "10.1609/aaai.v40i37.40347": [
+  [
+   "Guo",
+   "Zikang"
+  ],
+  [
+   "Xu",
+   "Benfeng"
+  ],
+  [
+   "Zhu",
+   "Chiwei"
+  ],
+  [
+   "Hong",
+   "Wentao"
+  ],
+  [
+   "Wang",
+   "Xiaorui"
+  ],
+  [
+   "Mao",
+   "Zhendong"
+  ]
+ ],
+ "10.2307/25148625": [
+  [
+   "Hevner",
+   "Alan R."
+  ],
+  [
+   "March",
+   "Salvatore T."
+  ],
+  [
+   "Park",
+   "Jinsoo"
+  ],
+  [
+   "Ram",
+   "Sudha"
+  ]
+ ],
+ "10.18653/v1/2025.findings-acl.78": [
+  [
+   "Ji",
+   "Jiarui"
+  ],
+  [
+   "Lei",
+   "Runlin"
+  ],
+  [
+   "Bi",
+   "Jialing"
+  ],
+  [
+   "Wei",
+   "Zhewei"
+  ],
+  [
+   "Chen",
+   "Xu"
+  ],
+  [
+   "Lin",
+   "Yankai"
+  ],
+  [
+   "Pan",
+   "Xuchen"
+  ],
+  [
+   "Li",
+   "Yaliang"
+  ],
+  [
+   "Ding",
+   "Bolin"
+  ]
+ ],
+ "10.52202/085713-4663": [
+  [
+   "La Malfa",
+   "Emanuele"
+  ],
+  [
+   "La Malfa",
+   "Gabriele"
+  ],
+  [
+   "Marro",
+   "Samuele"
+  ],
+  [
+   "Zhang",
+   "Jie"
+  ],
+  [
+   "Black",
+   "Elizabeth"
+  ],
+  [
+   "Luck",
+   "Michael"
+  ],
+  [
+   "Torr",
+   "Philip"
+  ],
+  [
+   "Wooldridge",
+   "Michael"
+  ]
+ ],
+ "10.1145/3711896.3736570": [
+  [
+   "Mohammadi",
+   "Mahmoud"
+  ],
+  [
+   "Li",
+   "Yipeng"
+  ],
+  [
+   "Lo",
+   "Jane"
+  ],
+  [
+   "Yip",
+   "Wendy"
+  ]
+ ],
+ "10.1136/bmj.n71": [
+  [
+   "Page",
+   "Matthew J"
+  ],
+  [
+   "McKenzie",
+   "Joanne E"
+  ],
+  [
+   "Bossuyt",
+   "Patrick M"
+  ],
+  [
+   "Boutron",
+   "Isabelle"
+  ],
+  [
+   "Hoffmann",
+   "Tammy C"
+  ],
+  [
+   "Mulrow",
+   "Cynthia D"
+  ],
+  [
+   "Shamseer",
+   "Larissa"
+  ],
+  [
+   "Tetzlaff",
+   "Jennifer M"
+  ],
+  [
+   "Akl",
+   "Elie A"
+  ],
+  [
+   "Brennan",
+   "Sue E"
+  ],
+  [
+   "Chou",
+   "Roger"
+  ],
+  [
+   "Glanville",
+   "Julie"
+  ],
+  [
+   "Grimshaw",
+   "Jeremy M"
+  ],
+  [
+   "Hr\u00f3bjartsson",
+   "Asbj\u00f8rn"
+  ],
+  [
+   "Lalu",
+   "Manoj M"
+  ],
+  [
+   "Li",
+   "Tianjing"
+  ],
+  [
+   "Loder",
+   "Elizabeth W"
+  ],
+  [
+   "Mayo-Wilson",
+   "Evan"
+  ],
+  [
+   "McDonald",
+   "Steve"
+  ],
+  [
+   "McGuinness",
+   "Luke A"
+  ],
+  [
+   "Stewart",
+   "Lesley A"
+  ],
+  [
+   "Thomas",
+   "James"
+  ],
+  [
+   "Tricco",
+   "Andrea C"
+  ],
+  [
+   "Welch",
+   "Vivian A"
+  ],
+  [
+   "Whiting",
+   "Penny"
+  ],
+  [
+   "Moher",
+   "David"
+  ]
+ ],
+ "10.1145/3586183.3606763": [
+  [
+   "Park",
+   "Joon Sung"
+  ],
+  [
+   "O'Brien",
+   "Joseph"
+  ],
+  [
+   "Cai",
+   "Carrie Jun"
+  ],
+  [
+   "Morris",
+   "Meredith Ringel"
+  ],
+  [
+   "Liang",
+   "Percy"
+  ],
+  [
+   "Bernstein",
+   "Michael S."
+  ]
+ ],
+ "10.2753/MIS0742-1222240302": [
+  [
+   "Peffers",
+   "Ken"
+  ],
+  [
+   "Tuunanen",
+   "Tuure"
+  ],
+  [
+   "Rothenberger",
+   "Marcus A."
+  ],
+  [
+   "Chatterjee",
+   "Samir"
+  ]
+ ],
+ "10.1109/PROC.1975.9939": [
+  [
+   "Saltzer",
+   "J.H."
+  ],
+  [
+   "Schroeder",
+   "M.D."
+  ]
+ ],
+ "10.1007/s11704-024-40231-1": [
+  [
+   "Wang",
+   "Lei"
+  ],
+  [
+   "Ma",
+   "Chen"
+  ],
+  [
+   "Feng",
+   "Xueyang"
+  ],
+  [
+   "Zhang",
+   "Zeyu"
+  ],
+  [
+   "Yang",
+   "Hao"
+  ],
+  [
+   "Zhang",
+   "Jingsen"
+  ],
+  [
+   "Chen",
+   "Zhiyuan"
+  ],
+  [
+   "Tang",
+   "Jiakai"
+  ],
+  [
+   "Chen",
+   "Xu"
+  ],
+  [
+   "Lin",
+   "Yankai"
+  ],
+  [
+   "Zhao",
+   "Wayne Xin"
+  ],
+  [
+   "Wei",
+   "Zhewei"
+  ],
+  [
+   "Wen",
+   "Jirong"
+  ]
+ ],
+ "10.1145/2601248.2601268": [
+  [
+   "Wohlin",
+   "Claes"
+  ]
+ ],
+ "10.18653/v1/2025.findings-emnlp.246": [
+  [
+   "Yu",
+   "Song"
+  ],
+  [
+   "Xu",
+   "Xiaofei"
+  ],
+  [
+   "Deng",
+   "Ke"
+  ],
+  [
+   "Li",
+   "Li"
+  ],
+  [
+   "Tian",
+   "Lin"
+  ]
+ ],
+ "full:10.1109/satml68715.2026.00040": {
+  "auth": [
+   [
+    "Debenedetti",
+    "Edoardo"
+   ],
+   [
+    "Shumailov",
+    "Ilia"
+   ],
+   [
+    "Fan",
+    "Tianqi"
+   ],
+   [
+    "Hayes",
+    "Jamie"
+   ],
+   [
+    "Carlini",
+    "Nicholas"
+   ],
+   [
+    "Fabian",
+    "Daniel"
+   ],
+   [
+    "Kern",
+    "Christoph"
+   ],
+   [
+    "Shi",
+    "Chongyang"
+   ],
+   [
+    "Terzis",
+    "Andreas"
+   ],
+   [
+    "Tram\u00e8r",
+    "Florian"
+   ]
+  ],
+  "title": "Defeating Prompt Injections by Design",
+  "venue": "2026 IEEE Conference on Secure and Trustworthy Machine Learning (SaTML)",
+  "year": 2026,
+  "page": "587-618"
+ },
+ "full:10.52202/079017-2636": {
+  "auth": [
+   [
+    "Debenedetti",
+    "Edoardo"
+   ],
+   [
+    "Zhang",
+    "Jie"
+   ],
+   [
+    "Balunovic",
+    "Mislav"
+   ],
+   [
+    "Beurer-Kellner",
+    "Luca"
+   ],
+   [
+    "Fischer",
+    "Marc"
+   ],
+   [
+    "Tram\u00e8r",
+    "Florian"
+   ]
+  ],
+  "title": "AgentDojo: A Dynamic Environment to Evaluate Prompt Injection Attacks and Defenses for LLM Agents",
+  "venue": "Advances in Neural Information Processing Systems 37",
+  "year": 2024,
+  "page": "82895-82920"
+ },
+ "full:10.1145/3605764.3623985": {
+  "auth": [
+   [
+    "Greshake",
+    "Kai"
+   ],
+   [
+    "Abdelnabi",
+    "Sahar"
+   ],
+   [
+    "Mishra",
+    "Shailesh"
+   ],
+   [
+    "Endres",
+    "Christoph"
+   ],
+   [
+    "Holz",
+    "Thorsten"
+   ],
+   [
+    "Fritz",
+    "Mario"
+   ]
+  ],
+  "title": "Not What You've Signed Up For: Compromising Real-World LLM-Integrated Applications with Indirect Prompt Injection",
+  "venue": "Proceedings of the 16th ACM Workshop on Artificial Intelligence and Security",
+  "year": 2023,
+  "page": "79-90"
+ },
+ "full:10.18653/v1/2024.findings-acl.624": {
+  "auth": [
+   [
+    "Zhan",
+    "Qiusi"
+   ],
+   [
+    "Liang",
+    "Zhixiang"
+   ],
+   [
+    "Ying",
+    "Zifan"
+   ],
+   [
+    "Kang",
+    "Daniel"
+   ]
+  ],
+  "title": "InjecAgent: Benchmarking Indirect Prompt Injections in Tool-Integrated Large Language Model Agents",
+  "venue": "Findings of the Association for Computational Linguistics ACL 2024",
+  "year": 2024,
+  "page": "10471-10506"
+ }
+}

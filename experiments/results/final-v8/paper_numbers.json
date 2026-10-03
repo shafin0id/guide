@@ -108,12 +108,22 @@
     "source": "experiments/results/final-v8/v7a_attributable_loss.json",
     "manuscript": true
   },
-  "m1b_predicted_cost": {
-    "value": "29.9",
+  "m1b_pred_blocked": {
+    "value": "31",
     "source": "experiments/results/final-v8/v7a_attributable_loss.json",
     "manuscript": true
   },
-  "m1b_observed_cost": {
+  "m1b_pred_blocked_pp": {
+    "value": "32.0",
+    "source": "experiments/results/final-v8/v7a_attributable_loss.json",
+    "manuscript": true
+  },
+  "m1b_lost_pp": {
+    "value": "30.9",
+    "source": "experiments/results/final-v8/v7a_attributable_loss.json",
+    "manuscript": true
+  },
+  "m1b_net_cost_pp": {
     "value": "29.9",
     "source": "experiments/results/final-v8/v7a_attributable_loss.json",
     "manuscript": true

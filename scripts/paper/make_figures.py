@@ -30,26 +30,84 @@ CONDITIONS = ["B1", "B2", "P", "GPLUS"]
 # greyscale fill shades per condition (lighter -> darker), markers differ per model
 SHADE = {"B1": "0.85", "B2": "0.65", "P": "0.45", "GPLUS": "0.15"}
 HATCH = {"B1": "", "B2": "//", "P": "xx", "GPLUS": ""}
-MODEL_MARKER = {"DeepSeek": "o", "Gemini": "s", "Groq GPT-OSS-120B": "^"}
+MODEL_MARKER = {"DeepSeek 4.1 Flash": "o", "Gemini 3.5 Flash-Lite": "s", "OpenAI GPT-OSS-120B (Groq)": "^"}
+
+# ---------------------------------------------------------------------------
+# Fig 1: GUIDE external reference monitor, controls and data flow
+# ---------------------------------------------------------------------------
+def make_fig1():
+    import matplotlib.patches as patches
+    fig, ax = plt.subplots(figsize=(150 / 25.4, 75 / 25.4), dpi=600)
+    ax.set_xlim(0, 150)
+    ax.set_ylim(0, 75)
+    ax.axis("off")
+
+    outer_box = patches.FancyBboxPatch((32, 10), 86, 60, boxstyle="square,pad=0",
+                                      linewidth=1.2, edgecolor="#222222", facecolor="#FAFAFA", linestyle="--")
+    ax.add_patch(outer_box)
+    ax.text(34, 67, "GUIDE: external reference monitor", fontsize=7.5, fontweight="bold", color="#222222")
+
+    def draw_box(x, y, w, h, title, subtitle=None, facecolor="#F0F0F0", edgecolor="#333333"):
+        box = patches.FancyBboxPatch((x, y), w, h, boxstyle="square,pad=0",
+                                    linewidth=0.8, edgecolor=edgecolor, facecolor=facecolor)
+        ax.add_patch(box)
+        if subtitle:
+            ax.text(x + w / 2, y + h / 2 + 2.2, title, fontsize=6.8, fontweight="bold", ha="center", va="center", color="#111111")
+            ax.text(x + w / 2, y + h / 2 - 2.5, subtitle, fontsize=5.5, ha="center", va="center", color="#444444")
+        else:
+            ax.text(x + w / 2, y + h / 2, title, fontsize=6.8, fontweight="bold", ha="center", va="center", color="#111111")
+
+    def draw_arrow(x1, y1, x2, y2, label=None, label_pos=None):
+        ax.annotate("", xy=(x2, y2), xytext=(x1, y1),
+                    arrowprops=dict(arrowstyle="->", lw=0.9, color="#222222"))
+        if label and label_pos:
+            ax.text(label_pos[0], label_pos[1], label, fontsize=5.2, ha="center", va="center", color="#333333",
+                    bbox=dict(boxstyle="square,pad=0.1", fc="white", ec="none"))
+
+    draw_box(2, 52, 24, 12, "User task", "natural language")
+    draw_box(36, 52, 26, 12, "Control 1", "Bayes-UCB routing")
+    draw_box(68, 52, 26, 12, "Control 2", "signed hand-off package")
+    draw_box(68, 30, 26, 12, "Control 4", "provenance guard")
+    draw_box(36, 30, 26, 12, "Control 3", "SMT policy gate")
+    draw_box(36, 14, 58, 10, "Trace ledger", "hash-linked record; success estimates feed Control 1")
+    draw_box(124, 52, 24, 12, "Agent loop", "untrusted model", facecolor="#FFFFFF")
+    draw_box(2, 31, 24, 10, "Tool code", "runs only if allowed", facecolor="#E8E8E8")
+    draw_box(2, 14, 24, 10, "Call denied", "never reaches tool", facecolor="#E0E0E0")
+
+    draw_arrow(26, 58, 36, 58, "task", (31, 60.5))
+    draw_arrow(62, 58, 68, 58, "agent", (65, 60.5))
+    draw_arrow(94, 58, 124, 58, "hand-off", (109, 60.5))
+    draw_arrow(130, 52, 94, 40, "proposed tool call", (116, 48))
+    draw_arrow(68, 36, 62, 36, "traced", (65, 38.5))
+    draw_arrow(36, 36, 26, 36, "allow / bound", (31, 38.5))
+    draw_arrow(36, 32, 26, 20, "deny", (30, 27))
+    draw_arrow(81, 30, 81, 24, None, None)
+    draw_arrow(49, 30, 49, 24, None, None)
+
+    fig.subplots_adjust(left=0.01, right=0.99, top=0.98, bottom=0.08)
+    fig.savefig(os.path.join(OUT, "fig1_reference_monitor_design.png"), dpi=600)
+    plt.close(fig)
+
+make_fig1()
 
 # ---------------------------------------------------------------------------
 # Fig 4: Task success + intent fidelity by condition, per model (dot-whisker)
 # Source: docs/experiments.md "Main Suite: Cross-Model Comparison"
 # ---------------------------------------------------------------------------
 main_suite = {
-    "DeepSeek": {
+    "DeepSeek 4.1 Flash": {
         "B1": (0.989, 0.967, 1.000, 0.999),
         "B2": (1.000, 1.000, 1.000, 1.000),
         "P":  (0.989, 0.967, 1.000, 0.999),
         "GPLUS": (1.000, 1.000, 1.000, 1.000),
     },
-    "Gemini": {
+    "Gemini 3.5 Flash-Lite": {
         "B1": (0.935, 0.797, 1.000, 0.989),
         "B2": (0.969, 0.895, 1.000, 0.995),
         "P":  (0.967, 0.891, 1.000, 0.994),
         "GPLUS": (0.968, 0.893, 1.000, 0.995),
     },
-    "Groq GPT-OSS-120B": {
+    "OpenAI GPT-OSS-120B (Groq)": {
         "B1": (0.409, 0.238, 0.590, 0.643),
         "B2": (0.390, 0.211, 0.575, 0.667),
         "P":  (0.297, 0.158, 0.447, 0.595),
@@ -72,7 +130,6 @@ for ax, (model, data) in zip(axes, main_suite.items()):
     ax.yaxis.set_major_formatter(mticker.PercentFormatter(1.0))
     ax.grid(axis="y", linestyle=":", linewidth=0.5, color="0.7")
 axes[-1].set_xlabel("condition")
-fig.suptitle("Fig. 4. Main-suite task success\nby condition and model (mean, 95% CI)", fontsize=7, y=0.995)
 fig.tight_layout(rect=[0, 0, 1, 0.93])
 fig.savefig(os.path.join(OUT, "fig4_main_suite_success.png"), dpi=600, bbox_inches="tight")
 plt.close(fig)
@@ -83,19 +140,19 @@ plt.close(fig)
 # cell = violation rate (task success in parens is the complement; we plot violation rate)
 # ---------------------------------------------------------------------------
 compromise = {
-    "DeepSeek": {
+    "DeepSeek 4.1 Flash": {
         "K1": {"B1": 0.00, "B2": 0.00, "P": 0.00, "GPLUS": 0.00},
         "K2": {"B1": 1.00, "B2": 1.00, "P": 0.00, "GPLUS": 0.00},
         "K3": {"B1": 1.00, "B2": 1.00, "P": 1.00, "GPLUS": 0.00},
         "K4": {"B1": 1.00, "B2": 1.00, "P": 0.00, "GPLUS": 0.00},
     },
-    "Gemini": {
+    "Gemini 3.5 Flash-Lite": {
         "K1": {"B1": 0.00, "B2": 0.00, "P": 0.00, "GPLUS": 0.00},
         "K2": {"B1": 1.00, "B2": 1.00, "P": 0.00, "GPLUS": 0.00},
         "K3": {"B1": 1.00, "B2": 1.00, "P": 1.00, "GPLUS": 0.00},
         "K4": {"B1": 1.00, "B2": 1.00, "P": 0.00, "GPLUS": 0.00},
     },
-    "Groq GPT-OSS-120B": {
+    "OpenAI GPT-OSS-120B (Groq)": {
         "K1": {"B1": 0.00, "B2": 0.00, "P": 0.00, "GPLUS": 0.00},
         "K2": {"B1": 1.00, "B2": 1.00, "P": 0.00, "GPLUS": 0.00},
         "K3": {"B1": 1.00, "B2": 1.00, "P": 1.00, "GPLUS": 0.00},
@@ -115,17 +172,16 @@ for ax, model in zip(axes, compromise.keys()):
             v = grid[yi][xi]
             ax.text(xi, yi, f"{v:.2f}", ha="center", va="center",
                      color="white" if v > 0.5 else "black", fontsize=7)
-fig.suptitle("Fig. 5. Violation rate under assumed compromise, by condition and model", fontsize=8)
 fig.tight_layout(rect=[0, 0, 1, 0.90])
 fig.savefig(os.path.join(OUT, "fig5_compromise_heatmap.png"), dpi=600)
 plt.close(fig)
 
 # ---------------------------------------------------------------------------
-# Fig 7: Overhead (median wall time per condition, DeepSeek; framework-only time)
+# Fig 7: Overhead (median wall time per condition, DeepSeek 4.1 Flash; monitor-only time)
 # Source: docs/experiments.md main suite table (median wall s) + overhead test section
 # ---------------------------------------------------------------------------
 wall_s = {"B1": 3.9, "B2": 4.2, "P": 4.3, "GPLUS": 4.5}
-framework_ms = {"B1": 0.16, "B2": 0.23, "P": 1.68, "GPLUS": 1.69}
+monitor_ms = {"B1": 0.16, "B2": 0.23, "P": 1.68, "GPLUS": 1.69}
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(140 / 25.4, 55 / 25.4))
 ax1.bar(range(len(CONDITIONS)), [wall_s[c] for c in CONDITIONS],
@@ -133,18 +189,17 @@ ax1.bar(range(len(CONDITIONS)), [wall_s[c] for c in CONDITIONS],
         hatch=[HATCH[c] for c in CONDITIONS])
 ax1.set_xticks(range(len(CONDITIONS))); ax1.set_xticklabels(CONDITIONS)
 ax1.set_ylabel("median wall time (s)")
-ax1.set_title("(a) end-to-end, DeepSeek", fontsize=7)
+ax1.set_title("(a) end-to-end, DeepSeek 4.1 Flash", fontsize=7)
 ax1.grid(axis="y", linestyle=":", linewidth=0.5, color="0.7")
 
-ax2.bar(range(len(CONDITIONS)), [framework_ms[c] for c in CONDITIONS],
+ax2.bar(range(len(CONDITIONS)), [monitor_ms[c] for c in CONDITIONS],
         color=[SHADE[c] for c in CONDITIONS], edgecolor="black",
         hatch=[HATCH[c] for c in CONDITIONS])
 ax2.set_xticks(range(len(CONDITIONS))); ax2.set_xticklabels(CONDITIONS)
-ax2.set_ylabel("framework-only time (ms)")
+ax2.set_ylabel("monitor-only time (ms)")
 ax2.set_title("(b) scripted model, no provider latency", fontsize=7)
 ax2.grid(axis="y", linestyle=":", linewidth=0.5, color="0.7")
 
-fig.suptitle("Fig. 7. Overhead by condition: end-to-end vs. framework-only", fontsize=8)
 fig.tight_layout(rect=[0, 0, 1, 0.90])
 fig.savefig(os.path.join(OUT, "fig7_overhead.png"), dpi=600)
 plt.close(fig)
@@ -192,7 +247,6 @@ ax.set_xlim(1, n)
 ax.set_ylim(0, n + 1)
 ax.legend(fontsize=5, loc="upper left", framealpha=1)
 ax.grid(linestyle=":", linewidth=0.5, color="0.7")
-fig.suptitle("Fig. 8. Degraded-agent sequence (A12), 20 consecutive runs", fontsize=8)
 fig.tight_layout(rect=[0, 0, 1, 0.92])
 fig.savefig(os.path.join(OUT, "fig8_degraded_agent_sequence.png"), dpi=600)
 plt.close(fig)
@@ -220,7 +274,6 @@ ax.set_ylabel("admissible recipients (log scale)")
 for i, (bar, v, unb) in enumerate(zip(bars, values, is_unbounded)):
     label = "unbounded\n(domain-wide)" if unb else str(v)
     ax.text(bar.get_x() + bar.get_width() / 2, v * 1.3, label, ha="center", fontsize=6)
-fig.suptitle("Fig. 6. Admissible recipients for one sink (T15), by policy", fontsize=8)
 fig.tight_layout(rect=[0, 0, 1, 0.90])
 fig.savefig(os.path.join(OUT, "fig6_blast_radius_bound_sizes.png"), dpi=600)
 plt.close(fig)
@@ -245,7 +298,6 @@ for i, (algo, vals) in enumerate(algo_vals.items()):
 ax.set_xticks(list(x)); ax.set_xticklabels(scenarios, fontsize=7)
 ax.set_ylabel("mean regret")
 ax.legend(fontsize=6)
-fig.suptitle("Fig. S2. Routing simulation regret, stationary vs. drift", fontsize=8)
 fig.tight_layout(rect=[0, 0, 1, 0.90])
 fig.savefig(os.path.join(OUT, "figS2_routing_regret.png"), dpi=600)
 plt.close(fig)
@@ -278,7 +330,6 @@ ax.yaxis.set_major_formatter(mticker.PercentFormatter(1.0))
 ax.legend(fontsize=6, loc="upper right")
 ax.grid(axis="y", linestyle=":", linewidth=0.5, color="0.7")
 
-fig.suptitle("Fig. 9. AgentDojo benign utility (v6b undefended vs. v6 defended) and M1 containment", fontsize=8)
 fig.tight_layout(rect=[0, 0, 1, 0.92])
 fig.savefig(os.path.join(OUT, "fig9_agentdojo_utility_containment.png"), dpi=600)
 plt.close(fig)
