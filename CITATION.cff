@@ -4,7 +4,7 @@ authors:
   - family-names: "Ahmad"
     given-names: "Shafin"
     orcid: "https://orcid.org/0009-0008-7351-1609"
-title: "GUIDE: An External Reference Monitor Bounding the Blast Radius of Compromised Agents in LLM Multi-Agent Systems"
+title: "GUIDE: An External Reference Monitor for Bounding the Blast Radius of Compromised Agents in LLM Multi-Agent Systems via Provenance-Based Runtime Enforcement and Sound Static Analysis"
 version: "paper-v1"
 date-released: "2026-10-03"
 url: "https://github.com/shafin0id/guide"

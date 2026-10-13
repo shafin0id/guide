@@ -1,4 +1,4 @@
-# GUIDE: An External Reference Monitor Bounding the Blast Radius of Compromised Agents in LLM Multi-Agent Systems
+# GUIDE: An External Reference Monitor for Bounding the Blast Radius of Compromised Agents in LLM Multi-Agent Systems via Provenance-Based Runtime Enforcement and Sound Static Analysis
 
 Shafin Ahmad¹, Ts. Dr. Maythem Kamal Abbas¹
 
