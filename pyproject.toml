@@ -35,6 +35,7 @@ dev = ["pytest>=8,<10", "hypothesis>=6.100,<7", "ruff>=0.6,<1", "mypy>=1.10,<2",
 [project.scripts]
 guide-bench = "guide_bench.run:main"
 guide-agentdojo = "guide_agentdojo.run:main"
+guide-agentdojo-v9 = "guide_agentdojo.run_v9:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
