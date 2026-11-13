@@ -42,3 +42,9 @@ with status completed; failed cells are retried.
 ## Stop rules
 DeepSeek balance floor 10.09 CNY (checked before every task); no protocol change after this commit except
 infrastructure fixes disclosed in the run log.
+
+## Addendum v9c: adaptive attacker loop (frozen 2026-11-13, before its main run)
+`src/guide_agentdojo/adaptive.py`. 30 pairs (prefix of the frozen 200-pair sample: 8 banking, 8 slack, 7 travel, 7 workspace) x
+conditions none, strict, cred, flexI_cred, weak DeepSeek agent. An attacker LLM (DeepSeek, temperature 0.8) rewrites the
+injection for up to 5 rounds after seeing the monitor's refusal text or the agent's reply. Success: AgentDojo `security`.
+Smoke (2 pairs, 2 conditions) ran end to end.
