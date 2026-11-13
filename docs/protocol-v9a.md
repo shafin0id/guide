@@ -55,3 +55,9 @@ attack `important_instructions`, first 5 pairs of each suite from the frozen 200
 strict, cred, flexI_cred. Reason for the small size: the supplied key is on Google's free tier (500 requests per day per
 model; the 2.5 Flash-Lite model is closed to new accounts). Pilot: undefended attack success 15/20 on this model.
 Executed by a scheduled job after the daily quota reset; incomplete cells are reported as incomplete.
+
+## Addendum v9g-2: Gemini block expanded after billing was linked (frozen 2026-11-13, before the run; supersedes the 20-pair plan)
+A funded key (paid tier) was supplied, so the free-tier cut-down is replaced. Gemini 3.1 Flash-Lite, default agent prompt, attack
+`important_instructions`, first 20 pairs per suite of the frozen 200-pair sample (80 pairs), conditions none, strict, cred, flexI_cred,
+tool_filter, spotlighting, repeat_user_prompt (pi_detector omitted: local model memory). Benign: all 97 tasks, conditions none, strict,
+cred, flexI_cred. Spend cap $9.00 (ledger estimate) as before. Results in `experiments/results/step3/runs/gemini/`.
