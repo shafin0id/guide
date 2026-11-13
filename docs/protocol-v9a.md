@@ -61,3 +61,9 @@ A funded key (paid tier) was supplied, so the free-tier cut-down is replaced. Ge
 `important_instructions`, first 20 pairs per suite of the frozen 200-pair sample (80 pairs), conditions none, strict, cred, flexI_cred,
 tool_filter, spotlighting, repeat_user_prompt (pi_detector omitted: local model memory). Benign: all 97 tasks, conditions none, strict,
 cred, flexI_cred. Spend cap $9.00 (ledger estimate) as before. Results in `experiments/results/step3/runs/gemini/`.
+
+## Addendum v9g-3: Gemini block reverted to the free-tier size (frozen 2026-11-13, before the reported run)
+The supplied key is also on Google's free tier (429: `generate_content_free_tier_requests`, 15 requests/minute plus a daily cap), so the
+v9g-2 expansion cannot be run. The reported block is the v9g plan: first 5 pairs per suite (20 pairs) x none, strict, cred, flexI_cred,
+one process. Cells from the aborted v9g-2 start (about 25, including tool_filter, spotlighting, repeat_user_prompt) are kept in the
+rows file and are reported only if complete; they are not part of the frozen matrix.
