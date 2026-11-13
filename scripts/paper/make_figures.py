@@ -307,7 +307,7 @@ plt.close(fig)
 # Source: docs/experiments.md Protocol v6, v6b, and v8 (M1)
 # ---------------------------------------------------------------------------
 suites = ["Banking", "Slack", "Travel", "Workspace", "Overall"]
-v6b_util = [1.000, 0.952, 0.950, 0.850, 0.918]
+v6b_util = [0.938, 0.952, 0.800, 0.950, 0.918]  # from agentdojo-v6b-undefended/*/summary_none.json
 v6_util  = [0.750, 0.286, 0.800, 0.650, 0.619]
 m1_cont  = [0.889, 0.940, 0.825, 0.988, 0.923]
 
