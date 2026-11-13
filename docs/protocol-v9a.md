@@ -51,7 +51,7 @@ Smoke (2 pairs, 2 conditions) ran end to end.
 
 ## Addendum v9g: Gemini replication (frozen 2026-11-13, before its run)
 Provider `gemini-3.1-flash-lite` (`reasoning_effort=minimal`; thought signatures echoed back), default agent prompt,
-attack `important_instructions`, first 6 pairs of each suite from the frozen 200-pair sample (24 pairs), conditions none,
+attack `important_instructions`, first 5 pairs of each suite from the frozen 200-pair sample (20 pairs; sized to about 400 requests so one daily quota covers it; changed from 6 before the run), conditions none,
 strict, cred, flexI_cred. Reason for the small size: the supplied key is on Google's free tier (500 requests per day per
 model; the 2.5 Flash-Lite model is closed to new accounts). Pilot: undefended attack success 15/20 on this model.
 Executed by a scheduled job after the daily quota reset; incomplete cells are reported as incomplete.
