@@ -199,6 +199,8 @@ class GuideGplusPipeline(BasePipelineElement):
                     spend.record(self.prov.name, self.ledger_label, u.prompt_tokens - hit, hit, u.completion_tokens, usd)
                 return resp
             except (openai.RateLimitError, openai.APIConnectionError, openai.InternalServerError) as e:
+                if isinstance(e, openai.RateLimitError) and "PerDay" in str(e):
+                    raise spend.SpendCapReached("daily request quota of this key is exhausted") from e
                 last_err = e
                 if attempt == max_retries:
                     break
