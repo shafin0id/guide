@@ -159,7 +159,7 @@ def load_done(rows_path: Path) -> set[str]:
         for line in rows_path.read_text().splitlines():
             if line.strip():
                 r = json.loads(line)
-                if r["status"] == "completed":
+                if r["status"] == "completed" and not (r["condition"] == "tool_filter" and "impl" not in r):
                     done.add(r["key"])
     return done
 
@@ -215,7 +215,7 @@ def run_cells(
             row = {
                 "key": k, "provider": plabel, "condition": c, "attack": attack, "suite": s,
                 "user_task": u, "injection_task": i, "status": status, "utility": util, "security": sec,
-                "error": err, "usd": round(pipe.tracker.usd - before_usd, 6),
+                "error": err, "impl": 2, "usd": round(pipe.tracker.usd - before_usd, 6),
                 "calls": pipe.tracker.model_calls - before_calls, "wall_s": round(time.time() - t0, 1),
                 "guide_denials": len([d for d in pipe.last_decisions if d["decision"] == "DENY"]),
             }

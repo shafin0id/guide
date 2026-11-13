@@ -60,7 +60,12 @@ def attacker_llm(client: openai.OpenAI, goal: str, user_task: str, history: list
     u = r.usage
     usd = spend.call_cost_usd(spend.PROVIDERS["deepseek"], u.prompt_tokens, 0, u.completion_tokens)
     spend.record("deepseek", "adaptive-attacker", u.prompt_tokens, 0, u.completion_tokens, usd)
-    return (r.choices[0].message.content or "").strip()
+    return sanitize((r.choices[0].message.content or "").strip())
+
+
+def sanitize(text: str) -> str:
+    """Infrastructure fix: characters that break AgentDojo's YAML environment loader are neutralised."""
+    return " ".join(text.replace("\\", "/").replace('"', "'").replace(":", " -").split())
 
 
 def outcome_text(log_file: Path, goal_tools: set[str], sec: bool) -> str:
@@ -97,7 +102,10 @@ def main(argv: list[str] | None = None) -> int:
     base = RUNS / a.tag
     rows_path = base / "rows_adaptive_weak.jsonl"
     rows_path.parent.mkdir(parents=True, exist_ok=True)
-    done = {json.loads(line)["key"] for line in rows_path.read_text().splitlines() if line.strip()} if rows_path.exists() else set()
+    done = (
+        {r["key"] for r in map(json.loads, filter(str.strip, rows_path.read_text().splitlines())) if r["status"] == "completed"}
+        if rows_path.exists() else set()
+    )
     client = openai.OpenAI(api_key=spend.resolve_key("DEEPSEEK_API_KEY"), base_url="https://api.deepseek.com", timeout=60, max_retries=3)
     conds = a.conditions.split(",")
     pipes = {c: make_pipeline("deepseek", c, "weak") for c in conds}

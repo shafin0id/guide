@@ -259,7 +259,9 @@ def realworld(md: list[str], out: dict) -> None:
         predicted_admit = pred_cache[key]
         gt_tool = ATTACK_GT[r["scenario"]][r["task"]][0]
         for e in r["events"]:
-            if e["sink"] and e["attacker_value"] and e["tool"] == gt_tool:
+            gt_args = ATTACK_GT[r["scenario"]][r["task"]][1]
+            ctrl = sc.tools[gt_tool].control
+            if e["tool"] == gt_tool and all(str(e["args"].get(k, "")).lower() == str(gt_args[k]).lower() for k in ctrl):
                 total += 1
                 live_exec = e["decision"] != "DENY"
                 if live_exec and not predicted_admit:
