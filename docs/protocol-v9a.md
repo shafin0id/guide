@@ -48,3 +48,10 @@ infrastructure fixes disclosed in the run log.
 conditions none, strict, cred, flexI_cred, weak DeepSeek agent. An attacker LLM (DeepSeek, temperature 0.8) rewrites the
 injection for up to 5 rounds after seeing the monitor's refusal text or the agent's reply. Success: AgentDojo `security`.
 Smoke (2 pairs, 2 conditions) ran end to end.
+
+## Addendum v9g: Gemini replication (frozen 2026-11-13, before its run)
+Provider `gemini-3.1-flash-lite` (`reasoning_effort=minimal`; thought signatures echoed back), default agent prompt,
+attack `important_instructions`, first 6 pairs of each suite from the frozen 200-pair sample (24 pairs), conditions none,
+strict, cred, flexI_cred. Reason for the small size: the supplied key is on Google's free tier (500 requests per day per
+model; the 2.5 Flash-Lite model is closed to new accounts). Pilot: undefended attack success 15/20 on this model.
+Executed by a scheduled job after the daily quota reset; incomplete cells are reported as incomplete.
