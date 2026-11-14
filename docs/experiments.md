@@ -298,7 +298,7 @@ by evaluating frozen main and assumed-compromise suites across three independent
   - **Groq Main**: 53 failed attempts pruned across three resumption sessions (48 TPM exhaustion, 3 rate-limit/bad-request errors, 2 JSON formatting errors).
   - **Gemini Compromised**: 19 failed attempts pruned following initial daily quota exhaustion before re-running with valid keys.
   - **Groq Compromised**: 0 failed attempts (completed cleanly in a single pass).
-  All reported metrics, confidence intervals, and comparison tables reflect completed runs only.
+  All reported metrics, confidence intervals, and comparison tables reflect completed runs only. The excluded failed and abandoned run files (`*.failed-*` and `v5-main-groq-qwen.abandoned-qwen-tpd-exhausted`) are preserved in git history at tag `paper-v1`.
 
 ### Main Suite: Cross-Model Comparison
 
