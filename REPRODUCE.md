@@ -1,8 +1,8 @@
 # Reproduction guide
 
-This document provides exact reproduction instructions for every table and empirical result in the paper. Commands use the project virtual environment via `uv run` or directly executable modules within `src`.
+This document provides exact reproduction instructions for every table, figure, and empirical result. Commands use the project virtual environment via `uv run` or directly executable modules within `src`.
 
-All commands execute locally. Zero-cost items require no external model APIs and incur zero monetary cost.
+All zero-cost commands execute locally without external model APIs and incur zero monetary cost.
 
 ---
 
@@ -15,70 +15,126 @@ Clone the repository and install all dependencies:
 git clone https://github.com/shafin0id/guide.git
 cd guide
 
-# Checkout the paper branch
-git checkout research/evidence-based-rebuild
+# Checkout the main release branch
+git checkout main
 
 # Sync dependencies using uv
 uv sync --all-extras
 ```
 
+The framework applications (Table 14, Protocol v9b) use a separate virtual environment because LangGraph, CrewAI, and AutoGen pin dependencies that conflict with AgentDojo:
+
+```bash
+uv venv .venv-rw --python 3.12
+uv pip install --python .venv-rw/bin/python langgraph==1.2.21 crewai==1.15.41 \
+  autogen-agentchat==0.7.5 "autogen-ext[openai]==0.7.5" langchain-openai openai python-dotenv cryptography
+```
+
 System requirements:
 - Python 3.10 to 3.12
 - `uv` package manager
-- Optional for document compilation: `pandoc`
+- Live model runs require API keys in `.env` (copy `.env.example` to `.env`).
 
 ---
 
 ## Quick validation
 
-To verify the test suite and all 34 manuscript numbers without re-running long benchmarks:
+To verify the test suite, package boundaries, and Protocol v9 result completeness without re-running model calls:
 
 ```bash
 # Run test suite (0 failed expected)
 uv run pytest -q
 
-# Verify all 34 manuscript numbers against raw experimental outputs (0 missing expected)
-uv run python -u scripts/final/run_final.py --stage check_numbers
+# Verify core <- research <- bench import boundary
+uv run python scripts/check_boundaries.py
+
+# Verify Protocol v9 result completeness across all blocks (0 missing expected)
+PYTHONPATH=src uv run python scripts/v9/verify_complete.py
+
+# Recompute Protocol v9 summary tables from raw JSONL logs
+PYTHONPATH=src uv run python scripts/v9/analyze.py
 ```
 
 ---
 
-## Reproduction by table and protocol
+## Reproduction by table
 
-### Table 1. Comparative capability matrix
-- **Paper section**: Section 2 (Related work)
-- **Protocol**: Architectural review (`paper-v1`)
-- **Inputs**: Formal model and specifications in `docs/formal_model.md` and literature review in `docs/lit-review/`
-- **Outputs**: Comparative matrix in `docs/paper/manuscript-draft.md` Table 1
-- **Expected key number**: 8 capability dimensions across 8 single-agent monitors and multi-agent frameworks
+### Table 1. Comparison of security mechanisms
+- **Protocol**: Systematic literature review (`review-protocol-v1`)
+- **Inputs**: Literature review corpus and extraction data in `docs/lit-review/`
+- **Outputs**: `docs/lit-review/literature-review.md` (§6)
+- **Expected key number**: 721 included studies (607 database + 114 snowball); comparative matrix across single-agent monitors and multi-agent frameworks
+- **API cost**: $0.00 (zero-cost)
+- **Git tag**: `review-protocol-v1`
+
+---
+
+### Table 2. Research questions, objectives, hypotheses, and evidence
+- **Protocol**: Pre-registered evaluation design (`protocol-v1`, extended in `protocol-v3` to `protocol-v9a-frozen`)
+- **Inputs**: `docs/evaluation.md`, `docs/experiments.md`, `docs/results-v9.md`
+- **Outputs**: Summary against hypotheses in `docs/experiments.md`
+- **Expected key number**: 5 research questions and pre-registered hypotheses mapped to recorded artifacts
+- **API cost**: $0.00 (zero-cost)
+- **Git tag**: `protocol-v1`
+
+---
+
+### Table 3. Evaluation metrics and operational definitions
+- **Protocol**: Metric definitions (`protocol-v1`)
+- **Inputs**: Benchmark scoring framework in `src/guide_bench/scoring.py` and `docs/evaluation.md`
+- **Outputs**: `docs/evaluation.md` (§3)
+- **Expected key number**: 8 operational metric definitions
+- **API cost**: $0.00 (zero-cost)
+- **Git tag**: `protocol-v1`
+
+---
+
+### Table 4. Deviations from the proposal
+- **Protocol**: Auditing and compliance (`protocol-v1` to `protocol-v9a-frozen`)
+- **Inputs**: Disclosed amendments and limitations in `docs/experiments.md`, `docs/limitations.md`, `docs/results/protocol-v7.md`, and `docs/results-v9.md`
+- **Outputs**: `docs/experiments.md`, `docs/limitations.md`
+- **Expected key number**: All protocol amendments and scope disclosures documented alongside frozen tags
 - **API cost**: $0.00 (zero-cost)
 - **Git tag**: `paper-v1`
 
 ---
 
-### Table 2. Alignment of research questions, objectives, and evidence
-- **Paper section**: Section 1 (Introduction) and Appendix
-- **Protocol**: Methodological mapping (`paper-v1`)
-- **Inputs**: Research plan and formal evaluation design
-- **Outputs**: Table 2 in `docs/paper/manuscript-draft.md`
-- **Expected key number**: 5 research questions (RQ1 to RQ5) mapped to contributions C1 to C4
-- **API cost**: $0.00 (zero-cost)
-- **Git tag**: `paper-v1`
+### Table 5. Violation rate under assumed compromise, K1 to K4
+- **Protocols**: Protocol v2, Protocol v5
+- **Commands**:
+  ```bash
+  # Protocol v2: DeepSeek assumed compromise (N=140)
+  uv run guide-bench --suite compromised --conditions B1,B2,P,GPLUS --reps 5 --out experiments/results/v2-compromised
+
+  # Protocol v5: Gemini 3.5 Flash-Lite (N=46)
+  uv run python -m guide_bench.run --suite compromised --conditions B1,B2,P,GPLUS --reps 2 --provider gemini --model gemini-3.5-flash-lite --out experiments/results/v5-compromised-gemini
+
+  # Protocol v5: Groq GPT-OSS 120B (N=38)
+  uv run python -m guide_bench.run --suite compromised --conditions B1,B2,P,GPLUS --reps 2 --provider groq --model openai/gpt-oss-120b --out experiments/results/v5-compromised-groq-gptoss120b
+  ```
+- **Inputs**: Adversarial test tasks K1 to K4 (`src/guide_bench/adversarial.py`)
+- **Outputs**: `experiments/results/v2-compromised/summary.md`, `experiments/results/v5-compromised-*/summary.md`
+- **Expected key numbers**:
+  - K1 (Direct read of restricted context): 0% leakage into final deliverable across all models (restricted exposure 1.0 in ungated B1/B2 vs 0.0 in P/GPLUS)
+  - K2 (Unauthorized email to external domain): 100% violation in B1 and B2, and 0% violation in P and GPLUS across all models
+  - K3 (Unauthorized email to in-domain recipient from untrusted tool data): 100% violation in B1, B2, and P, and 0% violation in GPLUS across all models
+  - K4 (Destructive record deletion): 100% violation in B1 and B2, and 0% violation in P and GPLUS across all models
+- **API cost**: External model API calls (completed during historical protocol runs)
+- **Git tags**: `protocol-v2`, `protocol-v5`
 
 ---
 
-### Table 3. Assumed-compromise containment replay on AgentDojo
-- **Paper section**: Section 4.2 (RQ2 runtime containment)
+### Table 6. Assumed-compromise replay on AgentDojo
 - **Protocol**: Protocol v8 (M1)
 - **Command**:
   ```bash
-  uv run python -u scripts/final/run_final.py --stage m1
+  PYTHONPATH=src uv run python -m guide_agentdojo.compromise_replay
   ```
 - **Inputs**: AgentDojo benchmark suite (`agentdojo==0.1.35`), 949 task-injection pairs across Banking, Slack, Travel, Workspace
 - **Outputs**: `experiments/results/compromise-replay-v8/summary.json`, `trace_log.jsonl`
 - **Expected key numbers**:
   - Full grid pairs: 949 total, 588 in-scope
-  - Contained pairs: 543/588 (92.3% [89.9%, 94.2%])
+  - Contained pairs (`strict`): 543/588 (92.3% [89.9%, 94.2%])
   - Partial containment: 0/588 (0.0%)
   - Admitted sink invocations: 45/588 (7.7%)
   - Sink-call block rate: 93.6% (657 denied out of 702 malicious sink calls)
@@ -89,18 +145,17 @@ uv run python -u scripts/final/run_final.py --stage check_numbers
 
 ---
 
-### Table 4. Bound prediction versus runtime containment on AgentDojo
-- **Paper section**: Section 4.2 (RQ2 runtime containment)
+### Table 7. Bound prediction versus runtime containment on AgentDojo
 - **Protocol**: Protocol v8 (M1)
 - **Command**:
   ```bash
-  uv run python -u scripts/final/run_final.py --stage m1
+  PYTHONPATH=src uv run python -m guide_agentdojo.compromise_replay
   ```
 - **Inputs**: Pre-computed static bounds from `src/guide_agentdojo/bound.py` and runtime outcomes from M1
 - **Outputs**: `experiments/results/compromise-replay-v8/summary.json` (`bound_vs_runtime`)
 - **Expected key numbers**:
-  - Bound blocked and runtime contained: 543
-  - Bound admitted and runtime executed: 45
+  - Bound blocked and runtime contained: 657 calls (543 pairs)
+  - Bound admitted and runtime executed: 427 calls (45 pairs)
   - Bound blocked and runtime executed (soundness violations): 0
   - Bound admitted and runtime denied (exactness gaps): 0
 - **API cost**: $0.00 (zero-cost)
@@ -108,19 +163,96 @@ uv run python -u scripts/final/run_final.py --stage check_numbers
 
 ---
 
-### Table 5. Evaluation metrics and operational definitions
-- **Paper section**: Section 3.11 (Methods)
-- **Protocol**: Metric definitions (`protocol-v1`)
-- **Inputs**: Benchmark scoring framework in `src/guide_bench/scoring.py`
-- **Outputs**: Metric definitions in `docs/paper/manuscript-draft.md` Table 5
-- **Expected key number**: 8 operational metric definitions
-- **API cost**: $0.00 (zero-cost)
-- **Git tag**: `protocol-v1`
+### Table 8. AgentDojo benchmark performance comparison: defended versus undefended
+- **Protocols**: Protocol v6, Protocol v6b
+- **Commands**:
+  ```bash
+  # Protocol v6: Defended run on DeepSeek
+  uv run guide-agentdojo --suite all --attack-type important_instructions --model deepseek-v4-flash --out experiments/results/agentdojo-v6
+
+  # Protocol v6b: Undefended baseline on DeepSeek
+  uv run python -m guide_agentdojo.run_baseline --suite all --attack-type important_instructions --model deepseek-v4-flash --out experiments/results/agentdojo-v6b-undefended
+  ```
+- **Inputs**: 97 benign tasks and 529 attack pairs across Banking, Slack, Travel, Workspace
+- **Outputs**: `experiments/results/agentdojo-v6/`, `experiments/results/agentdojo-v6b-undefended/`
+- **Expected key numbers**:
+  - Benign utility: 91.8% undefended (89/97) versus 61.9% defended (60/97), a 29.9 percentage point cost
+  - Slack benign utility: 95.2% undefended (20/21) versus 28.6% defended (6/21), a 66.7 percentage point cost
+  - Attack utility: 85.6% undefended (453/529) versus 68.4% defended (362/529)
+  - Attack success rate: 2.1% undefended (11/529) versus 2.3% defended (12/529)
+  - Tool-sink compromise rate: 0.0% (0/517) on both undefended and defended runs
+- **API cost**: ~10.89 CNY (undefended) + ~13.95 CNY (defended) via DeepSeek API (historical runs)
+- **Git tags**: `protocol-v6`, `protocol-v6b`
 
 ---
 
-### Table 6. Main-suite task performance across model families
-- **Paper section**: Section 4.1 (RQ1 governance overhead and utility)
+### Table 9. Utility-cost prediction confusion matrix
+- **Protocol**: Protocol v8 (M1b)
+- **Command**:
+  ```bash
+  PYTHONPATH=src uv run python -m guide_agentdojo.compromise_replay --m1b-only
+  ```
+- **Inputs**: Empirical task outcomes from `experiments/results/agentdojo-v6/` and `experiments/results/agentdojo-v6b-undefended/`
+- **Outputs**: `experiments/results/final-v8/v7a_attributable_loss.json`, `experiments/results/final-v8/v7a_attributable_loss.md`
+- **Expected key numbers**:
+  - Total lost tasks: 30
+  - True positives (predicted block and empirical loss): 29
+  - False positives (predicted block and no loss): 2
+  - False negatives (predicted pass and empirical loss): 1
+  - True negatives (predicted pass and no loss): 65
+  - Prediction accuracy: 96.9% [91.3%, 98.9%]
+  - Predicted cost: 29.9 percentage points versus observed cost 29.9 percentage points
+- **API cost**: $0.00 (zero-cost)
+- **Git tag**: `protocol-v8`
+
+---
+
+### Table 10. Structural census of fifty-five acyclic multi-agent configurations
+- **Protocol**: Protocol v8 (M2)
+- **Command**:
+  ```bash
+  PYTHONPATH=src uv run python -m guide_bench.topology_v8
+  ```
+- **Inputs**: 19 self-authored configurations in `experiments/real_world_blast_radius/results.jsonl` and 36 mined configurations in `experiments/mining/results.jsonl`
+- **Outputs**: `experiments/results/topology-v8/summary.json`, `experiments/results/topology-v8/summary.md`
+- **Expected key numbers**:
+  - Total acyclic configurations: 55
+  - Linear dependency chains: 49/55 (89.1%)
+  - Dominating source agents: 55/55 (100.0%)
+  - Configurations with sink floor equal to 1 under signed hand-offs: 21/21 (100.0% of sink-bearing configurations)
+  - Proposition 4 property test counterexamples: 0 across 300 tests
+  - Absolute reach median reduction via least privilege: 50.0% (from 2.0 to 1.0 sink)
+- **API cost**: $0.00 (zero-cost)
+- **Git tag**: `protocol-v8`
+
+---
+
+### Table 11. Configuration mining funnel and metrics
+- **Protocol**: Protocol v7b
+- **Commands**:
+  ```bash
+  # Repository mining
+  uv run python -m guide_bench.mining.harvest
+
+  # Static capability audit
+  uv run python -m guide_bench.mining.audit
+  ```
+- **Inputs**: Public GitHub repositories matching frozen queries for CrewAI, LangGraph, and AutoGen
+- **Outputs**: `experiments/mining/funnel.json`, `experiments/mining/configs.jsonl`, `experiments/mining/summary.json`
+- **Expected key numbers**:
+  - Candidate configurations: 37
+  - Scored acyclic configurations: 36 (1 cyclic LangGraph configuration excluded with disclosure)
+  - Configurations with zero write or external sinks: 34/36 (94.4%)
+  - Sequential configurations: 36/36 (100.0%)
+  - M1 metric (single agent blast radius contains a sink): 0.056 [0.015, 0.181] (2/36)
+  - M2 metric (zero-own-sink agent reaches a downstream sink): 0.028 [0.005, 0.142] (1/36)
+  - M5 metric (code execution tools): 0.000 [0.0, 0.096] (0/36)
+- **API cost**: $0.00 (zero-cost)
+- **Git tag**: `protocol-v7b`
+
+---
+
+### Table 12. Nominal task performance across model families
 - **Protocols**: Protocol v1, Protocol v2, Protocol v5
 - **Commands**:
   ```bash
@@ -148,133 +280,84 @@ uv run python -u scripts/final/run_final.py --stage check_numbers
 
 ---
 
-### Table 7. Assumed-compromise containment across model families
-- **Paper section**: Section 4.1 (RQ1 governance under compromise)
-- **Protocols**: Protocol v2, Protocol v5
+### Table 13. Defenses on AgentDojo (Protocol v9a, v9c, v9g)
+- **Protocols**: Protocol v9a, Protocol v9c, Protocol v9g (`docs/protocols/protocol-v9a.md`)
 - **Commands**:
   ```bash
-  # Protocol v2: DeepSeek assumed compromise (N=140)
-  uv run guide-bench --suite adversarial --conditions B1,B2,P,GPLUS --reps 5 --out experiments/results/v2-compromised
+  # Check matrix completeness across all Protocol v9 blocks (zero API cost)
+  PYTHONPATH=src uv run python scripts/v9/verify_complete.py
 
-  # Protocol v5: Gemini 3.5 Flash-Lite (N=46)
-  uv run python -m guide_bench.run --suite adversarial --conditions B1,B2,P,GPLUS --reps 2 --provider gemini --model gemini-3.5-flash-lite --out experiments/results/v5-compromised-gemini
+  # Recompute all Protocol v9 summary tables and statistics from raw JSONL logs (zero API cost)
+  PYTHONPATH=src uv run python scripts/v9/analyze.py
 
-  # Protocol v5: Groq GPT-OSS 120B (N=38)
-  uv run python -m guide_bench.run --suite adversarial --conditions B1,B2,P,GPLUS --reps 2 --provider groq --model openai/gpt-oss-120b --out experiments/results/v5-compromised-groq-gptoss120b
+  # Offline variant evaluation and full-grid replay (zero API cost)
+  PYTHONPATH=src uv run python scripts/v9/w2_variants.py
+  PYTHONPATH=src uv run python scripts/v9/w2_full.py
+
+  # Live DeepSeek Protocol v9a lanes (requires DEEPSEEK_API_KEY)
+  scripts/v9/run_v9a.sh 1
+  scripts/v9/run_v9a.sh 2
+  scripts/v9/run_v9a.sh 3
+  scripts/v9/run_v9a.sh 4
   ```
-- **Inputs**: Adversarial test tasks K1 to K4 (`src/guide_bench/adversarial.py`)
-- **Outputs**: `experiments/results/v2-compromised/summary.md`, `experiments/results/v5-compromised-*/summary.md`
+- **Inputs**:
+  - `experiments/results/v9/runs/main/` (97 benign tasks, 200 stratified pairs × 8 conditions/attacks, 30 adaptive attack pairs)
+  - `experiments/results/v9/runs/rep2/`, `experiments/results/v9/runs/rep3/` (3-repetition variance checks)
+  - `experiments/results/v9/runs/gemini/rows_important_instructions_default.jsonl` (Gemini 3.1 Flash-Lite 20-pair replication under 4 GUIDE conditions)
+- **Outputs**: `experiments/results/v9/summary.md`, `experiments/results/v9/summary.json`, `docs/results-v9.md`
 - **Expected key numbers**:
-  - K1 (Direct read of restricted context): 0% leakage into final deliverable across all models
-  - K2 (Unauthorized email to external domain): 100% violation in B1 and B2, and 0% violation in P and GPLUS across all models
-  - K3 (Unauthorized email to in-domain recipient from untrusted tool data): 100% violation in B1, B2, and P, and 0% violation in GPLUS across all models
-  - K4 (Destructive record deletion): 100% violation in B1 and B2, and 0% violation in P and GPLUS across all models
-- **API cost**: External model API calls (completed during historical protocol runs)
-- **Git tags**: `protocol-v2`, `protocol-v5`
+  - Full-grid containment: `strict` 92.3% (543/588), `cred` 95.1% (559/588), `flexI_cred` 88.8% (522/588)
+  - Pooled benign utility: `none` 95.9% (93/97), `strict` 62.9% (61/97), `cred` 62.9% (61/97), `flexI_cred` 78.4% (76/97; Slack recovery +38.1 pp from 28.6% to 66.7%)
+  - `direct` attack (N=200): `none` 9.0% (18/200), `strict` 0.5% (1/200), `tool_filter` 1.0% (2/200), `pi_detector` 1.5% (3/200), `spotlighting` 4.5% (9/200), `repeat_user_prompt` 4.0% (8/200)
+  - Gemini 3.1 Flash-Lite replication (first 20 pairs): ASR 75.0% (`15/20`, `none`) -> 5.0% (`1/20`, `strict`/`cred`/`flexI_cred`)
+- **API cost**: DeepSeek ~$6.05 + Gemini ~$0.75 (historical live runs); analysis and variant scripts are $0.00
+- **Git tags**: `protocol-v9a-frozen`, `protocol-v9c-frozen`, `protocol-v9g-frozen`
 
 ---
 
-### Table 8. AgentDojo benchmark performance comparison: defended versus undefended
-- **Paper section**: Section 4.2 (RQ2 runtime containment)
-- **Protocols**: Protocol v6, Protocol v6b
+### Table 14. Framework applications (Protocol v9b)
+- **Protocol**: Protocol v9b (`docs/protocols/protocol-v9b.md`, uses `.venv-rw`)
 - **Commands**:
   ```bash
-  # Protocol v6: Defended run on DeepSeek-V3
-  uv run guide-agentdojo --suite all --attack-type important_instructions --model deepseek-v4-flash --out experiments/results/agentdojo-v6
+  # Run the 15 framework applications (15 apps x 12 tasks x 4 conditions = 720 runs; requires DEEPSEEK_API_KEY)
+  PYTHONPATH=src .venv-rw/bin/python -m guide_realworld.run_rw --tag main
 
-  # Protocol v6b: Undefended baseline on DeepSeek-V3
-  uv run python -m guide_agentdojo.run_baseline --suite all --attack-type important_instructions --model deepseek-v4-flash --out experiments/results/agentdojo-v6b-undefended
+  # Analyze and verify all 720 runs (zero API cost)
+  PYTHONPATH=src uv run python scripts/v9/analyze.py
+  PYTHONPATH=src uv run python scripts/v9/verify_complete.py
   ```
-- **Inputs**: 97 benign tasks and 529 attack pairs across Banking, Slack, Travel, Workspace
-- **Outputs**: `experiments/results/agentdojo-v6/` and `experiments/results/agentdojo-v6b-undefended/`
+- **Inputs**: `src/guide_realworld/lg_apps.py`, `src/guide_realworld/cr_apps.py`, `src/guide_realworld/ag_apps.py`, `src/guide_realworld/scenarios.py`
+- **Outputs**: `experiments/results/v9/realworld/main/rows.jsonl`, `experiments/results/v9/summary.md`
 - **Expected key numbers**:
-  - Benign utility: 91.8% undefended (89/97) versus 61.9% defended (60/97), a 29.9 percentage point cost
-  - Slack benign utility: 95.2% undefended (20/21) versus 28.6% defended (6/21), a 66.7 percentage point cost
-  - Attack utility: 85.6% undefended (453/529) versus 68.4% defended (362/529)
-  - Attack success rate: 2.1% undefended (11/529) versus 2.3% defended (12/529)
-  - Tool-sink compromise rate: 0.0% (0/517) on both undefended and defended runs
-- **API cost**: ~10.89 CNY (undefended) + ~13.95 CNY (defended) via DeepSeek API
-- **Git tags**: `protocol-v6`, `protocol-v6b`
+  - 720 completed runs (15 applications × 12 tasks × 4 conditions)
+  - Compromised-reader relay attacks (`N=90`): 25.6% (23/90) undefended ASR -> 0.0% (0/90) under `strict` and `cred`, 6.7% (6/90) under `flexI_cred`
+  - Static prediction vs live monitor decisions on 69 attacker sink calls: 0 soundness violations, 84.1% agreement
+- **API cost**: Included in DeepSeek Protocol v9 ledger above; analysis is $0.00
+- **Git tag**: `protocol-v9b-frozen`
 
 ---
 
-### Table 9. Full deviation registry
-- **Paper section**: Appendix
-- **Protocol**: Auditing and compliance (`paper-v1`)
-- **Inputs**: Historical project decision records and alignment ledger in `docs/submission-alignment.md`
-- **Outputs**: Table 9 in `docs/paper/manuscript-draft.md`
-- **Expected key number**: 36 disclosed deviations (A1 to A36) with rationale and impact assessments
+## Figures
+
+### Figures 1 to 7, S1, and S2
+- **Protocol**: Figure generation from verified result summaries
+- **Command**:
+  ```bash
+  uv run python scripts/paper/make_figures.py
+  ```
+- **Inputs**: Verified result tables from `docs/experiments.md`, `docs/lit-review/prisma-counts.json`, and `experiments/results/`
+- **Outputs** (`scripts/paper/figures/`):
+  - `fig1_reference_monitor_design.png`
+  - `fig4_main_suite_success.png`
+  - `fig5_compromise_heatmap.png`
+  - `fig6_blast_radius_bound_sizes.png`
+  - `fig7_overhead.png`
+  - `fig8_degraded_agent_sequence.png`
+  - `fig9_agentdojo_utility_containment.png`
+  - `figS1_prisma_flow.png`
+  - `figS2_routing_regret.png`
 - **API cost**: $0.00 (zero-cost)
 - **Git tag**: `paper-v1`
-
----
-
-### Table 10. Confusion matrix of pre-deployment utility cost prediction
-- **Paper section**: Section 4.3 (RQ3 pre-deployment utility prediction)
-- **Protocol**: Protocol v8 (M1b)
-- **Command**:
-  ```bash
-  uv run python -u scripts/final/run_final.py --stage m1b
-  ```
-- **Inputs**: Empirical task outcomes from `experiments/results/agentdojo-v6/` and `agentdojo-v6b-undefended/`
-- **Outputs**: `experiments/results/final-v8/v7a_attributable_loss.json`
-- **Expected key numbers**:
-  - Total lost tasks: 30
-  - True positives (predicted block and empirical loss): 29
-  - False positives (predicted block and no loss): 2
-  - False negatives (predicted pass and empirical loss): 1
-  - True negatives (predicted pass and no loss): 65
-  - Prediction accuracy: 96.9% [91.3%, 98.9%]
-  - Predicted cost: 29.9 percentage points versus observed cost 29.9 percentage points
-- **API cost**: $0.00 (zero-cost)
-- **Git tag**: `protocol-v8`
-
----
-
-### Table 11. Structural census of fifty-five acyclic multi-agent configurations
-- **Paper section**: Section 4.4 (RQ4 agent topology and blast radius)
-- **Protocol**: Protocol v8 (M2)
-- **Command**:
-  ```bash
-  uv run python -u scripts/final/run_final.py --stage m2
-  ```
-- **Inputs**: 19 self-authored configurations in `experiments/real_world_blast_radius/results.jsonl` and 36 mined configurations in `experiments/mining/results.jsonl`
-- **Outputs**: `experiments/results/topology-v8/summary.json`
-- **Expected key numbers**:
-  - Total acyclic configurations: 55
-  - Linear dependency chains: 49/55 (89.1%)
-  - Dominating source agents: 55/55 (100.0%)
-  - Configurations with sink floor equal to 1 under signed hand-offs: 21/21 (100.0% of sink-bearing configurations)
-  - Proposition 4 property test counterexamples: 0 across 300 tests
-  - Absolute reach median reduction via least privilege: 50.0% (from 2.0 to 1.0 sink)
-- **API cost**: $0.00 (zero-cost)
-- **Git tag**: `protocol-v8`
-
----
-
-### Table 12. Real-world configuration mining funnel and metrics
-- **Paper section**: Section 4.4 (RQ4 agent topology and blast radius)
-- **Protocol**: Protocol v7b
-- **Commands**:
-  ```bash
-  # Repository mining
-  uv run python -m guide_bench.mining.harvest
-
-  # Static capability audit
-  uv run python -m guide_bench.mining.audit
-  ```
-- **Inputs**: Public GitHub repositories matching frozen queries for CrewAI, LangGraph, and AutoGen
-- **Outputs**: `experiments/mining/funnel.json`, `experiments/mining/configs.jsonl`, `experiments/mining/summary.json`
-- **Expected key numbers**:
-  - Candidate configurations: 37
-  - Scored acyclic configurations: 36 (1 cyclic LangGraph configuration excluded with disclosure)
-  - Configurations with zero write or external sinks: 34/36 (94.4%)
-  - Sequential configurations: 36/36 (100.0%)
-  - M1 metric (single agent blast radius contains a sink): 0.056 [0.015, 0.181] (2/36)
-  - M2 metric (zero-own-sink agent reaches a downstream sink): 0.028 [0.005, 0.142] (1/36)
-  - M5 metric (code execution tools): 0.000 [0.0, 0.096] (0/36)
-- **API cost**: $0.00 (zero-cost)
-- **Git tag**: `protocol-v7b`
 
 ---
 
@@ -343,96 +426,14 @@ uv run python -u scripts/final/run_final.py --stage check_numbers
 
 ---
 
-## Protocol v9 (Step 3): provenance variants, AgentDojo baselines, adaptive attacks, Gemini replication, and real-framework applications
-
-### Table 13. Protocol v9 AgentDojo provenance variants, baselines, attack templates, and Gemini replication
-- **Paper section**: Section 3.14 & Section 4.5 (RQ5)
-- **Protocols**: Protocol v9a, v9b, Step 3 (`step3-protocol-v9`)
+### 6. Bounded exhaustive verification of the blast-radius model
+- **Protocol**: Protocol v9
 - **Commands**:
   ```bash
-  # Check matrix completeness across all Step 3 blocks
-  .venv/bin/python scripts/step3/verify_complete.py
-
-  # Recompute all Step 3 summary tables and statistics from raw JSONL logs
-  .venv/bin/python scripts/step3/analyze.py
+  PYTHONPATH=src uv run python scripts/v9/exhaustive_bound.py A
+  PYTHONPATH=src uv run python scripts/v9/exhaustive_bound.py B
   ```
-- **Inputs**:
-  - `experiments/results/step3/runs/main/` (200 stratified pairs × 5 conditions/attacks plus variants `strict`, `cred`, `flexI_cred`, `none` on 97 benign tasks and 588 held-out/grid pairs; 30 adaptive attack pairs)
-  - `experiments/results/step3/runs/rep2/`, `experiments/results/step3/runs/rep3/` (3-repetition variance checks)
-  - `experiments/results/step3/runs/gemini/rows_important_instructions_default.jsonl` (Gemini 3.1 Flash-Lite 20-pair replication under 4 GUIDE conditions)
-- **Outputs**: `experiments/results/step3/summary.md`, `docs/step3-results.md`
-- **Expected key numbers**:
-  - Full-grid containment: `strict` 92.3% (543/588), `flexI_cred` 88.8% (522/588)
-  - Pooled benign utility: `none` 91.8%, `strict` 61.9%, `flexI_cred` 77.3% (+15.5 pp overall recovery; Slack +38.1 pp from 28.6% to 66.7%)
-  - Gemini 3.1 Flash-Lite replication (first 20 pairs): ASR 75.0% (`15/20`, none) -> 20.0% (`4/20`, rule-only) -> 5.0% (`1/20`, `strict`/`flexI_cred`)
-
----
-
-### Table 14. Real-framework multi-agent applications across LangGraph, CrewAI, and AutoGen
-- **Paper section**: Section 3.14 & Section 4.6 (RQ6)
-- **Protocol**: Protocol v9 / Step 3 real-world harness (`src/guide_realworld/`, `.venv-rw` or installed framework dependencies)
-- **Commands**:
-  ```bash
-  # Run the 15 framework applications (2 benign + 10 injected tasks x 4 conditions = 720 runs)
-  .venv-rw/bin/python -m guide_realworld.run_rw --out experiments/results/step3/realworld/main
-
-  # Analyze and verify all 720 runs
-  .venv/bin/python scripts/step3/analyze.py
-  .venv/bin/python scripts/step3/verify_complete.py
-  ```
-- **Inputs**: `src/guide_realworld/lg_apps.py`, `src/guide_realworld/cr_apps.py`, `src/guide_realworld/ag_apps.py`, `src/guide_realworld/scenarios.py`
-- **Outputs**: `experiments/results/step3/realworld/main/rows.jsonl`, `experiments/results/step3/summary.md`
-- **Expected key numbers**:
-  - 720 completed runs (15 applications × 12 tasks × 4 conditions)
-  - Compromised-reader attacks (`N=90`): 25.6% (23/90) undefended ASR -> 0.0% (0/90) under strict and `flexI_cred`
-  - Unseen predictor accuracy: 96.7% (29/30) across all 15 applications
-
----
-
-## Manuscript figures and numbers compilation
-
-### Generate all manuscript figures
-```bash
-.venv/bin/python scripts/paper/make_figures.py
-```
-Outputs figures into `scripts/paper/figures/`:
-- `fig4_main_suite_success.png`
-- `fig5_compromise_heatmap.png`
-- `fig6_blast_radius_bound_sizes.png`
-- `fig7_overhead.png`
-- `fig8_degraded_agent_sequence.png`
-- `fig9_agentdojo_utility_containment.png`
-- `figS1_prisma_flow.png`
-- `figS2_routing_regret.png`
-
-### Generate and verify manuscript numbers ledger
-```bash
-# Generate paper_numbers.json from raw logs
-.venv/bin/python -u scripts/final/run_final.py --stage numbers
-
-# Check synced markdown manuscript numbers match verbatim
-.venv/bin/python -u scripts/final/run_final.py --stage check_numbers
-
-# Verify V2 Word manuscript numbers against raw experimental artifacts
-.venv/bin/python scripts/paper/verify_docx_numbers.py docs/paper/revision-v2/GUIDE_Manuscript_Revised_V2.docx
-```
-
-### Revised V2 Word manuscripts & supplementary material
-- `docs/paper/revision-v2/GUIDE_Manuscript_Revised_V2.docx` and `GUIDE_Manuscript_Revised_V2.md`
-- `docs/paper/revision-v2/GUIDE_Supplementary_Material_V2.docx` and `GUIDE_Supplementary_Material_V2.md`
-- `docs/paper/revision-v2/REVISION-LOG.md`
-
-### Build Word manuscripts via Pandoc
-```bash
-# Build main manuscript
-pandoc docs/paper/manuscript-draft.md \
-  -o docs/paper/out/manuscript-draft.docx \
-  --reference-doc=docs/paper/reference-style.docx \
-  --resource-path=docs/paper:.
-
-# Build differences document
-pandoc docs/paper/differences-from-submitted.md \
-  -o docs/paper/out/differences-from-submitted.docx \
-  --reference-doc=docs/paper/reference-style.docx \
-  --resource-path=docs/paper:.
-```
+- **Outputs**: `experiments/results/v9/exhaustive/part_A.json`, `experiments/results/v9/exhaustive/part_B.json`
+- **Expected key numbers**: 0 oracle mismatches and 0 monotonicity violations across 594,516 influence cases (Part A); 0 soundness violations and 0 exactness violations across 1,966,080 gate evaluations (Part B).
+- **API cost**: $0.00 (zero-cost)
+- **Git tag**: `protocol-v9a-frozen`

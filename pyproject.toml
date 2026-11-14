@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "guide-mas"
-version = "0.3.0"
-description = "GUIDE: policy-aware, traceable orchestration for LLM multi-agent workflows (research prototype)"
+version = "0.4.0"
+description = "GUIDE: an external reference monitor that bounds the blast radius of compromised agents in LLM multi-agent systems (research prototype)"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "Apache-2.0" }
@@ -23,14 +23,13 @@ classifiers = [
 dependencies = [
     "agentdojo==0.1.35",
     "cryptography>=42,<47",
-    "matplotlib>=3.10.9",
-    "python-docx>=1.2.0",
 ]
 
 [project.optional-dependencies]
 openai = ["httpx>=0.27,<1"]  # OpenAI-compatible HTTP provider
 bench = ["httpx>=0.27,<1", "scipy>=1.11,<2", "numpy>=1.26,<3"]
-dev = ["pytest>=8,<10", "hypothesis>=6.100,<7", "ruff>=0.6,<1", "mypy>=1.10,<2", "scipy>=1.11,<2", "numpy>=1.26,<3", "httpx>=0.27,<1"]
+figures = ["matplotlib>=3.10.9"]
+dev = ["pytest>=8,<10", "hypothesis>=6.100,<7", "ruff>=0.6,<1", "mypy>=1.10,<2", "scipy>=1.11,<2", "numpy>=1.26,<3", "httpx>=0.27,<1", "matplotlib>=3.10.9"]
 
 [project.scripts]
 guide-bench = "guide_bench.run:main"
