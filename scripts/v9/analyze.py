@@ -303,7 +303,10 @@ def variants(md: list[str], out: dict) -> None:
             continue
         c, b = x["containment"], x["benign_est"]
         md.append(f"| {k} | {fmt(*c['dev'])} | {fmt(*c['heldout'])} | {fmt(*b['dev'])} | {fmt(*b['heldout'])} |")
-    md.append(f"\nSelection rule outcome: {v['_selection']['chosen']} (eligible: {', '.join(v['_selection']['eligible'])}). See scripts/v9/w2_variants.py.\n")
+    md.append(
+        f"\nSelection rule outcome: {v['_selection']['chosen']} "
+        f"(eligible: {', '.join(v['_selection']['eligible'])}). See scripts/v9/w2_variants.py.\n"
+    )
 
 
 def spend_summary(md: list[str], out: dict) -> None:
