@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import glob
 import json
-import re
 from pathlib import Path
 from typing import Any
 
@@ -98,7 +97,7 @@ def generate_paper_numbers(progress: Any | None = None) -> dict[str, dict[str, A
     # 3. v7a
     v7a_summary_path = REPO_ROOT / "experiments" / "results" / "predict-utility-v7a" / "summary.json"
     if v7a_summary_path.exists():
-        with open(v7a_summary_path, "r", encoding="utf-8") as f:
+        with open(v7a_summary_path, encoding="utf-8") as f:
             v7a_data = json.load(f)
         numbers["v7a_acc"] = {
             "value": "92.8%",
@@ -119,7 +118,7 @@ def generate_paper_numbers(progress: Any | None = None) -> dict[str, dict[str, A
     # 4. M1 (from compromise-replay-v8/summary.json)
     m1_sum_path = REPO_ROOT / "experiments" / "results" / "compromise-replay-v8" / "summary.json"
     if m1_sum_path.exists():
-        with open(m1_sum_path, "r", encoding="utf-8") as f:
+        with open(m1_sum_path, encoding="utf-8") as f:
             m1_data = json.load(f)
         fg_ov = m1_data["full_grid"]["overall"]
         v6_ov = m1_data["v6_subset"]["overall"]
@@ -164,7 +163,7 @@ def generate_paper_numbers(progress: Any | None = None) -> dict[str, dict[str, A
     # 5. M1b (from final-v8/v7a_attributable_loss.json)
     m1b_path = FINAL_V8_DIR / "v7a_attributable_loss.json"
     if m1b_path.exists():
-        with open(m1b_path, "r", encoding="utf-8") as f:
+        with open(m1b_path, encoding="utf-8") as f:
             m1b_data = json.load(f)
         numbers["m1b_acc"] = {
             "value": f"{m1b_data['accuracy'] * 100:.1f}%",
@@ -201,7 +200,7 @@ def generate_paper_numbers(progress: Any | None = None) -> dict[str, dict[str, A
     # 6. M2 (from topology-v8/summary.json)
     m2_path = REPO_ROOT / "experiments" / "results" / "topology-v8" / "summary.json"
     if m2_path.exists():
-        with open(m2_path, "r", encoding="utf-8") as f:
+        with open(m2_path, encoding="utf-8") as f:
             m2_data = json.load(f)
         census = m2_data["census"]["total_acyclic"]
         meds = m2_data["abs_reach_medians"]
@@ -252,7 +251,7 @@ def generate_paper_numbers(progress: Any | None = None) -> dict[str, dict[str, A
     v6_tokens_sum = 0
     v6_cny_sum = 0.0
     for p in glob.glob(str(REPO_ROOT / "experiments/results/agentdojo-v6/*/summary_*.json")):
-        with open(p, "r", encoding="utf-8") as f:
+        with open(p, encoding="utf-8") as f:
             d = json.load(f)
             tok = d.get("tokens", {})
             v6_tokens_sum += tok.get("total", 0)
@@ -261,7 +260,7 @@ def generate_paper_numbers(progress: Any | None = None) -> dict[str, dict[str, A
     v6b_tokens_sum = 0
     v6b_cny_sum = 0.0
     for p in glob.glob(str(REPO_ROOT / "experiments/results/agentdojo-v6b-undefended/*/summary_*.json")):
-        with open(p, "r", encoding="utf-8") as f:
+        with open(p, encoding="utf-8") as f:
             d = json.load(f)
             tok = d.get("tokens", {})
             v6b_tokens_sum += tok.get("total", 0)
@@ -305,7 +304,7 @@ def check_manuscript_numbers(progress: Any | None = None) -> list[str]:
     if not PAPER_NUMBERS_FILE.exists():
         generate_paper_numbers()
 
-    with open(PAPER_NUMBERS_FILE, "r", encoding="utf-8") as f:
+    with open(PAPER_NUMBERS_FILE, encoding="utf-8") as f:
         numbers = json.load(f)
 
     if not MANUSCRIPT_FILE.exists():

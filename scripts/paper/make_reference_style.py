@@ -10,11 +10,9 @@ try:
     import docx
 except ImportError:
     subprocess.run([sys.executable, "-m", "pip", "install", "--quiet", "python-docx"], check=True)
-    import docx
 
 from docx import Document
-from docx.shared import Pt, Cm
-from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.shared import Cm, Pt
 
 doc = Document()
 

@@ -15,15 +15,26 @@ import itertools
 import json
 import sys
 import time
-from dataclasses import replace
 from pathlib import Path
 
-from guide import (AgentSpec, Decision, HandoffMode, Policy, PolicyContext, RulePolicyEngine, Sensitivity, Step,
-                   ToolCall, ToolRegistry, Trust, Workflow)
+from guide import (
+    AgentSpec,
+    Decision,
+    HandoffMode,
+    Policy,
+    PolicyContext,
+    RulePolicyEngine,
+    Sensitivity,
+    Step,
+    ToolCall,
+    ToolRegistry,
+    Trust,
+    Workflow,
+)
 from guide.workflow import TaskSpec
 from guide_bench.env import VENDOR_COLUMNS, Environment
 from guide_research.blast_radius import SystemModel, _exposed, authority, influenced
-from guide_research.provenance import ProvenanceGuard, corpus_of
+from guide_research.provenance import ProvenanceGuard
 
 REG = ToolRegistry(Environment().tools)
 OUT = Path(__file__).resolve().parents[2] / "experiments" / "results" / "step3" / "exhaustive"

@@ -56,6 +56,13 @@ experiments/**/transcripts.jsonl
 # v7b mining: configs.jsonl is the frozen record of what was extracted (plan §3.7)
 !experiments/mining/configs.jsonl
 !experiments/results/agentdojo-v6*/token_usage.jsonl
+# v9 / Step 3 raw run & ledger jsonl records (exclude smoke/smoke_old)
+!experiments/results/step3/ledger.jsonl
+!experiments/results/step3/realworld/main/rows.jsonl
+!experiments/results/step3/runs/main/rows_*.jsonl
+!experiments/results/step3/runs/rep2/rows_none_default.jsonl
+!experiments/results/step3/runs/rep3/rows_none_default.jsonl
+!experiments/results/step3/runs/gemini/rows_important_instructions_default.jsonl
 
 # v7b mining: cloned third-party repos are parsed (ast/yaml only, never executed/imported)
 # and deleted after extraction. Never commit mined source code.

@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from dataclasses import replace
 
-import pytest
 from hypothesis import given, settings
 from hypothesis import strategies as st
 
@@ -17,7 +16,7 @@ from guide.workflow import Step, Workflow
 from guide_bench.real_world.configs import load_configs
 from guide_research import topology
 from guide_research.blast_radius import ObservedCall, SystemModel, synthesize_least_privilege
-from guide_research.topology_theory import closed_form_floor, has_dominating_source, is_chain, step_reach
+from guide_research.topology_theory import closed_form_floor, has_dominating_source
 
 
 class _ToyTool:

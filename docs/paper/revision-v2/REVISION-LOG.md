@@ -164,12 +164,17 @@ The numbers in the V2 docx were checked against the result files with `scripts/p
 - The Gemini 3.5 and GPT-OSS run counts were given as 144, but Table 12 was computed on 248 and 166 completed runs.
 - Adaptive routing was described as recovering after 19 runs. It failed once in warm-up and then completed 19 of 20.
 
+### 6.2 Second audit pass and polish (Supervisor Feedback 1 completeness check)
+
+After auditing `GUIDE_Manuscript_Revised_V2.docx`, figures, tables, supplementary material, and repository state against all 21 items of `Supervisor Feedback 1.md`, the remaining gaps were closed directly:
+
+- Manuscript prose and tables: fixed §2 `DBLP` to `Semantic Scholar`, added `(Wohlin, 2014)` citation for backward snowballing, added `(Figure S1)` reference, numbered `equation (1)` in §3.2, updated §3.2 `Figure S1` to `Figure S2`, standardized Groq model id in §3.5 to `openai/gpt-oss-120b`, fixed §4.2 degraded-agent sentence (`19 of 20` runs after 1 warm-up failure), added explicit hypothesis confirmations (`This supports H3.` in §4.3, `This supports H4.` in §4.4), clarified §5.5 full-grid drop `(from 543 to 522 of 588 pairs)`, clarified §5.6 DeepSeek utility wording (`kept full or near-full utility`), clarified §6 `90 compromised-reader attack runs`, updated Table 2 RQ2 to `H2a to H2c`, converted Table 12 metrics/CIs to percentages to match the rest of the paper, fixed reference casing/initials (`Lecture Notes in Computer Science`, `Saltzer, J. H., & Schroeder, M. D.`), and formatted all 14 tables with fixed proportional widths (`9072 dxa`), repeating headers (`tblHeader`), and `cantSplit`.
+- Figures and supplementary material: regenerated Figures 2 (`fig6`), 4 (`fig8`), and 5 (`fig9`) in `scripts/paper/make_figures.py` to remove text overlaps and legend collisions, re-embedded them in `GUIDE_Manuscript_Revised_V2.docx` with matching aspect ratios, added PRISMA diagram `figS1_prisma_flow.png`, and created `GUIDE_Supplementary_Material_V2.docx` / `GUIDE_Supplementary_Material_V2.md` (Figure S1, PRISMA counts table, search strings S1–S6, Figure S2 routing regret, and routing simulation table).
+- Repository and CI: re-synced `GUIDE_Manuscript_Revised_V2.md` and `docs/paper/manuscript-draft.md` with the updated `.docx`, updated `README.md` and `REPRODUCE.md` for Protocol v9 (Tables 13–14, `src/guide_realworld/`, `scripts/step3/`), moved `run_topology_v8` out of `guide_research` into `src/guide_bench/topology_v8.py` to fix boundary/mypy errors, cleaned lint checks, unignored the Step 3 `.jsonl` result files in `.gitignore`, and pushed `step3-protocol-v9`.
+
 ## 7. Still open
 
-- Step 4: journal formatting, moving secondary detail to a supplement, table and figure layout, and a reference and DOI check, especially for the three new software and model references.
-- Add the PRISMA diagram to the supplement.
-- Open the docx in Word once to check layout, Figure 5 and Tables 13 and 14. No render check was possible on this machine.
-- `docs/paper/manuscript-draft.md` is still the V1 text, so the old number checker still reads V1.
-- Push `step3-protocol-v9` to GitHub, because the paper says the code is public.
-- Check the Acknowledgments sentence about Google AI Studio being free tier.
-- Revoke and regenerate every API key that was pasted into the chat.
+- Step 4: target-journal formatting (template styling, section/word-limit adjustments, and bibliography style conversion once the target journal is decided).
+- Open `GUIDE_Manuscript_Revised_V2.docx` and `GUIDE_Supplementary_Material_V2.docx` in Microsoft Word once on desktop to visually confirm page breaks, figure clarity, and table rendering.
+- Acknowledgments mention the free tier for Section 3.5; Section 3.14 also notes its Gemini 3.1 Flash-Lite replication quota was set by the free tier (can be echoed in Acknowledgments during journal formatting if desired).
+- Local `.env` and `.env.gemini_keys` remain untracked and gitignored (external API key rotation skipped by user instruction).

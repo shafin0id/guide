@@ -10,11 +10,11 @@ import collections
 import json
 from pathlib import Path
 
-from guide_agentdojo import compromise_replay as cr
-from guide_agentdojo.specs import DOJO_TOOL_SECURITY
+from agentdojo.benchmark import get_suite
 from w2_variants import VARIANT_ORDER, containment, split_tasks  # type: ignore[import-not-found]
 
-from agentdojo.benchmark import get_suite
+from guide_agentdojo import compromise_replay as cr
+from guide_agentdojo.specs import DOJO_TOOL_SECURITY
 
 OUT = Path(__file__).resolve().parents[2] / "experiments" / "results" / "step3" / "w2"
 

@@ -11,7 +11,7 @@ from __future__ import annotations
 from guide.agent import AgentSpec
 from guide.policy import Policy
 from guide.runtime import HandoffMode
-from guide.tools import OperationSpec, Tool, ToolRegistry, ToolSpec
+from guide.tools import OperationSpec, ToolRegistry, ToolSpec
 from guide.types import Sensitivity, ToolResult
 from guide.workflow import Step, Workflow
 from guide_bench.mining.classify import classify_tool

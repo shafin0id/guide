@@ -12,8 +12,8 @@ import random
 import re
 import time
 from collections.abc import Callable, Sequence
-from typing import Any, Protocol, runtime_checkable
 from dataclasses import dataclass
+from typing import Any, Protocol, runtime_checkable
 
 from guide.errors import ConfigurationError, ProviderError
 from guide.types import ChatMessage
@@ -157,7 +157,9 @@ class OpenAICompatibleProvider:
                     )
                 retryable = resp.status_code == 429 or resp.status_code >= 500
                 wait_s = _parse_retry_after(resp) if resp.status_code == 429 else 0.0
-                last_error = ProviderError(f"HTTP {resp.status_code}: {resp.text}", retryable=retryable, status=resp.status_code)
+                last_error = ProviderError(
+                    f"HTTP {resp.status_code}: {resp.text}", retryable=retryable, status=resp.status_code
+                )
             if not last_error.retryable or attempt == self._max_retries:
                 break
             if len(self._keys) > 1 and last_error.status == 429:
@@ -165,8 +167,8 @@ class OpenAICompatibleProvider:
                 if attempt < len(self._keys) - 1:
                     time.sleep(0.5)
                     continue
-            backoff = self._backoff_s * (2**attempt) * (0.5 + random.random())
-            time.sleep(min(max(backoff, wait_s + 0.5), 25.0))  # noqa: S311 - retry jitter, not security
+            backoff = self._backoff_s * (2**attempt) * (0.5 + random.random())  # noqa: S311 - retry jitter, not security
+            time.sleep(min(max(backoff, wait_s + 0.5), 25.0))
         assert last_error is not None
         raise last_error
 

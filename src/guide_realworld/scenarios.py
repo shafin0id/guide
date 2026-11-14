@@ -42,10 +42,12 @@ def _support() -> Scenario:
         return "No such customer", []
 
     def reply(s, a):
-        _eff(s, "reply", to=a.get("to"), body=a.get("body")); return "Reply sent", None
+        _eff(s, "reply", to=a.get("to"), body=a.get("body"))
+        return "Reply sent", None
 
     def refund(s, a):
-        _eff(s, "refund", customer_id=a.get("customer_id"), amount=a.get("amount")); return "Refund issued", None
+        _eff(s, "refund", customer_id=a.get("customer_id"), amount=a.get("amount"))
+        return "Refund issued", None
 
     tools = {t.name: t for t in [
         ToolDef("read_ticket", "Read a support ticket", {"ticket_id": "ticket id"}, read_ticket),
@@ -88,10 +90,12 @@ def _finance() -> Scenario:
         return (f"Vendor {n}: IBAN {vendors[n]}", [n, vendors[n]]) if n in vendors else ("No such vendor", [])
 
     def pay(s, a):
-        _eff(s, "payment", iban=a.get("iban"), amount=a.get("amount")); return "Payment scheduled", None
+        _eff(s, "payment", iban=a.get("iban"), amount=a.get("amount"))
+        return "Payment scheduled", None
 
     def receipt(s, a):
-        _eff(s, "receipt", to=a.get("to"), body=a.get("body")); return "Receipt sent", None
+        _eff(s, "receipt", to=a.get("to"), body=a.get("body"))
+        return "Receipt sent", None
 
     tools = {t.name: t for t in [
         ToolDef("read_invoice", "Read an invoice email", {"invoice_id": "invoice id"}, read_inv),
@@ -132,10 +136,12 @@ def _publishing() -> Scenario:
         return docs.get(a.get("doc_id", ""), "No such document"), None
 
     def publish(s, a):
-        _eff(s, "post", channel=a.get("channel"), text=a.get("text")); return "Published", None
+        _eff(s, "post", channel=a.get("channel"), text=a.get("text"))
+        return "Published", None
 
     def share(s, a):
-        _eff(s, "share", doc_id=a.get("doc_id"), email=a.get("email")); return "Shared", None
+        _eff(s, "share", doc_id=a.get("doc_id"), email=a.get("email"))
+        return "Shared", None
 
     tools = {t.name: t for t in [
         ToolDef("fetch_page", "Fetch a web page", {"url": "page url"}, fetch),
@@ -175,13 +181,16 @@ def _devops() -> Scenario:
         return "Services: " + ", ".join(services), list(services)
 
     def restart(s, a):
-        _eff(s, "restart", name=a.get("name")); return "Restart triggered", None
+        _eff(s, "restart", name=a.get("name"))
+        return "Restart triggered", None
 
     def comment(s, a):
-        _eff(s, "comment", issue_id=a.get("issue_id"), text=a.get("text")); return "Comment posted", None
+        _eff(s, "comment", issue_id=a.get("issue_id"), text=a.get("text"))
+        return "Comment posted", None
 
     def deploy(s, a):
-        _eff(s, "deploy", service=a.get("service"), version=a.get("version")); return "Deploy started", None
+        _eff(s, "deploy", service=a.get("service"), version=a.get("version"))
+        return "Deploy started", None
 
     tools = {t.name: t for t in [
         ToolDef("read_issue", "Read an issue from the tracker", {"issue_id": "issue id"}, read_issue),
@@ -223,10 +232,12 @@ def _hr() -> Scenario:
         return (f"Candidate {k}: {cands[k][0]} <{cands[k][1]}>", [k, *cands[k]]) if k in cands else ("No such candidate", [])
 
     def sched(s, a):
-        _eff(s, "interview", email=a.get("email"), slot=a.get("slot")); return "Interview scheduled", None
+        _eff(s, "interview", email=a.get("email"), slot=a.get("slot"))
+        return "Interview scheduled", None
 
     def msg(s, a):
-        _eff(s, "message", email=a.get("email"), body=a.get("body")); return "Message sent", None
+        _eff(s, "message", email=a.get("email"), body=a.get("body"))
+        return "Message sent", None
 
     tools = {t.name: t for t in [
         ToolDef("read_application", "Read a job application", {"app_id": "application id"}, read_app),

@@ -7,7 +7,6 @@ into an AgentDojo BasePipelineElement executing against DeepSeek (deepseek-v4-fl
 from __future__ import annotations
 
 import json
-import os
 import random
 import time
 import uuid
@@ -34,14 +33,13 @@ from agentdojo.types import (
     ChatUserMessage,
     text_content_block_from_string,
 )
-from dotenv import dotenv_values
 
 from guide.policy import Decision, PolicyContext, RulePolicyEngine
 from guide.types import ToolCall, Trust
+from guide_agentdojo import spend
 from guide_agentdojo.policy import build_suite_policy
 from guide_agentdojo.specs import build_tool_registry
-from guide_agentdojo import spend
-from guide_research.provenance import Match, ProvenanceGuard
+from guide_research.provenance import Match
 from guide_research.provenance_v9 import DIRECTORY_EXTRACTORS, VARIANTS, make_guard
 
 DEFAULT_SYSTEM_MESSAGE = (

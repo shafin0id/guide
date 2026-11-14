@@ -1,6 +1,5 @@
 """S0 probe: which Gemini models support the multi-turn tool loop through the OpenAI-compatible endpoint."""
 
-import json
 import sys
 
 import openai

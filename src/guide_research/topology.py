@@ -17,7 +17,7 @@ from dataclasses import dataclass, replace
 
 from guide.agent import AgentSpec
 from guide.runtime import HandoffMode
-from guide.workflow import Step, Workflow
+from guide.workflow import Workflow
 from guide_research.blast_radius import SystemModel, authority, blast_radius
 
 # ----------------------------------------------------------------------------- set partitions

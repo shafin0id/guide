@@ -1,5 +1,7 @@
 """One-line progress report for all Step 3 live runs."""
-import glob, json, collections
+import glob
+import json
+
 S = "experiments/results/step3/"
 def comp(pattern, field_ok=lambda r: True):
     last = {}

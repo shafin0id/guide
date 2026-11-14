@@ -17,7 +17,7 @@ from pathlib import Path
 from typing import Any
 
 from agentdojo.agent_pipeline.base_pipeline_element import BasePipelineElement
-from agentdojo.attacks.attack_registry import ATTACKS, load_attack, register_attack
+from agentdojo.attacks.attack_registry import load_attack, register_attack
 from agentdojo.attacks.base_attacks import FixedJailbreakAttack
 from agentdojo.attacks.important_instructions_attacks import get_model_name_from_pipeline
 from agentdojo.benchmark import get_suite, run_task_with_injection_tasks, run_task_without_injection_tasks

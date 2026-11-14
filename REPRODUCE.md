@@ -343,11 +343,57 @@ uv run python -u scripts/final/run_final.py --stage check_numbers
 
 ---
 
+## Protocol v9 (Step 3): provenance variants, AgentDojo baselines, adaptive attacks, Gemini replication, and real-framework applications
+
+### Table 13. Protocol v9 AgentDojo provenance variants, baselines, attack templates, and Gemini replication
+- **Paper section**: Section 3.14 & Section 4.5 (RQ5)
+- **Protocols**: Protocol v9a, v9b, Step 3 (`step3-protocol-v9`)
+- **Commands**:
+  ```bash
+  # Check matrix completeness across all Step 3 blocks
+  .venv/bin/python scripts/step3/verify_complete.py
+
+  # Recompute all Step 3 summary tables and statistics from raw JSONL logs
+  .venv/bin/python scripts/step3/analyze.py
+  ```
+- **Inputs**:
+  - `experiments/results/step3/runs/main/` (200 stratified pairs × 5 conditions/attacks plus variants `strict`, `cred`, `flexI_cred`, `none` on 97 benign tasks and 588 held-out/grid pairs; 30 adaptive attack pairs)
+  - `experiments/results/step3/runs/rep2/`, `experiments/results/step3/runs/rep3/` (3-repetition variance checks)
+  - `experiments/results/step3/runs/gemini/rows_important_instructions_default.jsonl` (Gemini 3.1 Flash-Lite 20-pair replication under 4 GUIDE conditions)
+- **Outputs**: `experiments/results/step3/summary.md`, `docs/step3-results.md`
+- **Expected key numbers**:
+  - Full-grid containment: `strict` 92.3% (543/588), `flexI_cred` 88.8% (522/588)
+  - Pooled benign utility: `none` 91.8%, `strict` 61.9%, `flexI_cred` 77.3% (+15.5 pp overall recovery; Slack +38.1 pp from 28.6% to 66.7%)
+  - Gemini 3.1 Flash-Lite replication (first 20 pairs): ASR 75.0% (`15/20`, none) -> 20.0% (`4/20`, rule-only) -> 5.0% (`1/20`, `strict`/`flexI_cred`)
+
+---
+
+### Table 14. Real-framework multi-agent applications across LangGraph, CrewAI, and AutoGen
+- **Paper section**: Section 3.14 & Section 4.6 (RQ6)
+- **Protocol**: Protocol v9 / Step 3 real-world harness (`src/guide_realworld/`, `.venv-rw` or installed framework dependencies)
+- **Commands**:
+  ```bash
+  # Run the 15 framework applications (2 benign + 10 injected tasks x 4 conditions = 720 runs)
+  .venv-rw/bin/python -m guide_realworld.run_rw --out experiments/results/step3/realworld/main
+
+  # Analyze and verify all 720 runs
+  .venv/bin/python scripts/step3/analyze.py
+  .venv/bin/python scripts/step3/verify_complete.py
+  ```
+- **Inputs**: `src/guide_realworld/lg_apps.py`, `src/guide_realworld/cr_apps.py`, `src/guide_realworld/ag_apps.py`, `src/guide_realworld/scenarios.py`
+- **Outputs**: `experiments/results/step3/realworld/main/rows.jsonl`, `experiments/results/step3/summary.md`
+- **Expected key numbers**:
+  - 720 completed runs (15 applications × 12 tasks × 4 conditions)
+  - Compromised-reader attacks (`N=90`): 25.6% (23/90) undefended ASR -> 0.0% (0/90) under strict and `flexI_cred`
+  - Unseen predictor accuracy: 96.7% (29/30) across all 15 applications
+
+---
+
 ## Manuscript figures and numbers compilation
 
 ### Generate all manuscript figures
 ```bash
-uv run python scripts/paper/make_figures.py
+.venv/bin/python scripts/paper/make_figures.py
 ```
 Outputs figures into `scripts/paper/figures/`:
 - `fig4_main_suite_success.png`
@@ -356,16 +402,25 @@ Outputs figures into `scripts/paper/figures/`:
 - `fig7_overhead.png`
 - `fig8_degraded_agent_sequence.png`
 - `fig9_agentdojo_utility_containment.png`
+- `figS1_prisma_flow.png`
 - `figS2_routing_regret.png`
 
 ### Generate and verify manuscript numbers ledger
 ```bash
 # Generate paper_numbers.json from raw logs
-uv run python -u scripts/final/run_final.py --stage numbers
+.venv/bin/python -u scripts/final/run_final.py --stage numbers
 
-# Check manuscript numbers match verbatim
-uv run python -u scripts/final/run_final.py --stage check_numbers
+# Check synced markdown manuscript numbers match verbatim
+.venv/bin/python -u scripts/final/run_final.py --stage check_numbers
+
+# Verify V2 Word manuscript numbers against raw experimental artifacts
+.venv/bin/python scripts/paper/verify_docx_numbers.py docs/paper/revision-v2/GUIDE_Manuscript_Revised_V2.docx
 ```
+
+### Revised V2 Word manuscripts & supplementary material
+- `docs/paper/revision-v2/GUIDE_Manuscript_Revised_V2.docx` and `GUIDE_Manuscript_Revised_V2.md`
+- `docs/paper/revision-v2/GUIDE_Supplementary_Material_V2.docx` and `GUIDE_Supplementary_Material_V2.md`
+- `docs/paper/revision-v2/REVISION-LOG.md`
 
 ### Build Word manuscripts via Pandoc
 ```bash

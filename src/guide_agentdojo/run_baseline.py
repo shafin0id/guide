@@ -11,9 +11,7 @@ Supports --resume to safely restart from any completed suite/condition without r
 from __future__ import annotations
 
 import argparse
-import datetime
 import json
-import os
 import sys
 import time
 from pathlib import Path
@@ -191,7 +189,7 @@ def run_full_baseline(
     print("STARTING FULL AGENTDOJO UNDEFENDED BASELINE RUN (Protocol v6b)")
     print(f"Model: {model_name} | Pricing: {msg}")
     print(f"Planned units: {total_units} (97 benign + 529 attack pairs) | Token cap: {TOKEN_CAP:,}")
-    print(f"Containment stack: GATED=False, PROVENANCE=False (Pure Undefended)")
+    print("Containment stack: GATED=False, PROVENANCE=False (Pure Undefended)")
     print(f"Log directory: {logdir.resolve()}")
     print("================================================================================\n", flush=True)
 

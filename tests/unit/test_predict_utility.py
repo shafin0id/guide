@@ -43,7 +43,7 @@ def test_recipient_only_in_environment_data_is_blocked() -> None:
     assert send_money_calls, "fixture task must contain a send_money ground-truth call"
     for fc in send_money_calls:
         v = _verdict(fc, caps)
-        assert v.blocked, f"expected blocked, got admitted"
+        assert v.blocked, "expected blocked, got admitted"
         assert v.reason.startswith("recipient=")
 
 

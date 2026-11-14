@@ -21,7 +21,7 @@ from agentdojo.benchmark import get_suite, run_task_with_injection_tasks
 from agentdojo.logging import OutputLogger
 
 from guide_agentdojo import spend
-from guide_agentdojo.run_v9 import AGENTS, CONDITIONS, RUNS, VERSION, make_pipeline, make_sample
+from guide_agentdojo.run_v9 import RUNS, VERSION, make_pipeline, make_sample
 
 ROUNDS = 5
 PAIRS_PER_SUITE = (8, 8, 7, 7)  # banking, slack, travel, workspace -> 30 pairs (prefix of the frozen sample)

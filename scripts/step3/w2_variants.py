@@ -26,7 +26,7 @@ from guide.types import ToolCall, Trust
 from guide_agentdojo import compromise_replay as cr
 from guide_agentdojo.policy import build_suite_policy
 from guide_agentdojo.specs import DOJO_TOOL_SECURITY, build_tool_registry
-from guide_research.provenance_v9 import DIRECTORY_EXTRACTORS, VARIANTS, make_guard
+from guide_research.provenance_v9 import DIRECTORY_EXTRACTORS, make_guard
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "experiments" / "results" / "step3" / "w2"

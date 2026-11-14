@@ -555,7 +555,7 @@ def run_m1b(progress: Any | None = None) -> dict[str, Any]:
     # 1. Load predictions from predict-utility-v7a/predictions.jsonl
     v7a_pred_file = REPO_ROOT / "experiments" / "results" / "predict-utility-v7a" / "predictions.jsonl"
     pred_by_task: dict[tuple[str, str], bool] = {}
-    with open(v7a_pred_file, "r", encoding="utf-8") as f:
+    with open(v7a_pred_file, encoding="utf-8") as f:
         for line in f:
             if line.strip():
                 item = json.loads(line)
@@ -576,9 +576,9 @@ def run_m1b(progress: Any | None = None) -> dict[str, Any]:
         v6_sum_path = v6_dir / s_name / "summary_none.json"
         v6b_sum_path = v6b_dir / s_name / "summary_none.json"
 
-        with open(v6_sum_path, "r", encoding="utf-8") as f:
+        with open(v6_sum_path, encoding="utf-8") as f:
             v6_data = json.load(f)["utility_results"]
-        with open(v6b_sum_path, "r", encoding="utf-8") as f:
+        with open(v6b_sum_path, encoding="utf-8") as f:
             v6b_data = json.load(f)["utility_results"]
 
         for ut_id, v6b_util in sorted(v6b_data.items(), key=lambda kv: _natural_key(kv[0])):

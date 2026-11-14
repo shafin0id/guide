@@ -36,7 +36,7 @@ FIRST_PERSON = [
 def validate():
     text = MANUSCRIPT_FILE.read_text(encoding="utf-8")
     errors = []
-    
+
     # 1. Check for horizontal rules ---
     hr_matches = re.findall(r"^---$", text, re.MULTILINE)
     if hr_matches:

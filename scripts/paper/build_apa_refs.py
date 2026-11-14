@@ -8,9 +8,9 @@ braces in titles). Produces:
 No data is invented. Entries with insufficient metadata for a clean APA line are flagged
 with a leading '[VERIFY]' marker rather than guessed at, per the project's integrity rule.
 """
-import re
 import json
 import os
+import re
 
 BIB_PATH = os.path.join(os.path.dirname(__file__), "..", "..", "references-final.bib")
 OUT_MD = os.path.join(os.path.dirname(__file__), "..", "..", "docs", "paper", "references-apa.md")

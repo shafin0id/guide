@@ -12,8 +12,7 @@ import time
 from pathlib import Path
 from typing import Any
 
-from guide_realworld import common
-from guide_realworld.core import SYSTEM_DEFAULT, SYSTEM_WEAK, Runtime, RunResult, relay_suffix, render_injection
+from guide_realworld.core import SYSTEM_DEFAULT, SYSTEM_WEAK, RunResult, Runtime, relay_suffix, render_injection
 from guide_realworld.scenarios import SCENARIOS
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -52,7 +51,7 @@ class _Timeout(Exception):
 
 
 def _alarm(_s: int, _f: Any) -> None:
-    raise _Timeout("run exceeded %ds" % RUN_TIMEOUT_S)
+    raise _Timeout(f"run exceeded {RUN_TIMEOUT_S}s")
 
 
 def build(framework: str, topology: str, sc, rt, system):

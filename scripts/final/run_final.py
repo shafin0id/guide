@@ -63,7 +63,7 @@ def stage_m1b(progress: Progress) -> None:
 
 
 def stage_m2(progress: Progress) -> None:
-    from guide_research.topology_theory import run_topology_v8
+    from guide_bench.topology_v8 import run_topology_v8
     run_topology_v8(progress)
 
 

@@ -21,7 +21,6 @@ from typing import Any, Literal
 from guide.policy import Decision, PolicyContext, PolicyDecision, PolicyEngine
 from guide.tools import ToolRegistry
 from guide.types import ToolCall
-
 from guide_research.provenance import Match, ProvenanceGuard, supported
 
 DirectoryMode = Literal["off", "internal", "all"]

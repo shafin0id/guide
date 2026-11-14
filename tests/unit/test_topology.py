@@ -8,7 +8,6 @@ partition is the identity, and determinism of the tie-break.
 from __future__ import annotations
 
 import itertools
-from dataclasses import replace
 
 from hypothesis import HealthCheck, given, settings
 from hypothesis import strategies as st
@@ -63,7 +62,8 @@ def test_identity_partition_reproduces_original_blast_radius() -> None:
             # the matching singleton agent in the partitioned model is a{step_index}
             step_idx = next(i for i, s in enumerate(model.workflow.steps) if agent.role == s.role)
             br_partitioned = blast_radius(partitioned, frozenset({f"a{step_idx}"}))
-            assert {(c.tool, c.operation) for c in br_original.capabilities if c.step == model.workflow.steps[step_idx].step_id} <= {
+            step_id = model.workflow.steps[step_idx].step_id
+            assert {(c.tool, c.operation) for c in br_original.capabilities if c.step == step_id} <= {
                 (c.tool, c.operation) for c in br_partitioned.capabilities
             }
 

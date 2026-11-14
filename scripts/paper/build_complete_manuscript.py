@@ -2,8 +2,7 @@
 """Build complete manuscript-draft.md adhering strictly to shafin-writing-skill-v2."""
 
 from __future__ import annotations
-import json
-import re
+
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -18,7 +17,7 @@ def get_apa_references() -> str:
 
 def build_manuscript() -> str:
     apa_refs = get_apa_references()
-    
+
     doc = r"""# GUIDE: Bounding the Blast Radius of Compromised Agents in LLM Multi-Agent Systems with Sound Static Analysis and Runtime Enforcement
 
 Shafin Ahmad¹, Ts. Dr. Maythem Kamal Abbas¹

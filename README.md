@@ -69,33 +69,37 @@ print(record.status, record.final_output, record.trace_intact)
 | Layer | Package | Purpose |
 |---|---|---|
 | GUIDE Core | `src/guide` | stable primitives: providers, tools, policy, hand-off, trace, routing, runtime (public API = `guide/__init__.py`) |
-| GUIDE Research | `src/guide_research` | experimental mechanisms under evaluation (provenance guard) |
-| GUIDE Bench | `src/guide_bench` | tasks, sandbox, conditions, condition-blind scoring, runner, statistics |
+| GUIDE Research | `src/guide_research` | experimental mechanisms under evaluation (`provenance`, `provenance_v9`, `blast_radius`, `topology`, `topology_theory`) |
+| GUIDE Bench & Real-World | `src/guide_bench`, `src/guide_agentdojo`, `src/guide_realworld` | tasks, sandbox, AgentDojo harness, real LangGraph/CrewAI/AutoGen applications, condition-blind scoring, runner, statistics |
 
 Dependencies point one way only (Core ← Research ← Bench), enforced by `scripts/check_boundaries.py` in CI.
 
 ## Reproduce
 
-See [REPRODUCE.md](REPRODUCE.md) for complete instructions to reproduce every table and metric in the paper.
+See [REPRODUCE.md](REPRODUCE.md) for complete instructions to reproduce every table and metric in the paper (Protocols v1 to v9).
 
 Quick check:
 
 ```bash
-uv run pytest -q                                                   # Unit test suite, no network
-uv run python -u scripts/final/run_final.py --stage check_numbers  # Verify all 34 manuscript numbers
+.venv/bin/python -m pytest -q                                                   # Unit test suite, no network
+.venv/bin/python scripts/step3/verify_complete.py                                # Verify Step 3 (Protocol v9) completeness
+.venv/bin/python -u scripts/final/run_final.py --stage check_numbers             # Verify paper_numbers.json against manuscript
+.venv/bin/python scripts/paper/verify_docx_numbers.py docs/paper/revision-v2/GUIDE_Manuscript_Revised_V2.docx
 ```
 
 ## Paper artefacts
 
-The research paper evaluates GUIDE as an external reference monitor for LLM multi-agent systems across formal proofs, synthetic benchmarks, and external real-world benchmarks:
+The research paper evaluates GUIDE as an external reference monitor for LLM multi-agent systems across formal proofs, synthetic benchmarks, AgentDojo, and real-framework applications:
 
-- [Reproduction guide](REPRODUCE.md): step-by-step commands and verification for every table and empirical finding across protocols v1 to v8.
+- [Revised V2 manuscript](docs/paper/revision-v2/GUIDE_Manuscript_Revised_V2.md) and [supplementary material](docs/paper/revision-v2/GUIDE_Supplementary_Material_V2.md) (`.docx` companions and revision log in `docs/paper/revision-v2/`).
+- [Reproduction guide](REPRODUCE.md): step-by-step commands and verification for every table and empirical finding across protocols v1 to v9.
 - [Formal model and proofs](docs/formal_model.md): complete definitions, Theorem 1 and Theorem 2 blast-radius containment, Proposition 3 topology monotonicity, and Proposition 4 linear chain closed-form bounds.
-- [Final run results](docs/final-run-results.md): authoritative execution log, verified paper numbers, and metric summaries for Protocol v8.
+- [Final run results](docs/final-run-results.md) & [Step 3 results](docs/step3-results.md): execution logs and metric summaries for Protocols v8 and v9.
 - [Benchmark experiment logs](docs/experiments.md): detailed records covering protocols v1 to v8.
 
 ### Experimental result directories
 
+- `experiments/results/step3/`: Protocol v9 (Step 3) variants (`strict`, `cred`, `flexI_cred`), AgentDojo baselines, adaptive/GUIDE-aware/direct attacks, Gemini 3.1 Flash-Lite replication (`runs/`), and 15 real-framework applications (`realworld/main/rows.jsonl`, summary in `summary.md`).
 - `experiments/results/compromise-replay-v8/`: Protocol v8 (M1) assumed-compromise replay logs across 949 AgentDojo pairs.
 - `experiments/results/final-v8/`: Protocol v8 (M1b) attributable utility loss evaluation and verified paper numbers ledger.
 - `experiments/results/topology-v8/`: Protocol v8 (M2) structural census and Proposition 4 evaluation over 55 acyclic workflows.

@@ -5,10 +5,12 @@ immediately to keep memory low under tight host conditions. No invented data: ev
 is copied from the markdown tables already verified in docs/experiments.md.
 """
 import matplotlib
+
 matplotlib.use("Agg")
+import os
+
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
-import os
 
 OUT = os.path.join(os.path.dirname(__file__), "figures")
 os.makedirs(OUT, exist_ok=True)
@@ -210,7 +212,6 @@ plt.close(fig)
 # B2 0/20; P(routing) 19/20 one warm-up failure then recovers; GPLUS 20/20;
 # GPLUS-redispatch 19/20; GPLUS-routing(static routing, redispatch rescues) 20/20
 # ---------------------------------------------------------------------------
-import itertools
 
 def cumulative(fail_at_runs, n=20):
     """fail_at_runs: set of 1-indexed run numbers that fail (do not complete)."""
@@ -231,23 +232,23 @@ series = {
     "GPLUS-routing (static + re-dispatch)": cumulative(set()),  # 20/20, rescued every time
 }
 STYLE = {
-    "B2 (static, static)": dict(linestyle="-", marker="", color="0.75"),
-    "P (routing, no re-dispatch)": dict(linestyle="--", marker="o", color="0.5", markevery=4),
-    "GPLUS (routing + re-dispatch)": dict(linestyle="-", marker="^", color="0.0", markevery=4),
-    "GPLUS-redispatch (routing only)": dict(linestyle="-.", marker="s", color="0.3", markevery=4),
-    "GPLUS-routing (static + re-dispatch)": dict(linestyle=":", marker="D", color="0.15", markevery=4),
+    "B2 (static, static)": dict(linestyle="-", marker="x", color="0.55", markevery=(1, 4)),
+    "P (routing, no re-dispatch)": dict(linestyle="--", marker="o", color="0.45", markevery=(0, 4)),
+    "GPLUS (routing + re-dispatch)": dict(linestyle="-", marker="^", color="0.0", markevery=(0, 4)),
+    "GPLUS-redispatch (routing only)": dict(linestyle="-.", marker="s", color="0.25", markevery=(2, 4)),
+    "GPLUS-routing (static + re-dispatch)": dict(linestyle=":", marker="D", color="0.15", markevery=(2, 4)),
 }
-fig, ax = plt.subplots(figsize=(85 / 25.4, 65 / 25.4))
+fig, ax = plt.subplots(figsize=(95 / 25.4, 68 / 25.4))
 x = list(range(1, n + 1))
 for label, cum in series.items():
-    ax.plot(x, cum, label=label, linewidth=1, markersize=3, **STYLE[label])
+    ax.plot(x, cum, label=label, linewidth=1.1, markersize=3.2, **STYLE[label])
 ax.set_xlabel("run number (degraded agent present throughout)")
 ax.set_ylabel("cumulative completed runs")
-ax.set_xlim(1, n)
-ax.set_ylim(0, n + 1)
-ax.legend(fontsize=5, loc="upper left", framealpha=1)
+ax.set_xlim(0.5, n + 0.5)
+ax.set_ylim(-1.2, n + 1.5)
+ax.legend(fontsize=5.2, loc="upper left", framealpha=1)
 ax.grid(linestyle=":", linewidth=0.5, color="0.7")
-fig.tight_layout(rect=[0, 0, 1, 0.92])
+fig.tight_layout(rect=[0, 0, 1, 0.96])
 fig.savefig(os.path.join(OUT, "fig8_degraded_agent_sequence.png"), dpi=600)
 plt.close(fig)
 
@@ -265,16 +266,17 @@ UNBOUNDED_DISPLAY = 10000
 values = [UNBOUNDED_DISPLAY, UNBOUNDED_DISPLAY, 692, 1, 1]
 is_unbounded = [True, True, False, False, False]
 
-fig, ax = plt.subplots(figsize=(85 / 25.4, 60 / 25.4))
-bars = ax.bar(range(len(labels)), values, color=["0.8", "0.6", "0.4", "0.15", "0.15"],
+fig, ax = plt.subplots(figsize=(105 / 25.4, 66 / 25.4))
+bars = ax.bar(range(len(labels)), values, width=0.58, color=["0.8", "0.6", "0.4", "0.15", "0.15"],
               edgecolor="black")
 ax.set_yscale("log")
-ax.set_xticks(range(len(labels))); ax.set_xticklabels(labels, fontsize=6)
+ax.set_ylim(0.5, 120000)
+ax.set_xticks(range(len(labels))); ax.set_xticklabels(labels, fontsize=6.5)
 ax.set_ylabel("admissible recipients (log scale)")
-for i, (bar, v, unb) in enumerate(zip(bars, values, is_unbounded)):
-    label = "unbounded\n(domain-wide)" if unb else str(v)
-    ax.text(bar.get_x() + bar.get_width() / 2, v * 1.3, label, ha="center", fontsize=6)
-fig.tight_layout(rect=[0, 0, 1, 0.90])
+for bar, v, unb in zip(bars, values, is_unbounded):
+    label = "unbounded\n(domain)" if unb else str(v)
+    ax.text(bar.get_x() + bar.get_width() / 2, v * 1.35, label, ha="center", va="bottom", fontsize=5.8)
+fig.tight_layout(rect=[0, 0, 1, 0.96])
 fig.savefig(os.path.join(OUT, "fig6_blast_radius_bound_sizes.png"), dpi=600)
 plt.close(fig)
 
@@ -325,14 +327,105 @@ bars3 = ax.bar([x + w for x in xs], m1_cont, width=w, label="M1 containment (ass
 ax.set_xticks(xs)
 ax.set_xticklabels(suites, fontsize=7)
 ax.set_ylabel("rate")
-ax.set_ylim(0, 1.12)
+ax.set_ylim(0, 1.30)
+ax.set_yticks([0.0, 0.2, 0.4, 0.6, 0.8, 1.0])
 ax.yaxis.set_major_formatter(mticker.PercentFormatter(1.0))
-ax.legend(fontsize=6, loc="upper right")
+ax.legend(fontsize=6, loc="upper center", ncol=2, frameon=True)
 ax.grid(axis="y", linestyle=":", linewidth=0.5, color="0.7")
 
-fig.tight_layout(rect=[0, 0, 1, 0.92])
+fig.tight_layout(rect=[0, 0, 1, 0.96])
 fig.savefig(os.path.join(OUT, "fig9_agentdojo_utility_containment.png"), dpi=600)
 plt.close(fig)
+
+# ---------------------------------------------------------------------------
+# Fig S1: PRISMA 2020 literature selection flow diagram
+# Source: docs/lit-review/prisma-counts.json
+# ---------------------------------------------------------------------------
+def make_figS1_prisma():
+    import json
+
+    import matplotlib.patches as patches
+    counts_path = os.path.join(os.path.dirname(__file__), "..", "..", "docs", "lit-review", "prisma-counts.json")
+    with open(counts_path, encoding="utf-8") as f:
+        c = json.load(f)
+
+    fig, ax = plt.subplots(figsize=(155 / 25.4, 125 / 25.4), dpi=600)
+    ax.set_xlim(0, 155)
+    ax.set_ylim(0, 125)
+    ax.axis("off")
+
+    def box(x, y, w, h, title, detail="", fc="#F4F4F4"):
+        p = patches.FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.6", linewidth=0.8, edgecolor="#222222", facecolor=fc)
+        ax.add_patch(p)
+        if detail:
+            ax.text(x + w / 2, y + h * 0.64, title, fontsize=6.5, fontweight="bold", ha="center", va="center", color="#111111")
+            ax.text(x + w / 2, y + h * 0.30, detail, fontsize=5.6, ha="center", va="center", color="#333333")
+        else:
+            ax.text(x + w / 2, y + h / 2, title, fontsize=6.5, fontweight="bold", ha="center", va="center", color="#111111")
+
+    def arrow(x1, y1, x2, y2):
+        ax.annotate("", xy=(x2, y2), xytext=(x1, y1), arrowprops=dict(arrowstyle="->", lw=0.8, color="#222222"))
+
+    # Main vertical chain (left) and exclusions (right)
+    mw, mh = 86, 12
+    ew, eh = 56, 12
+    mx, ex = 4, 96
+    ys = [110, 92, 74, 56, 38, 20, 3]
+
+    box(mx, ys[0], mw, mh,
+        f"Records identified (n = {c['identified_database']:,})",
+        "OpenAlex, arXiv, Semantic Scholar (6 strings x 3 sources)")
+    box(mx, ys[1], mw, mh,
+        f"Unique records after deduplication (n = {c['unique']:,})",
+        "Deduplicated by DOI, arXiv ID, and normalized title")
+    box(ex, ys[1], ew, mh,
+        f"Duplicates removed (n = {c['duplicates_removed']:,})", "", fc="#FAFAFA")
+
+    box(mx, ys[2], mw, mh,
+        f"Passed deterministic pre-filter (n = {c['title_screened']:,})",
+        "Requires LLM term + agent term (+7 rescued in recall audit)")
+    pr = c["prefilter_reasons"]
+    box(ex, ys[2], ew, mh,
+        f"Pre-filter excluded (n = {c['prefilter_excluded']:,})",
+        f"E6: {pr['E6']}, E3: {pr['E3']}, E1: {pr['E1']}, E2: {pr['E2']}", fc="#FAFAFA")
+
+    box(mx, ys[3], mw, mh,
+        f"Passed title screening (n = {c['abstract_assessed']:,})",
+        "Single primary screener against I1-I3 / E1-E6")
+    tr = c["title_reasons"]
+    box(ex, ys[3], ew, mh,
+        f"Title excluded (n = {c['title_excluded']:,})",
+        f"E6: {tr['E6']}, E3: {tr['E3']}, E1: {tr['E1']}, E2: {tr['E2']}", fc="#FAFAFA")
+
+    box(mx, ys[4], mw, mh,
+        f"Included from databases (n = {c['included_database']:,})",
+        "Abstract assessment completed")
+    ar = c["abstract_reasons"]
+    box(ex, ys[4], ew, mh,
+        f"Abstract excluded (n = {c['abstract_excluded']:,})",
+        f"E3: {ar['E3']}, E6: {ar['E6']}, E5: {ar['E5']}", fc="#FAFAFA")
+
+    box(mx, ys[5], mw, mh,
+        f"Snowballing additions (n = {c['included_snowball']:,})",
+        f"1 round on 43 core works: {c['snowball_identified']} identified -> {c['included_snowball']} included")
+    box(ex, ys[5], ew, mh,
+        f"Snowball excluded (n = {c['snowball_prefilter_excluded'] + c['snowball_title_excluded']:,})",
+        f"Pre-filter: {c['snowball_prefilter_excluded']}, Title: {c['snowball_title_excluded']}", fc="#FAFAFA")
+
+    box(mx, ys[6], mw, mh,
+        f"Total studies included (n = {c['included_total']:,})",
+        "607 database + 114 snowballing (26 core works hand-coded)", fc="#E8E8E8")
+
+    for i in range(len(ys) - 1):
+        arrow(mx + mw / 2, ys[i], mx + mw / 2, ys[i + 1] + mh)
+    for y in ys[1:6]:
+        arrow(mx + mw, y + mh / 2, ex, y + mh / 2)
+
+    fig.tight_layout(pad=0.3)
+    fig.savefig(os.path.join(OUT, "figS1_prisma_flow.png"), dpi=600)
+    plt.close(fig)
+
+make_figS1_prisma()
 
 print("Figures written to", OUT)
 for f in sorted(os.listdir(OUT)):

@@ -13,13 +13,12 @@ import random
 import shutil
 import subprocess
 import time
-from dataclasses import asdict
 from pathlib import Path
 
 from guide.runtime import HandoffMode
 from guide_bench.mining.common import ExtractedConfig
 from guide_bench.mining.repo_driver import EXTRACTORS
-from guide_bench.mining.search import FRAMEWORK_OWN_REPOS, apply_exclusions, fetch_search_pages
+from guide_bench.mining.search import apply_exclusions, fetch_search_pages
 from guide_bench.mining.to_model import build_model
 from guide_bench.run import git_state
 from guide_research.blast_radius import blast_radius

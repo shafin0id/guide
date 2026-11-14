@@ -210,7 +210,13 @@ def gate_cases(draw):
 COVERAGE: dict[str, int] = {}
 
 
-@settings(max_examples=4000, deadline=None, derandomize=True, database=None, suppress_health_check=[HealthCheck.too_slow])
+@settings(
+    max_examples=4000,
+    deadline=None,
+    derandomize=True,
+    database=None,
+    suppress_health_check=[HealthCheck.too_slow],
+)
 @given(
     case=gate_cases(),
     gate=st.sampled_from(["rule", "rule+provenance"]),

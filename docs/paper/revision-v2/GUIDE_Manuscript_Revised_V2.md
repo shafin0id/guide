@@ -1,4 +1,4 @@
-# GUIDE: An External Reference Monitor That Bounds the Blast Radius of Compromised Agents in LLM Multi-Agent Systems
+## GUIDE: An External Reference Monitor That Bounds the Blast Radius of Compromised Agents in LLM Multi-Agent Systems
 
 Author: Shafin Ahmad (https://orcid.org/0009-0008-7351-1609).
 
@@ -6,14 +6,13 @@ Supervisor: Ts. Dr. Maythem Kamal Abbas
 
 Asia Pacific University of Technology and Innovation, Technology Park Malaysia, Bukit Jalil, 57000 Kuala Lumpur, Malaysia.
 
-## Abstract
+### Abstract
 
 Prompt injection is hard to prevent inside an LLM reasoning loop. In a multi-step pipeline, an injection in one agent can spread to downstream agents and cause unauthorized actions. This paper assumes that any agent can be compromised and places an external reference monitor at the boundary between agents and tools. The monitor, GUIDE (Governed, Uncertainty-aware, Intent-pinned Delegation Enforcer), computes a static blast-radius bound for any subset of compromised agents. The bound is sound with respect to the monitor's own enforcement, and a bounded exhaustive check of 594,516 influence cases found no violation. On AgentDojo, the static analysis flagged 29 of the 30 benign tasks that enforcement later lost (96.9% accuracy). An assumed-compromise replay contained 92.3% of the 588 in-scope task-injection pairs. Strict enforcement cut benign utility from 95.9% to 62.9%. A directory-aware variant recovered 78.4%, and live attack success under it stayed at 0.5%. On 15 applications built with LangGraph, CrewAI and AutoGen, a compromised reader agent reached its goal in 23 of 90 undefended runs and in none under strict enforcement. A census of 55 workflow configurations found 49 linear chains, where splitting work across agents cannot reduce worst-case reach and least privilege can. Live attacks rarely succeeded on DeepSeek 4.1 Flash even without a defense, so the live security gain rests mainly on a weakened agent, the framework applications and a 20-pair Gemini replication.
 
 Keywords: multi-agent systems, large language models, prompt injection, reference monitor, least privilege, static analysis, blast radius
 
-
-## 1. Introduction
+### 1. Introduction
 
 Most multi-agent systems built on large language models have an unsolved security problem at the execution boundary. When an agent reads an external source, such as a document, a search result, or user input, that untrusted text enters its prompt context. Attacks of this kind are called prompt injection (Greshake et al., 2023), and they are very hard to prevent inside the model's reasoning loop. In a single-agent system, an injection can redirect a tool call directly. In a multi-agent system, the attack can also cross delegation boundaries. A compromised agent can trick downstream agents into running privileged tools (Lee et al., 2026; Le et al., 2026), which the first agent could not call itself.
 
@@ -49,17 +48,17 @@ The paper evaluates six research questions:
 
 Section 2 reviews related work. Section 3 describes the design of GUIDE and the formal methods. Section 4 reports the results. Section 5 discusses design implications and limitations. Section 6 concludes.
 
-## 2. Related work
+### 2. Related work
 
-Related work was identified through a systematic review that followed PRISMA 2020 (Page et al., 2021) and the guidelines of Kitchenham and Charters (2007). Six search strings combined agent terms such as multi-agent, agentic, LLM agent and tool use with security or orchestration terms such as prompt injection, least privilege, information flow, blast radius and provenance. Each string was run on OpenAlex, arXiv and DBLP for work from January 2022 to the search date. The first 200 records per string and source were kept, so the 18 queries returned 3,600 records.
+Related work was identified through a systematic review that followed PRISMA 2020 (Page et al., 2021) and the guidelines of Kitchenham and Charters (2007). Six search strings combined agent terms such as multi-agent, agentic, LLM agent and tool use with security or orchestration terms such as prompt injection, least privilege, information flow, blast radius and provenance. Each string was run on OpenAlex, arXiv and Semantic Scholar (which replaced DBLP after a bot-challenge failure) for work from January 2022 to the search date. The first 200 records per string and source were kept, so the 18 queries returned 3,600 records.
 
-A record was included if it was in English, concerned LLM-based agents that call tools or exchange messages, and proposed or evaluated a control, an attack analysis or a benchmark. Records were excluded for chatbot safety without tools, multi-agent systems without LLMs, or positions and surveys with no mechanism. Duplicates, inaccessible texts and off-topic term collisions were also excluded. After de-duplication 2,766 records remained. A deterministic keyword pre-filter kept 1,712, title screening kept 631 and abstract screening included 607. Snowballing on 43 core works added 114, for 721 included studies. One author screened all records, so no inter-rater agreement is reported. The PRISMA flow diagram is in the supplementary material.
+A record was included if it was in English, concerned LLM-based agents that call tools or exchange messages, and proposed or evaluated a control, an attack analysis or a benchmark. Records were excluded for chatbot safety without tools, multi-agent systems without LLMs, or positions and surveys with no mechanism. Duplicates, inaccessible texts and off-topic term collisions were also excluded. After de-duplication 2,766 records remained. A deterministic keyword pre-filter kept 1,712, title screening kept 631 and abstract screening included 607. Snowballing (Wohlin, 2014) on 43 core works added 114, for 721 included studies. One author screened all records, so no inter-rater agreement is reported. The PRISMA flow diagram (Figure S1) is in the supplementary material.
 
-### 2.1 Multi-agent coordination and orchestration
+2.1 Multi-agent coordination and orchestration
 
 Most work on multi-agent orchestration aims at coordination and task completion. MasRouter routes each task to a specialized agent to improve completion efficiency (Yue et al., 2025). Difficulty-aware orchestration adjusts the pipeline topology to the complexity of the input (Su et al., 2026). Evolving orchestration changes the team communication structure during a task (Dang et al., 2025). Ji et al. (2025) model multi-agent workflows as scalable graph generative models. Tree-structured reasoning layouts reduce context loss in long inputs (Yu et al., 2025), and problem drift degrades long multi-agent debates (Becker et al., 2026). Other work models agents as optimizable graphs (Zhuge et al., 2024) or as decentralized evolutionary networks (Yang et al., 2025). SagaLLM adds transaction guarantees and context validation to multi-agent planning (Chang & Geng, 2025), and Pasupuleti et al. (2026) propose policy-compliant orchestration for enterprise deployments. These approaches improve coordination and performance. They do not enforce security policy at the tool boundary, and they do not measure containment when an agent in the topology is compromised.
 
-### 2.2 Single-agent tool-call reference monitors and information flow control
+2.2 Single-agent tool-call reference monitors and information flow control
 
 Single-agent reference monitors and information-flow-control systems check each tool call from one agent against policy rules or information-flow labels. CaMeL attaches capability tokens and data-flow policies to values passing through an agent and checks the policy before each tool call, with a formal safety proof (Debenedetti et al., 2026). Progent controls tool privileges through policy (Shi et al., 2025). FIDES propagates confidentiality and integrity labels through tool executions so that sensitive data cannot flow where it should not (Costa et al., 2025). The Agentic Reference Monitor (ARM) of Chinaei (2026) builds causal provenance graphs of tool calls and return values to stop causality laundering, where information leaks through denial feedback. MiniScope generates tool policies from a permission set to give individual agents least privilege (Zhu et al., 2025). Cordon gives tool-using agents transactional semantics so that tool effects can be separated from execution (Chen et al., 2026).
 
@@ -83,7 +82,7 @@ Table 1. Comparison of security mechanisms in tool-calling and multi-agent workf
 | Safin et al. (2026) | Yes | No | No | No | No |
 | GUIDE (This paper) | Yes | Yes | Yes (soundness theorem) | Yes | Yes |
 
-### 2.3 Multi-agent security, prompt injection attacks, and containment
+2.3 Multi-agent security, prompt injection attacks, and containment
 
 Security risks specific to multi-agent pipelines are a recent research area. Injected prompts can travel through agent messages and infect downstream agents (Lee et al., 2026; Le et al., 2026). Flooding attacks can spread misinformation across communities of agents (Ju et al., 2026). Canary tokens placed at each agent stage can track how injections move along an attack kill chain (Wang & Zhang, 2026). Autonomous agents can collude without central coordination (Motwani et al., 2024), and peer debate can amplify adversarial prompts (Amayuelas et al., 2024). Optimized prompt attacks still break multi-agent systems when bandwidth and topology limit how an attack travels (Khan et al., 2025). Multi-agent code generation systems are open to shadow injection, especially through shared repositories (X. Wang et al., 2025). Security checks also add latency and token cost, which Peigné-Lefebvre et al. (2025) describe as a security tax. Collaboration degrades quickly when a failing agent goes unhandled (Huang et al., 2024).
 
@@ -97,19 +96,19 @@ AgentHarm measures the harmfulness of LLM agents on malicious multi-step tasks (
 
 Agent Security Bench combines attacks and defenses for LLM-based agents (H. Zhang et al., 2024). TAMAS benchmarks adversarial risks in multi-agent LLM systems (Kavathekar et al., 2025). ContainmentBench is a benchmark that assesses containment after the initial compromise of an agent (Lan et al., 2026). BlindGuard protects multi-agent systems against unknown attacks (Miao et al., 2025).
 
-### 2.4 Static and pre-deployment analysis
+2.4 Static and pre-deployment analysis
 
 Several 2026 preprints partly address pre-deployment and static analysis. Parisel (2026) models an influence graph and a pairwise compositional blast radius over an organizational hierarchy. It gives no static bound, no soundness proof and no running implementation. Muruaga (2026) shows that the delegation scope of a chain of principals shrinks monotonically at runtime. It checks scopes during execution and does not compute a scope for a whole workflow before deployment. Moon and Varshney (2026) verify single-agent runtime containment mechanically but do not model multi-agent influence. Paul and Nandy (2026) list 14 attack vectors and propose a defense architecture with signed messages, provenance tracking, boundary sanitization, role-scoped tool privileges and anomaly detection.
 
 Safin et al. (2026) propose an architectural pattern with per-task signed tokens and a policy oracle against a malicious validator in a four-agent LangGraph pipeline. CAPMAS (Veski et al., 2026) passes monotonic Macaroon tokens for delegation. Neither computes an a priori blast-radius bound for a workflow, and CAPMAS does not prove soundness against a compromised delegating agent. AgentFlow builds agent dependency graphs for static analysis of agent programs (S. Wang et al., 2026). Its focus is finding bugs in agent code, not limiting what a compromised agent can reach.
 
-### 2.5 Evaluation benchmarks
+2.5 Evaluation benchmarks
 
 Standard security benchmarks focus on single-agent execution. AgentDojo evaluates prompt-injection defenses for single agents on both utility and security (Debenedetti et al., 2024). InjecAgent evaluates indirect prompt injection for single agents (Zhan et al., 2024), and τ-bench measures reliability in realistic tasks that involve agents and users (Yao et al., 2025). There is no standard benchmark for compromised agents in multi-agent workflows. This paper therefore builds a multi-agent containment suite with internal attack scenarios, evaluates runtime tool enforcement on AgentDojo under assumed compromise, and tests 15 applications built with LangGraph, CrewAI and AutoGen.
 
-## 3. Materials and methods
+### 3. Materials and methods
 
-### 3.1 Research design
+3.1 Research design
 
 This study follows design science research (Hevner et al., 2004). It builds and tests an external reference monitor for a defined computing problem, not a commercial product. The study maps onto the six activities of Peffers et al. (2007). Section 1 identifies the problem, the objectives answer RQ1 to RQ6 and the reference monitor is the design artifact. Nominal runs give the demonstration, Section 4 gives the evaluation, and this paper with the archived code is the communication. The engineering principle is that the model proposes and external code disposes (Moutesidis, 2026). The unit of analysis is the monitor, not the model, so every condition uses the same tasks, tools, decoding settings and base models. Table 2 maps research questions to objectives, hypotheses and evidence.
 
@@ -118,7 +117,7 @@ Table 2. Correspondence between research questions, research objectives, researc
 | Research Question | Objective | Hypothesis | Primary Evidence Source |
 |---|---|---|---|
 | RQ1: Bound Soundness | O1: Formulate and prove static blast-radius bound | H1: Soundness correspondence and step containment hold for any compromised subset | Theorem 1 and 2 proofs, property tests (0 counterexamples), live adaptive attacker (39/39 exactness) |
-| RQ2: Runtime Containment | O2: Evaluate tool-boundary runtime enforcement | H2a: Policy gate contains out-of-domain actions, provenance guard contains in-domain steering | Protocol v8 M1 replay (588 in-scope of 949 AgentDojo pairs, 92.3% containment), internal suite (K1 to K4) |
+| RQ2: Runtime Containment | O2: Evaluate tool-boundary runtime enforcement | H2a to H2c: Policy gate and provenance guard contain out-of-domain and in-domain steering (H2a), adaptive routing and re-dispatch recover from degraded agents (H2b), and per-principal keys detect spoofing (H2c) | Protocol v8 M1 replay (588 in-scope of 949 AgentDojo pairs, 92.3% containment), internal suite (K1 to K4) |
 | RQ3: Cost Prediction | O3: Predict deployment utility cost statically | H3: Static admissibility predicts runtime utility degradation without model execution | Protocol v8 M1b (97 tasks, 96.9% accuracy, 31 predicted blocks vs 30 observed losses) |
 | RQ4: Topology Floor | O4: Establish workflow topology constraints | H4: Sequential agent decomposition cannot reduce worst-case blast radius below the full pipeline reach | Proposition 4 proof, census of 55 workflows (89.1% linear chains), least-privilege synthesis (50.0% reduction) |
 | RQ5: Cross-Model Baseline | O5: Measure nominal performance across model families | H5 (H5a to H5c): Governance overhead stays within 1.30 times the B2 median wall time, and nominal task completion is preserved across models | Protocols v1 to v5 across DeepSeek 4.1 Flash, Gemini 3.5 Flash-Lite, and OpenAI GPT-OSS-120B |
@@ -128,7 +127,7 @@ The hypotheses follow the numbering of the research questions. H1 states that th
 
 H4 states that splitting a linear chain across agents cannot lower its worst-case blast radius. H5a states that the controls raise task success and intent fidelity over both baselines, and H5b that they reduce violations on nominal tasks. H5c states that the median wall time stays within 1.30 times that of B2. H6 states that GUIDE lowers attack success compared with no defense, at a utility cost that the enforcement variants can trade off.
 
-### 3.2 External reference monitor design and controls
+3.2 External reference monitor design and controls
 
 GUIDE is an external reference monitor. It sits outside the model and outside the agents, and every proposed tool call and delegation passes through it before any action is taken. The code is split into three packages with a one-way dependency order. The core package holds the monitor primitives. The research package holds the provenance guard and the static analyzer, and the benchmark package holds the task suites and test beds. Continuous integration tests check that the core package imports nothing from the other two. Figure 1 shows GUIDE with its four controls and the data flow of one execution step.
 
@@ -136,11 +135,15 @@ Figure 1. GUIDE as an external reference monitor: controls and data flow for one
 
 The steps in a run are executed sequentially. A router chooses a candidate agent for each step, and the step inputs reach that agent through a hand-off. The agent then proposes tool calls inside a closed agent loop. Finally, the external reference monitor verifies each proposed call before any tool code runs. GUIDE applies four controls during this execution:
 
-Control 1: Beta posterior routing policy. Routing keeps a success estimate for each candidate agent in each task domain, modeled as a beta distribution:
+Control 1: Beta posterior routing policy. Routing keeps a success estimate for each candidate agent in each task domain, modeled as a beta distribution (equation 1):
 
-Here,  is the success probability of agent  on domain . The parameters  and  equal one plus the observed successes and failures. The monitor first gives each agent one warm-up task. It then chooses the candidate agent with the largest upper-confidence quantile, following the Bayes-UCB method (Auer et al., 2002; Kaufmann et al., 2012). The score is computed with equation (2). Figure S1 shows a prior simulation of this policy.
+θi,d∼Beta(αi,d,βi,d)  (1)
 
-Here,  is the current step index and  is the quantile function of the Beta distribution. This gives adaptive routing across candidate agents that aims to minimize regret.
+Here, θi,d is the success probability of agent i on domain d. The parameters αi,d and βi,d equal one plus the observed successes and failures. The monitor first gives each agent one warm-up task. It then chooses the candidate agent with the largest upper-confidence quantile, following the Bayes-UCB method (Auer et al., 2002; Kaufmann et al., 2012). The score is computed with equation (2). Figure S2 shows a prior simulation of this policy.
+
+Bayes-UCB(i, d) = Q(1 - 1/t, Beta(α_{i,d}, β_{i,d}))  (2)
+
+Here, t is the current step index and Q is the quantile function of the Beta distribution. This gives adaptive routing across candidate agents that aims to minimize regret.
 
 Control 2: Signed hand-off package. A hand-off package holds the run and hand-off identifiers, the hash of the previous package and the task objective. It also lists the constraints, input references, allowed tools, output schemas and expiry time. The package is serialized to canonical JSON over a restricted set of values and signed with the sender's Ed25519 private key (Bernstein et al., 2012). The receiver checks the signature, the hash chain back to the genesis hash, the mandatory fields, the expiry time and the schemas. If any check fails, the hand-off is rejected with an integrity error.
 
@@ -150,7 +153,7 @@ Control 4: Provenance guard. The provenance guard adds a check to the policy gat
 
 The monitor also keeps a hash-linked trace ledger that records each routing decision, hand-off result, policy decision, tool result and step output as it happens.
 
-### 3.3 Conditions
+3.3 Conditions
 
 The four conditions use the same tasks, tools and base model and run in the same evaluation harness.
 
@@ -164,19 +167,19 @@ GPLUS: P plus the provenance guard, re-dispatch and fail-closed rejection of fai
 
 Six ablations each remove one part of GPLUS. GPLUS-provenance removes the provenance guard, GPLUS-gate the policy gate and GPLUS-signing the signed hand-off. GPLUS-redispatch, GPLUS-routing and GPLUS-trace remove re-dispatch, adaptive routing and the trace ledger. The ablations show which part causes each observed effect.
 
-### 3.4 Tasks and suites
+3.4 Tasks and suites
 
 The main suite has 18 tasks in three families, which are information synthesis, evidence reconciliation and policy-sensitive planning. Each task has 4, 6 or 8 atomic constraints and runs as a three-stage sequence of retrieve, analyze and report. The adversarial suite adds 11 cases. They test missing entities, conflicting data, injected instructions aimed at external and internal sinks, destructive writes and privilege escalation. They also test compromised peers, hand-off tampering, tool outages and malformed outputs. A separate sequence of 20 runs keeps one agent permanently degraded.
 
 The assumed-compromise suite implements the threat model of RQ2. In four scenarios, an attacker call replaces the compromised agent's first tool call. The scenarios are a restricted column read (K1), an external email (K2), in-domain mailbox steering (K3) and a record deletion (K4). The live model runs every later step of the run. This separates what the monitor contains, the action of the compromised agent, from any change in the behavior of the model.
 
-### 3.5 Models and settings
+3.5 Models and settings
 
 Protocols v1 to v4 and v6 used DeepSeek 4.1 Flash through the DeepSeek API (requested as deepseek-chat, reported as deepseek-v4-flash or deepseek-flash), with temperature 0, JSON mode and seed 42. Each run allowed 4 tool turns and 2 repairs, and repairs used temperature 0.3. Protocol v9 requested deepseek-flash, which the provider served as the DeepSeek-V4.1-Flash-1017 snapshot, because the earlier name had been dropped. Thinking mode was disabled and temperature was 0. Each call allowed up to 1,024 output tokens, and each AgentDojo task allowed up to 12 agent turns.
 
-Protocol v5 adds OpenAI GPT-OSS-120B served through Groq and Google Gemini 3.5 Flash-Lite (gemini-3.5-flash-lite) served through the Gemini API. Temperature, token limit and JSON mode match the DeepSeek runs. No seed was set, because the Gemini endpoint does not accept one. The Protocol v9 replication used Gemini 3.1 Flash-Lite (gemini-3.1-flash-lite) with minimal reasoning effort, because Gemini 2.5 Flash-Lite was closed to new accounts. AgentDojo runs used package version 0.1.35 and benchmark version v1.2.2. The framework applications used LangGraph 1.2.21 (LangChain Inc., 2026), CrewAI 1.15.41 (CrewAI Inc., 2026) and AutoGen AgentChat 0.7.5 (Wu et al., 2024).
+Protocol v5 adds OpenAI GPT-OSS-120B (openai/gpt-oss-120b) served through Groq and Google Gemini 3.5 Flash-Lite (gemini-3.5-flash-lite) served through the Gemini API. Temperature, token limit and JSON mode match the DeepSeek runs. No seed was set, because the Gemini endpoint does not accept one. The Protocol v9 replication used Gemini 3.1 Flash-Lite (gemini-3.1-flash-lite) with minimal reasoning effort, because Gemini 2.5 Flash-Lite was closed to new accounts. AgentDojo runs used package version 0.1.35 and benchmark version v1.2.2. The framework applications used LangGraph 1.2.21 (LangChain Inc., 2026), CrewAI 1.15.41 (CrewAI Inc., 2026) and AutoGen AgentChat 0.7.5 (Wu et al., 2024).
 
-### 3.6 Metrics
+3.6 Metrics
 
 Table 3 lists the evaluation metrics and their operational definitions.
 
@@ -195,11 +198,15 @@ Table 3. Evaluation metrics, formal definitions, and instrumentation.
 
 Every check is deterministic and computed without access to the condition label that produced the run.
 
-### 3.7 Static blast-radius analysis
+3.7 Static blast-radius analysis
 
 The formal model treats a deployment as a workflow graph of steps and agents, with metadata for tools and declarative security policies. An adversary controls the output of a compromised subset of agents, the content returned by injectable tools and the hand-off transport. The correspondence lemma shows that the policy gate’s decision procedure at every step corresponds to the mathematical definition of authority. The step-containment theorem then shows that, whatever the adversary does, no execution produces an effect outside the gate’s authority rule. An influence relation propagates from compromised steps through shared state, hand-off context and injectable tools. The blast radius of a compromised subset is bounded by the union of the authority of every step that the influence relation can reach. Equation (3) defines this bound:
 
+Reach(C)=⋃s∈Inf(C)Auth(s)  (3)
+
 Here, C is the set of compromised steps, Inf(C) is the set of steps influenced by C and Auth(s) is the authority that the policy gate awards at step s. This is an upper bound on all adversary-dependent effects (Theorem 1). Theorem 2 shows that actions outside the influence relation are unaffected by the adversary. Least-privilege policy synthesis produces a minimal policy that admits the observed nominal executions, keeps the bound and adds no nominal denials. Equation (4) defines this policy:
+
+Policy*(s)=⋂{P∣NominalExec(s)⊆P}  (4)
 
 Here P denotes a policy, and NominalExec(s) is the set of calls observed at step s in nominal runs.
 
@@ -209,7 +216,7 @@ Under these assumptions the bound limits which effects can happen, not whether t
 
 A bounded exhaustive check tested the formal model without any API calls. It compared the influence analysis with an independent graph-reachability oracle on every acyclic workflow of up to five steps. The enumeration covered hand-off modes, tool assignments, write policies and compromised subsets. It also compared the authority rule with the real gate over a full grid of policies, delegations, gate settings and calls.
 
-### 3.8 Protocol, statistics and deviations
+3.8 Protocol, statistics and deviations
 
 All evaluation protocols were frozen in version control before the corresponding runs. Deviations from the proposal are listed in Table 4. Per-condition summaries are based on the mean and a 95% cluster-bootstrap confidence interval over tasks (with 10,000 resamples). Paired comparisons involve two-sided Wilcoxon signed-rank tests (with Pratt's correction for zero difference) and Holm correction within metric families.
 
@@ -236,31 +243,33 @@ Table 4. Summary of deviations between the approved proposal and executed resear
 | A34 | Protocol v8 | Single-step synthetic benchmarks | Full 949-pair AgentDojo assumed-compromise replay | Validation on an external tool-using benchmark using recorded ground-truth attacker calls |
 | A35 | Protocol v9 | Not specified in proposal | Live AgentDojo comparison with four baseline defenses and two enforcement variants, 15 framework-built applications, an adaptive attacker and a Gemini replication | Adds quantitative comparison and real-world validation. The model snapshot changed, so every live condition was rerun |
 
-### 3.9 Ethics and data
+3.9 Ethics and data
 
 All data in the sandbox are synthetic or public. No human subjects or human data were used. The sandbox tool set is allow-listed, and nothing can write to the network beyond the simulated email tool.
 
-### 3.10 External benchmark: AgentDojo
+3.10 External benchmark: AgentDojo
 
 AgentDojo (Debenedetti et al., 2024) is an external benchmark for tool-using agents in the Banking, Slack, Travel and Workspace domains. This paper uses it to evaluate the deployment cost of agent defenses and tool-boundary enforcement.
 
 AgentDojo is evaluated under three protocols. Protocol v6 runs GUIDE on DeepSeek 4.1 Flash. Protocol v6b is the baseline run with no defense. Protocol v8 (M1) replays all 949 task-injection pairs under assumed compromise. Protocol v9a reruns AgentDojo on the current model snapshot and adds the baselines and enforcement variants of Section 3.14.
 
-### 3.11 Pre-deployment cost prediction
+3.11 Pre-deployment cost prediction
 
 Protocols v7a and v8 (M1b) test whether the utility cost can be determined in advance, without deployment. The static predictor flags a task as blocked when its required calls conflict with the synthesized policies or the provenance constraints.
 
-### 3.12 Workflow topology analysis
+3.12 Workflow topology analysis
 
-Protocols v7c and v8 (M2) investigate the limits that workflow topology places on blast radius. Proposition 3 states that refinement is monotonic. In linear dependency chains, Proposition 4 shows that the worst-case blast radius equals that of the unpartitioned pipeline, however the steps are split across agents. The reachable sink set of any compromised step  in a linear chain of length N is given by equation (5).
+Protocols v7c and v8 (M2) investigate the limits that workflow topology places on blast radius. Proposition 3 states that refinement is monotonic. In linear dependency chains, Proposition 4 shows that the worst-case blast radius equals that of the unpartitioned pipeline, however the steps are split across agents. The reachable sink set of any compromised step sk in a linear chain of length N is given by equation (5).
 
-Here,  is the set of write or external tool capabilities available at step .
+Reach(s_k) = ⋃_{j=k..N} Sinks(s_j)  (5)
 
-### 3.13 Real-world configuration mining
+Here, Sinks(sj) is the set of write or external tool capabilities available at step sj.
+
+3.13 Real-world configuration mining
 
 Protocol v7b mines public repositories (CrewAI, LangGraph and AutoGen) through search queries. Extraction found 37 configurations (36 CrewAI and 1 LangGraph). The LangGraph configuration was cyclic, so it was not scored, which leaves 36 scored CrewAI configurations. No usable AutoGen configuration was available.
 
-### 3.14 Protocol v9: variants, baselines and framework applications
+3.14 Protocol v9: variants, baselines and framework applications
 
 Protocol v9 adds two enforcement variants that were designed from the Slack failures of Protocol v6. In 13 of the 15 Slack tasks that failed under GUIDE, a provenance denial blocked a value that the agent had read from a tool, most often a channel or user name from a listing tool. The cred variant also treats credential and profile fields as control parameters. The flexI_cred variant adds this and admits an identifier returned by a directory tool, but only for internal sinks. Both were chosen on a seeded 30% development split of AgentDojo tasks before the held-out tasks were scored.
 
@@ -274,9 +283,9 @@ Each application ran 2 benign tasks and 10 injected tasks under four conditions,
 
 A replication on Gemini 3.1 Flash-Lite used the default agent prompt, the important_instructions attack and the first 20 pairs of the frozen sample under the four GUIDE conditions. Its size was set by the free-tier request quota.
 
-## 4. Results
+### 4. Results
 
-### 4.1 RQ1: Soundness and exactness of the bound
+4.1 RQ1: Soundness and exactness of the bound
 
 For 1,575 runs that generated 2,051 tool calls, the effects of each run were replayed against the bound computed for the compromised set of tools. The replay found no containment violations and no blast-radius violations. All 55 harmful effects seen in the assumed-compromise suite fell within the bound predicted for that run before it was executed. A least-privilege policy built from nominal traces rejected none of 44 held-out calls. It completed its tasks in 36 runs with no policy denials and made the policy much smaller. For one representative task, the default gate admitted any recipient in the organization’s domain, whereas the synthesized policy admitted exactly one recipient.
 
@@ -292,7 +301,7 @@ Figure 2. Admissible recipients for one representative sink (task T15), by polic
 
 To test whether the analysis generalizes to new enterprise domains, 19 self-authored configurations that reproduce LangGraph, CrewAI and AutoGen patterns were analyzed. The framework code was not executed for this analysis. In 18 of the 19 configurations, at least one agent can reach more effects than its role needs, because common integration methods hand whole tool objects to agents. Giving agents single operations instead removes this excess. Least-privilege synthesis cut reachable sink capability by 55.6% overall and rejected no nominal call in any configuration.
 
-### 4.2 RQ2: Containment under assumed compromise
+4.2 RQ2: Containment under assumed compromise
 
 Table 5 reports the assumed-compromise results on DeepSeek 4.1 Flash with five repetitions per cell, and Figure 3 shows the four cases for all three model families. The pattern is the same in every model. In K1 the compromised agent reads restricted columns. The violation rate is 0.0 in all conditions because no model copied a restricted value into the final output. But the ungated conditions B1 and B2 expose restricted columns, while P and GPLUS do not.
 
@@ -310,7 +319,7 @@ Table 5. Violation rate under assumed compromise on all attack cases and conditi
 
 Figure 3. Violation rate when assuming compromise (K1 to K4) per condition and model. The darker the cell, the higher the rate of violations.
 
-The textual injection suite produced no successful attack in 550 runs on DeepSeek, because the model treated the injected text as data. With per-principal keys, the integrity suite flagged all 10 seeded tampering classes with no false rejections. With a shared key, no sender-spoofing attempt was detected, which supports H2c. In the degraded-agent sequence (Figure 4), the statically assigned baseline did not recover within 20 runs. Adaptive routing recovered after 19 runs and every re-dispatch succeeded, which supports H2b.
+The textual injection suite produced no successful attack in 550 runs on DeepSeek, because the model treated the injected text as data. With per-principal keys, the integrity suite flagged all 10 seeded tampering classes with no false rejections. With a shared key, no sender-spoofing attempt was detected, which supports H2c. In the degraded-agent sequence (Figure 4), the statically assigned baseline did not recover within 20 runs. Adaptive routing failed once in warm-up and then completed 19 of 20 runs, and every re-dispatch succeeded, which supports H2b.
 
 Figure 4. Degraded-agent sequence: cumulative completed runs over 20 consecutive runs with one agent permanently faulty.
 
@@ -361,7 +370,7 @@ Two findings stand out. First, DeepSeek 4.1 Flash resists prompt injection on it
 
 Figure 5. AgentDojo benchmark performance across suites: undefended benign utility (Protocol v6b), defended benign utility (Protocol v6), and assumed-compromise containment rate (Protocol v8 M1).
 
-### 4.3 RQ3: Pre-deployment cost prediction
+4.3 RQ3: Pre-deployment cost prediction
 
 Protocol v7a tested whether static analysis predicts, before deployment, which of AgentDojo's 97 nominal tasks enforcement will block. Its reference is whether the defended run met a policy denial on the task path. Against this reference the predictor reached 92.8% accuracy (95% Wilson CI [85.8%, 96.5%]), with 28 correct blocks and 3 false blocks. It never predicted success for a task whose required path contained a blocked call. All 4 misses were denials on calls off the required path.
 
@@ -375,9 +384,9 @@ Table 9. Confusion matrix of pre-deployment utility cost prediction (Protocol v8
 | Not Predicted | 1 | 65 | 66 |
 | Total | 30 | 67 | 97 |
 
-The static predictor flagged 31 of the 97 tasks as blocked. It caught 29 of the 30 lost tasks, raised 2 false alarms and missed 1 lost task. Overall accuracy was 96.9% [91.3%, 98.9%], with a precision of 93.5% and a recall of 96.7%. The 31 predicted blocks (32.0 percentage points) compare with 30 observed losses (30.9 percentage points). The net benign utility cost in Table 8 is 29.9 percentage points (29 tasks) rather than 30, because one task succeeded under Protocol v6 but not under Protocol v6b. Static analysis therefore predicts the practical cost of enforcement reasonably well, though not exactly. The two figures answer different questions. The 92.8% measures whether a denial occurs on the task path, and the 96.9% measures whether the task is lost.
+The static predictor flagged 31 of the 97 tasks as blocked. It caught 29 of the 30 lost tasks, raised 2 false alarms and missed 1 lost task. Overall accuracy was 96.9% [91.3%, 98.9%], with a precision of 93.5% and a recall of 96.7%. The 31 predicted blocks (32.0 percentage points) compare with 30 observed losses (30.9 percentage points). The net benign utility cost in Table 8 is 29.9 percentage points (29 tasks) rather than 30, because one task succeeded under Protocol v6 but not under Protocol v6b. Static analysis therefore predicts the practical cost of enforcement reasonably well, though not exactly. The two figures answer different questions. The 92.8% measures whether a denial occurs on the task path, and the 96.9% measures whether the task is lost. This supports H3.
 
-### 4.4 RQ4: Topology floor and workflow structure
+4.4 RQ4: Topology floor and workflow structure
 
 Proposition 3 (refinement monotonicity) passed 200 property tests with no counterexample, so splitting an agent's steps never increased the blast radius. Proposition 4 states that, in a linear dependency chain, partitioning cannot lower the worst-case blast radius below that of the whole pipeline. It passed property tests on more than 300 random linear chains and matched the closed form. It also held on 76 real configuration combinations, which are the 19 linear configurations in transcript and signed hand-off modes under nominal and synthesized policies.
 
@@ -410,9 +419,9 @@ Table 11. Real-world configuration mining funnel and metrics (Protocol v7b).
 | Zero-own-sink agent reaches downstream sink | 1 | 2.8% [0.5%, 14.2%] |
 | Code execution tool present | 0 | 0.0% [0.0%, 9.6%] |
 
-In total, 37 configurations were found and 36 were scored, because one cyclic LangGraph configuration was excluded. The frozen keyword classifier found no write or external sink in 34 of the 36 (94.4%). All 36 use the CrewAI sequential process type, and 30 of them are linear dependency chains. The two configurations with sinks confirmed the propagation rule of the formal model. In one, a researcher agent with no tools reached a downstream file-writer sink through its context.
+In total, 37 configurations were found and 36 were scored, because one cyclic LangGraph configuration was excluded. The frozen keyword classifier found no write or external sink in 34 of the 36 (94.4%). All 36 use the CrewAI sequential process type, and 30 of them are linear dependency chains. The two configurations with sinks confirmed the propagation rule of the formal model. In one, a researcher agent with no tools reached a downstream file-writer sink through its context. This supports H4.
 
-### 4.5 RQ5: Nominal performance across model families
+4.5 RQ5: Nominal performance across model families
 
 For each condition, separately per model family, main-suite task success, intent fidelity and overhead are reported in Table 12. Task success for the same cells is plotted in Figure 6.
 
@@ -420,18 +429,18 @@ Table 12. Performance across model families (DeepSeek 4.1 Flash, Gemini 3.5 Flas
 
 | Model Family | Condition | Task Success [95% CI] | Intent Fidelity | Violations | Median Tokens | Median Wall Time (s) |
 |---|---|---|---|---|---|---|
-| DeepSeek 4.1 Flash | B1 | 0.989 [0.967, 1.000] | 0.999 | 0 | 3610 | 3.9 |
-| DeepSeek 4.1 Flash | B2 | 1.000 [1.000, 1.000] | 1.000 | 0 | 3288 | 4.2 |
-| DeepSeek 4.1 Flash | P | 0.989 [0.967, 1.000] | 0.999 | 0 | 3424 | 4.3 |
-| DeepSeek 4.1 Flash | GPLUS | 1.000 [1.000, 1.000] | 1.000 | 0 | 3404 | 4.5 |
-| Gemini 3.5 Flash-Lite | B1 | 0.935 [0.797, 1.000] | 0.989 | 0 | 2642 | 4.9 |
-| Gemini 3.5 Flash-Lite | B2 | 0.969 [0.895, 1.000] | 0.995 | 0 | 2439 | 5.2 |
-| Gemini 3.5 Flash-Lite | P | 0.967 [0.891, 1.000] | 0.994 | 0 | 2596 | 5.1 |
-| Gemini 3.5 Flash-Lite | GPLUS | 0.968 [0.893, 1.000] | 0.995 | 0 | 2714 | 5.2 |
-| OpenAI GPT-OSS-120B | B1 | 0.409 [0.238, 0.590] | 0.643 | 0 | 3879 | 24.7 |
-| OpenAI GPT-OSS-120B | B2 | 0.390 [0.211, 0.575] | 0.667 | 0 | 4037 | 16.4 |
-| OpenAI GPT-OSS-120B | P | 0.297 [0.158, 0.447] | 0.595 | 0 | 4196 | 25.5 |
-| OpenAI GPT-OSS-120B | GPLUS | 0.318 [0.152, 0.512] | 0.632 | 0 | 3908 | 20.8 |
+| DeepSeek 4.1 Flash | B1 | 98.9% [96.7%, 100.0%] | 99.9% | 0 | 3610 | 3.9 |
+| DeepSeek 4.1 Flash | B2 | 100.0% [100.0%, 100.0%] | 100.0% | 0 | 3288 | 4.2 |
+| DeepSeek 4.1 Flash | P | 98.9% [96.7%, 100.0%] | 99.9% | 0 | 3424 | 4.3 |
+| DeepSeek 4.1 Flash | GPLUS | 100.0% [100.0%, 100.0%] | 100.0% | 0 | 3404 | 4.5 |
+| Gemini 3.5 Flash-Lite | B1 | 93.5% [79.7%, 100.0%] | 98.9% | 0 | 2642 | 4.9 |
+| Gemini 3.5 Flash-Lite | B2 | 96.9% [89.5%, 100.0%] | 99.5% | 0 | 2439 | 5.2 |
+| Gemini 3.5 Flash-Lite | P | 96.7% [89.1%, 100.0%] | 99.4% | 0 | 2596 | 5.1 |
+| Gemini 3.5 Flash-Lite | GPLUS | 96.8% [89.3%, 100.0%] | 99.5% | 0 | 2714 | 5.2 |
+| OpenAI GPT-OSS-120B | B1 | 40.9% [23.8%, 59.0%] | 64.3% | 0 | 3879 | 24.7 |
+| OpenAI GPT-OSS-120B | B2 | 39.0% [21.1%, 57.5%] | 66.7% | 0 | 4037 | 16.4 |
+| OpenAI GPT-OSS-120B | P | 29.7% [15.8%, 44.7%] | 59.5% | 0 | 4196 | 25.5 |
+| OpenAI GPT-OSS-120B | GPLUS | 31.8% [15.2%, 51.2%] | 63.2% | 0 | 3908 | 20.8 |
 
 Task success is at ceiling on DeepSeek 4.1 Flash, with 100.0% for B2 and GPLUS and 98.9% for B1 and P over 360 runs. No run had a violation, and intent fidelity was between 99.9% and 100.0%. After Holm correction, no paired Wilcoxon comparison between conditions is significant. Many tasks had a paired difference of zero, so this is a ceiling effect and not a test of equivalence. No condition met the proposal's bar of a 10-point gain in both success and fidelity, so H5a is not supported. The research plan anticipated this outcome for a capable model.
 
@@ -443,7 +452,7 @@ The monitor adds little time compared with model latency. A scripted timing run 
 
 Figure 7. Overhead by condition: Multi-model wall time on DeepSeek 4.1 Flash and monitor-only time (after subtracting out provider latency).
 
-### 4.6 RQ6: Comparison with existing defenses and framework-built applications
+4.6 RQ6: Comparison with existing defenses and framework-built applications
 
 Table 13 compares GUIDE with the AgentDojo baseline defenses on DeepSeek 4.1 Flash under Protocol v9a. Without a defense, benign utility was 95.9%. Strict GUIDE kept 62.9%, close to the 61.9% of Protocol v6, and Slack fell from 100% to 28.6%. The flexI_cred variant raised utility to 78.4% and Slack to 66.7% (exact McNemar p = 0.0007 against strict). The cred variant matched strict on utility. Spotlighting and prompt repetition kept utility near the undefended level, while tool filtering kept 86.6% and the detector 57.7%.
 
@@ -483,17 +492,17 @@ The guard rule, applied before the runs, predicted the monitor's decision on 84.
 
 On Gemini 3.1 Flash-Lite, the important_instructions attack succeeded in 15 of 20 undefended pairs. All three GUIDE conditions allowed 1 of 20, and utility under attack fell from 12 of 20 to 10 or 11 of 20. The sample is small, so it shows the direction of the effect on a more susceptible model but not its size. This supports H6.
 
-## 5. Discussion
+### 5. Discussion
 
-### 5.1 Why nominal success did not move
+5.1 Why nominal success did not move
 
 The nominal task success result does not show that the controls failed. It is a ceiling effect, because capable models complete most nominal tasks correctly with or without gating and routing. Li and Wang (2026) report the same pattern for hand-off attenuation, which is near zero for large models but grows quickly for smaller models of about 32 billion parameters. The controls can only show a difference when something fails, when the model is weaker, as with GPT-OSS-120B in Section 4.5, or when an agent is compromised, as in Section 4.2.
 
-### 5.2 Why containment needed two mechanisms, not one
+5.2 Why containment needed two mechanisms, not one
 
 The policy gate blocked every out-of-domain action tested. It does this without reading the task text, because call metadata is enough to identify external domains and destructive deletes. In-domain steering is different. The attacker's target sits inside the allowed domain, so no declarative policy rule can tell it apart. The provenance guard covers this case by checking whether the recipient appears in the trusted task text. The guard still needs the gate, because without it out-of-domain actions would not be blocked.
 
-### 5.3 What the static bound adds
+5.3 What the static bound adds
 
 Measured containment needs a live attacked workflow. The static blast-radius bound of Section 3.7 instead computes, before any code runs, everything that a tainted set of steps can cause. An auditor can then judge the worst case of a configuration without building and running every possible attack.
 
@@ -501,25 +510,25 @@ Static analysis has two further uses. First, it finds structural problems in wor
 
 Second, static analysis predicts the utility cost of deployment before execution (C2). Stricter enforcement is more likely to block normal business flows. The predictor caught 29 of the 30 lost AgentDojo tasks (96.9% accuracy), so the trade-off can be judged before deployment.
 
-### 5.4 Model dependence and the AgentDojo finding
+5.4 Model dependence and the AgentDojo finding
 
 Model compliance is not a reliable form of containment, and AgentDojo shows that it is also a poor way to measure a defense. DeepSeek 4.1 Flash resisted indirect injection on its own, with 2.1% attack success undefended in Protocol v6b. Even an agent told to obey tool outputs was hit by only 9.0% of direct attacks in Protocol v9a. Gemini 3.1 Flash-Lite was hit by 15 of 20, and GUIDE reduced this to 1 of 20. So the size of the live benefit depends on the model, but the assumed-compromise results do not depend on whether the model resists.
 
 The assumed-compromise replay (Protocol v8 M1) tested the monitor directly against the ground-truth malicious tool calls. The monitor blocked 657 of 702 malicious sink calls (93.6%) deterministically. This assurance comes from checking provenance outside the model, not from the model's compliance.
 
-### 5.5 Topology and least privilege
+5.5 Topology and least privilege
 
 In strictly linear dependency chains, agent partitioning and cryptographic signing cannot lower the worst-case blast radius below the full pipeline reach (Proposition 4). The structural census found that 49 of the 55 configurations (89.1%) are linear chains and that all 55 have a dominating source agent. So, on the pipelines studied, nothing in the structure stops an upstream compromise from reaching downstream steps. The framework applications show the same, because in all 15 the reader agent can structurally reach an agent that holds a sink.
 
-For sequential workflows, least-privilege policy synthesis is therefore the main way to reduce the blast radius. In linear chains, synthesized policies cut the median reach by 1.0 sink. This protection has a cost. Strict provenance cut Slack benign utility by 71.4 percentage points in Protocol v9a, because downstream calls use values read by earlier calls. The flexI_cred variant recovered 15.5 points of overall utility for a 3.6-point drop in full-grid containment. Because the cost can be predicted in advance (Section 4.3), a designer can choose the setting on purpose.
+For sequential workflows, least-privilege policy synthesis is therefore the main way to reduce the blast radius. In linear chains, synthesized policies cut the median reach by 1.0 sink. This protection has a cost. Strict provenance cut Slack benign utility by 71.4 percentage points in Protocol v9a, because downstream calls use values read by earlier calls. The flexI_cred variant recovered 15.5 points of overall utility for a 3.6-point drop in full-grid containment (from 543 to 522 of 588 pairs). Because the cost can be predicted in advance (Section 4.3), a designer can choose the setting on purpose.
 
-### 5.6 Practical implications
+5.6 Practical implications
 
 This study gives operators who deploy multi-agent pipelines two concrete outcomes. First, a least-privilege policy can be synthesized directly from recorded traces. It reduces the total reachable sink capability by 55.6% (and the median per-chain reach by 50.0%) while letting valid calls run, so designers do not have to write full security policies by hand. Second, cryptographic hand-offs should use per-principal signing keys. With a shared key, no sender spoofing attempt is detected, although tampering is still detected 100% of the time. With per-principal keys, spoofing is detected as well.
 
-The baseline comparison shows where GUIDE fits. Tool filtering also blocked most direct attacks and kept more utility, because it removes tools that the task does not need. But it depends on the model choosing the right tools, and it gives no bound and no prediction. Spotlighting and prompt repetition kept full utility but stopped only about half of the direct attacks. GUIDE costs more utility, and in return its containment does not depend on the model.
+The baseline comparison shows where GUIDE fits. Tool filtering also blocked most direct attacks and kept more utility, because it removes tools that the task does not need. But it depends on the model choosing the right tools, and it gives no bound and no prediction. Spotlighting and prompt repetition kept full or near-full utility but stopped only about half of the direct attacks. GUIDE costs more utility, and in return its containment does not depend on the model.
 
-### 5.7 Limitations
+5.7 Limitations
 
 This study has the following limitations:
 
@@ -547,7 +556,7 @@ Comparison scope: CaMeL and Progent were not run under the same conditions, so t
 
 Baseline implementation: The tool filter lists the tools in its prompt, and detector inputs were truncated to 512 tokens partway through the run.
 
-## 6. Conclusion
+### 6. Conclusion
 
 This paper evaluated GUIDE, an external reference monitor for LLM multi-agent systems. It computes a static blast-radius bound, synthesizes least-privilege policies and enforces them at runtime.
 
@@ -559,15 +568,15 @@ This paper makes four contributions:
 
 - C3 is the topology floor. Proposition 4 shows that partitioning cannot lower the worst-case reach of a linear chain. Of 55 surveyed configurations, 49 (89.1%) are linear chains, so least privilege is the main way to reduce risk.
 
-- C4 covers the empirical results. Under assumed compromise the monitor contained 543 of 588 in-scope AgentDojo pairs (92.3%). On 15 LangGraph, CrewAI and AutoGen applications, strict enforcement stopped all 90 compromised-reader attacks, against 23 undefended successes. This protection cost benign utility, which a directory-aware variant partly recovers.
+- C4 covers the empirical results. Under assumed compromise the monitor contained 543 of 588 in-scope AgentDojo pairs (92.3%). On 15 LangGraph, CrewAI and AutoGen applications, strict enforcement stopped all 90 compromised-reader attack runs (0 of 90 vs. 23 of 90 undefended successes). This protection cost benign utility, which a directory-aware variant partly recovers.
 
 GUIDE is an external reference monitor. It does not depend on agents following their prompts. It enforces bounds at the tool and delegation boundary, which limits what a compromised agent in a multi-agent workflow can reach. It remains open how to constrain the content of allowed calls and how to extend the bound to cyclic workflows.
 
-## Acknowledgments
+### Acknowledgments
 
 The author thanks the supervisor, Ts. Dr. Maythem Kamal Abbas, for his guidance. This work received no external funding. API usage for the evaluations in Section 3.5 on Groq and Google AI Studio fell under each provider’s public free tier. API credits for DeepSeek 4.1 Flash were self-financed.
 
-## Statements
+### Statements
 
 Data availability: All raw results files, code summaries and code manifests of all the protocol versions are archived with the tagged code release at https://github.com/shafin0id/guide.
 
@@ -581,7 +590,7 @@ Ethics: No human participants or information that could personally identify huma
 
 Generative AI use: Author coding and data aggregation, literature screening, and language editing were done with generative AI tools with the author's guidance and supervision. The author has verified all claims, all numbers and all citations with the data files used in the experiments in this paper.
 
-## References
+### References
 
 References are listed alphabetically by first author surname following APA 7th edition.
 
@@ -671,7 +680,7 @@ LangChain Inc. (2026). LangGraph (Version 1.2.21) [Computer software]. https://g
 
 Le, T. D., Dinh, T. D., Nguyen, T. L. Q., & Nguyen, C. D. (2026). Cross-layer contagion of prompt injections in multi-agent swarms: a multiplex microscopic markov chain approach. Cybersecurity, 9(1). https://doi.org/10.1186/s42400-026-00628-w
 
-Lee, D., Tiwari, M., & Miranda, B. (2026). Prompt Infection: LLM-to-LLM Prompt Injection within Multi-agent Systems. Lecture notes in computer science. https://doi.org/10.1007/978-3-032-16092-8_28
+Lee, D., Tiwari, M., & Miranda, B. (2026). Prompt Infection: LLM-to-LLM Prompt Injection within Multi-agent Systems. Lecture Notes in Computer Science. https://doi.org/10.1007/978-3-032-16092-8_28
 
 Li, B., & Wang, G. (2026). Governance at the Boundary: How Agent Decomposition Degrades Policy Compliance. arXiv preprint arXiv:2608.16055. https://arxiv.org/abs/2608.16055
 
@@ -729,7 +738,7 @@ Ruan, Y., Dong, H., Wang, A., Pitis, S., Zhou, Y., Ba, J., Dubois, Y., Maddison,
 
 Safin, T. H., Zisad, S. N., Shatabda, S., & Hasan, R. (2026). Trust propagation and structural containment in Multi-agent LLM pipelines. arXiv preprint arXiv:2609.17648. https://arxiv.org/abs/2609.17648
 
-Saltzer, J.H., & Schroeder, M.D. (1975). The protection of information in computer systems. Proceedings of the IEEE, 63(9), 1278–1308. https://doi.org/10.1109/PROC.1975.9939
+Saltzer, J. H., & Schroeder, M. D. (1975). The protection of information in computer systems. Proceedings of the IEEE, 63(9), 1278–1308. https://doi.org/10.1109/PROC.1975.9939
 
 Shi, J., Yuan, Z., Tie, G., Zhou, P., Gong, N., & Sun, L. (2026). Prompt Injection Attack to Tool Selection in LLM Agents. Proceedings 2026 Network and Distributed System Security Symposium. https://doi.org/10.14722/ndss.2026.230675
 
@@ -808,5 +817,4 @@ Zhu, S., Chen, Z., Wang, Z., & Li, B. (2025). MELON: Provable Defense Against In
 Zhuge, M., Gao, H., Wang, X., Gao, J., Shi, S., Hou, X., Zhang, J., & Shen, Z. (2024). Language Agents as Optimizable Graphs. Proceedings of the 41st International Conference on Machine Learning, 235, 62743–62767. https://proceedings.mlr.press/v235/zhuge24a.html
 
 Zou, A., Xiao, Z., Ba, J., Fredrikson, M., Kolter, Z., & Hendrycks, D. (2025). Security Challenges in AI Agent Deployment: Insights from a Large Scale Public Competition. Advances in Neural Information Processing Systems 38, 16584–16624. https://doi.org/10.52202/085713-1768
-
 

@@ -76,7 +76,10 @@ class LGApp:
         if t == "sequential":
             for n, r in (("R", "R"), ("W", "W"), ("A", "A")):
                 g.add_node(n, self.node(n, r))
-            g.add_edge(START, "R"); g.add_edge("R", "W"); g.add_edge("W", "A"); g.add_edge("A", END)
+            g.add_edge(START, "R")
+            g.add_edge("R", "W")
+            g.add_edge("W", "A")
+            g.add_edge("A", END)
         elif t == "supervisor":
             for n, r in (("R", "R"), ("W", "W"), ("A", "A")):
                 g.add_node(n, self.node(n, r))
@@ -94,8 +97,13 @@ class LGApp:
             for n in ("R", "W", "A"):
                 g.add_edge(n, "sup")
         elif t == "parallel":
-            g.add_node("R", self.node("R", "R")); g.add_node("N", self.node("N", "N")); g.add_node("A", self.node("A", "AW"))
-            g.add_edge(START, "R"); g.add_edge(START, "N"); g.add_edge(["R", "N"], "A"); g.add_edge("A", END)
+            g.add_node("R", self.node("R", "R"))
+            g.add_node("N", self.node("N", "N"))
+            g.add_node("A", self.node("A", "AW"))
+            g.add_edge(START, "R")
+            g.add_edge(START, "N")
+            g.add_edge(["R", "N"], "A")
+            g.add_edge("A", END)
         elif t == "router":
             for n, r in (("R", "R"), ("W", "W"), ("S", "S"), ("S2", "S2")):
                 g.add_node(n, self.node(n, r))
@@ -104,11 +112,15 @@ class LGApp:
                 return {"route": self.choose(state, ["S", "S2"], common.route_hint(self.sc))}
 
             g.add_node("router", router)
-            g.add_edge(START, "R"); g.add_edge("R", "W"); g.add_edge("W", "router")
+            g.add_edge(START, "R")
+            g.add_edge("R", "W")
+            g.add_edge("W", "router")
             g.add_conditional_edges("router", lambda s: s["route"], {"S": "S", "S2": "S2"})
-            g.add_edge("S", END); g.add_edge("S2", END)
+            g.add_edge("S", END)
+            g.add_edge("S2", END)
         elif t == "cyclic":
-            g.add_node("D", self.node("D", "D")); g.add_node("A", self.node("A", "A"))
+            g.add_node("D", self.node("D", "D"))
+            g.add_node("A", self.node("A", "A"))
 
             def review(state: S) -> dict[str, Any]:
                 note = self.agent("V", "V", state["task"], state.get("notes", []))
@@ -116,7 +128,8 @@ class LGApp:
                         "loops": state.get("loops", 0) + 1}
 
             g.add_node("V", review)
-            g.add_edge(START, "D"); g.add_edge("D", "V")
+            g.add_edge(START, "D")
+            g.add_edge("D", "V")
             g.add_conditional_edges("V", lambda s: "A" if s["route"] == "APPROVE" or s["loops"] >= 3 else "D",
                                     {"A": "A", "D": "D"})
             g.add_edge("A", END)

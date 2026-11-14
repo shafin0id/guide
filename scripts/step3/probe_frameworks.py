@@ -8,7 +8,13 @@ for p in ["langgraph", "langchain-openai", "langchain-core", "crewai", "autogen-
     except Exception:  # noqa: BLE001
         print(p, "MISSING")
 from autogen_agentchat.agents import AssistantAgent  # noqa: E402,F401
-from autogen_agentchat.teams import DiGraphBuilder, GraphFlow, RoundRobinGroupChat, SelectorGroupChat, Swarm  # noqa: E402,F401
+from autogen_agentchat.teams import (  # noqa: E402,F401
+    DiGraphBuilder,
+    GraphFlow,
+    RoundRobinGroupChat,
+    SelectorGroupChat,
+    Swarm,
+)
 
 print("autogen teams ok")
 from crewai import LLM, Agent, Crew, Process, Task  # noqa: E402,F401

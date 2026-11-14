@@ -205,10 +205,10 @@ def realworld(md: list[str], out: dict) -> None:
     import sys
 
     sys.path.insert(0, str(ROOT / "src"))
-    from guide_realworld.scenarios import ATTACK_GT, SCENARIOS  # noqa: PLC0415
-    from guide_realworld.core import Runtime  # noqa: PLC0415
-    from guide.types import ToolCall  # noqa: PLC0415
     from guide.policy import PolicyContext  # noqa: PLC0415
+    from guide.types import ToolCall  # noqa: PLC0415
+    from guide_realworld.core import Runtime  # noqa: PLC0415
+    from guide_realworld.scenarios import ATTACK_GT, SCENARIOS  # noqa: PLC0415
 
     rows = load(str(S3 / "realworld/main/rows.jsonl"))
     if not rows:
