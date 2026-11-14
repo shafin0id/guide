@@ -14,7 +14,7 @@ from typing import Any
 from dotenv import dotenv_values
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-LEDGER = REPO_ROOT / "experiments" / "results" / "step3" / "ledger.jsonl"
+LEDGER = REPO_ROOT / "experiments" / "results" / "v9" / "ledger.jsonl"
 
 # Hard caps (USD for Gemini estimate; CNY for DeepSeek, measured from the account balance).
 GEMINI_CAP_USD = 9.00

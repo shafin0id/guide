@@ -21,7 +21,7 @@ spend = importlib.util.module_from_spec(_spec)  # type: ignore[arg-type]
 sys.modules["v9_spend"] = spend
 _spec.loader.exec_module(spend)  # type: ignore[union-attr]
 
-OUT = ROOT / "experiments" / "results" / "step3" / "realworld"
+OUT = ROOT / "experiments" / "results" / "v9" / "realworld"
 
 # (app_id, framework, topology, scenario). Each scenario appears three times, once per framework.
 APPS: list[tuple[str, str, str, str]] = [

@@ -28,9 +28,9 @@ from guide_agentdojo.pipeline import GuideGplusPipeline
 from guide_agentdojo.specs import DOJO_TOOL_SECURITY
 
 ROOT = Path(__file__).resolve().parents[2]
-STEP3 = ROOT / "experiments" / "results" / "step3"
-PROTOCOL = STEP3 / "protocol"
-RUNS = STEP3 / "runs"
+V9_RESULTS = ROOT / "experiments" / "results" / "v9"
+PROTOCOL = V9_RESULTS / "protocol"
+RUNS = V9_RESULTS / "runs"
 VERSION = "v1.2.2"
 SUITES = ("banking", "slack", "travel", "workspace")
 SEED = 20261113
