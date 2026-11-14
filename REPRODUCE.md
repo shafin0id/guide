@@ -107,10 +107,10 @@ PYTHONPATH=src uv run python scripts/v9/analyze.py
   uv run guide-bench --suite compromised --conditions B1,B2,P,GPLUS --reps 5 --out experiments/results/v2-compromised
 
   # Protocol v5: Gemini 3.5 Flash-Lite (N=46)
-  uv run python -m guide_bench.run --suite compromised --conditions B1,B2,P,GPLUS --reps 2 --provider gemini --model gemini-3.5-flash-lite --out experiments/results/v5-compromised-gemini
+  uv run python -m guide_bench.run --suite compromised --conditions B1,B2,P,GPLUS --reps 2 --base-url https://generativelanguage.googleapis.com/v1beta/openai --key-env GEMINI_API_KEY --model gemini-3.5-flash-lite --model-seed none --out experiments/results/v5-compromised-gemini
 
   # Protocol v5: Groq GPT-OSS 120B (N=38)
-  uv run python -m guide_bench.run --suite compromised --conditions B1,B2,P,GPLUS --reps 2 --provider groq --model openai/gpt-oss-120b --out experiments/results/v5-compromised-groq-gptoss120b
+  uv run python -m guide_bench.run --suite compromised --conditions B1,B2,P,GPLUS --reps 2 --base-url https://api.groq.com/openai/v1 --key-env GROQ_API_KEY --model openai/gpt-oss-120b --model-seed none --out experiments/results/v5-compromised-groq-gptoss120b
   ```
 - **Inputs**: Adversarial test tasks K1 to K4 (`src/guide_bench/adversarial.py`)
 - **Outputs**: `experiments/results/v2-compromised/summary.md`, `experiments/results/v5-compromised-*/summary.md`
@@ -131,7 +131,7 @@ PYTHONPATH=src uv run python scripts/v9/analyze.py
   PYTHONPATH=src uv run python -m guide_agentdojo.compromise_replay
   ```
 - **Inputs**: AgentDojo benchmark suite (`agentdojo==0.1.35`), 949 task-injection pairs across Banking, Slack, Travel, Workspace
-- **Outputs**: `experiments/results/compromise-replay-v8/summary.json`, `trace_log.jsonl`
+- **Outputs**: `experiments/results/compromise-replay-v8/summary.json`, `experiments/results/compromise-replay-v8/summary.md` (full replay also writes `pairs.jsonl` and `calls.jsonl`)
 - **Expected key numbers**:
   - Full grid pairs: 949 total, 588 in-scope
   - Contained pairs (`strict`): 543/588 (92.3% [89.9%, 94.2%])
@@ -167,11 +167,13 @@ PYTHONPATH=src uv run python scripts/v9/analyze.py
 - **Protocols**: Protocol v6, Protocol v6b
 - **Commands**:
   ```bash
-  # Protocol v6: Defended run on DeepSeek
-  uv run guide-agentdojo --suite all --attack-type important_instructions --model deepseek-v4-flash --out experiments/results/agentdojo-v6
+  # Protocol v6: Defended run on DeepSeek (run across each suite; model configured via DEEPSEEK_MODEL)
+  for suite in banking slack travel workspace; do
+    uv run guide-agentdojo --suite "$suite" --attack important_instructions --logdir experiments/results/agentdojo-v6
+  done
 
   # Protocol v6b: Undefended baseline on DeepSeek
-  uv run python -m guide_agentdojo.run_baseline --suite all --attack-type important_instructions --model deepseek-v4-flash --out experiments/results/agentdojo-v6b-undefended
+  uv run python -m guide_agentdojo.run_baseline --model deepseek-v4-flash --logdir experiments/results/agentdojo-v6b-undefended
   ```
 - **Inputs**: 97 benign tasks and 529 attack pairs across Banking, Slack, Travel, Workspace
 - **Outputs**: `experiments/results/agentdojo-v6/`, `experiments/results/agentdojo-v6b-undefended/`
@@ -231,10 +233,7 @@ PYTHONPATH=src uv run python scripts/v9/analyze.py
 - **Protocol**: Protocol v7b
 - **Commands**:
   ```bash
-  # Repository mining
-  uv run python -m guide_bench.mining.harvest
-
-  # Static capability audit
+  # Repository harvesting and static capability audit
   uv run python -m guide_bench.mining.audit
   ```
 - **Inputs**: Public GitHub repositories matching frozen queries for CrewAI, LangGraph, and AutoGen
@@ -260,10 +259,10 @@ PYTHONPATH=src uv run python scripts/v9/analyze.py
   uv run guide-bench --suite main --conditions B1,B2,P,GPLUS --reps 5 --out experiments/results/v2-main
 
   # Protocol v5: Gemini 3.5 Flash-Lite (N=248)
-  uv run python -m guide_bench.run --suite main --conditions B1,B2,P,GPLUS --reps 2 --provider gemini --model gemini-3.5-flash-lite --out experiments/results/v5-main-gemini
+  uv run python -m guide_bench.run --suite main --conditions B1,B2,P,GPLUS --reps 2 --base-url https://generativelanguage.googleapis.com/v1beta/openai --key-env GEMINI_API_KEY --model gemini-3.5-flash-lite --model-seed none --out experiments/results/v5-main-gemini
 
   # Protocol v5: Groq GPT-OSS 120B (N=166)
-  uv run python -m guide_bench.run --suite main --conditions B1,B2,P,GPLUS --reps 2 --provider groq --model openai/gpt-oss-120b --out experiments/results/v5-main-groq-gptoss120b
+  uv run python -m guide_bench.run --suite main --conditions B1,B2,P,GPLUS --reps 2 --base-url https://api.groq.com/openai/v1 --key-env GROQ_API_KEY --model openai/gpt-oss-120b --model-seed none --out experiments/results/v5-main-groq-gptoss120b
 
   # Cross-model summary aggregation
   uv run python scripts/aggregate_protocol_v5.py
@@ -367,7 +366,7 @@ PYTHONPATH=src uv run python scripts/v9/analyze.py
 - **Protocol**: Protocol v1
 - **Command**:
   ```bash
-  uv run python -m guide_bench.integrity --n 500
+  uv run python -m guide_bench.integrity --n 500 --out experiments/results/integrity
   ```
 - **Outputs**: `experiments/results/integrity/`
 - **Expected key numbers**: 100% detection rate across 10 mutation classes with per-principal keys, and 0% sender spoofing detection with shared key.
@@ -380,7 +379,7 @@ PYTHONPATH=src uv run python scripts/v9/analyze.py
 - **Protocol**: Protocol v1
 - **Command**:
   ```bash
-  uv run python -m guide_bench.routing_sim --seeds 100 --horizon 1000
+  uv run python -m guide_bench.routing_sim --seeds 100 --horizon 1000 --out experiments/results/routing
   ```
 - **Outputs**: `experiments/results/routing/`
 - **Expected key numbers**: Cumulative regret reduction from 150.0 (static) to 18.3 (Bayes-UCB) and 12.5 (Bayes-UCB with penalty).
@@ -403,7 +402,7 @@ PYTHONPATH=src uv run python scripts/v9/analyze.py
 
 ### 4. Static blast-radius offline soundness
 - **Protocol**: Protocol v3
-- **Command**:
+- **Command** (requires local `transcripts.jsonl` in each run directory from executing `guide-bench`; raw `transcripts.jsonl` files are gitignored):
   ```bash
   uv run python -m guide_bench.validate_bound offline experiments/results/v2-compromised experiments/results/v2-main experiments/results/v2-adversarial experiments/results/main experiments/results/adversarial --out experiments/results/v3-offline
   ```
@@ -418,7 +417,7 @@ PYTHONPATH=src uv run python scripts/v9/analyze.py
 - **Protocol**: Protocol v7c
 - **Command**:
   ```bash
-  uv run pytest tests/unit/test_topology_refinement.py -q
+  uv run pytest tests/unit/test_topology.py -q
   ```
 - **Expected key numbers**: 0 counterexamples across 200 Hypothesis trials validating Proposition 3.
 - **API cost**: $0.00 (zero-cost)

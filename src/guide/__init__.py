@@ -31,7 +31,7 @@ from guide.trace import EventSink, JsonlSink, TraceEvent, TraceLedger
 from guide.types import ChatMessage, Sensitivity, ToolCall, ToolResult, Trust, Usage
 from guide.workflow import Step, TaskSpec, Workflow
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"
 
 __all__ = [
     "AgentSpec",
