@@ -8,7 +8,7 @@ Asia Pacific University of Technology and Innovation, Technology Park Malaysia, 
 
 ### Abstract
 
-Prompt injection is hard to prevent inside an LLM reasoning loop. In a multi-step pipeline, an injection in one agent can spread to downstream agents and cause unauthorized actions. This paper assumes that any agent can be compromised and places an external reference monitor at the boundary between agents and tools. The monitor, GUIDE (Governed, Uncertainty-aware, Intent-pinned Delegation Enforcer), computes a static blast-radius bound for any subset of compromised agents. The bound is sound with respect to the monitor's own enforcement, and a bounded exhaustive check of 594,516 influence cases found no violation. On AgentDojo, the static analysis flagged 29 of the 30 benign tasks that enforcement later lost (96.9% accuracy). An assumed-compromise replay contained 92.3% of the 588 in-scope task-injection pairs. Strict enforcement cut benign utility from 95.9% to 62.9%. A directory-aware variant recovered 78.4%, and live attack success under it stayed at 0.5%. On 15 applications built with LangGraph, CrewAI and AutoGen, a compromised reader agent reached its goal in 23 of 90 undefended runs and in none under strict enforcement. A census of 55 workflow configurations found 49 linear chains, where splitting work across agents cannot reduce worst-case reach and least privilege can. Live attacks rarely succeeded on DeepSeek 4.1 Flash even without a defense, so the live security gain rests mainly on a weakened agent, the framework applications and a 20-pair Gemini replication.
+Prompt injection is hard to prevent inside an LLM reasoning loop. In a multi-step pipeline, an injection in one agent can spread to downstream agents and cause unauthorized actions. This paper assumes that any agent can be compromised and places an external reference monitor at the boundary between agents and tools. The monitor, GUIDE (Governed, Uncertainty-aware, Intent-pinned Delegation Enforcer), computes a static blast-radius bound for any subset of compromised agents. The bound is sound with respect to the monitor's own enforcement, and a bounded exhaustive check of 594,516 influence cases found no violation. On AgentDojo, the static analysis flagged 29 of the 30 benign tasks that enforcement later lost (96.9% accuracy). An assumed-compromise replay contained 92.3% of the 588 in-scope task-injection pairs. Strict enforcement cut benign utility from 95.9% to 62.9%. A directory-aware variant recovered utility to 78.4%, and live attack success under it stayed at 0.5%. On 15 applications built with LangGraph, CrewAI and AutoGen, a compromised reader agent reached its goal in 23 of 90 undefended runs and in none under strict enforcement. A census of 55 workflow configurations found 49 linear chains, where splitting work across agents cannot reduce worst-case reach and least privilege can. Live attacks rarely succeeded on DeepSeek 4.1 Flash even without a defense, so the live security gain rests mainly on a weakened agent, the framework applications and a 20-pair Gemini replication.
 
 Keywords: multi-agent systems, large language models, prompt injection, reference monitor, least privilege, static analysis, blast radius
 
@@ -30,7 +30,7 @@ This paper makes four contributions:
 
 - Topology floor and structural census (C3). For the influence model of Section 3.7, splitting a workflow across more agents never increases the blast radius (Proposition 3). In a linear dependency chain it also cannot lower the worst case below the reach of the whole pipeline, with or without cryptographic signing (Proposition 4). A census of 55 acyclic workflows, 19 self-authored and 36 mined from public repositories, found that 49 (89.1%) are linear chains. All 55 have a single source agent whose influence reaches every later step, so least privilege is the lever that works.
 
-- Empirical containment, trade-off and comparison findings (C4). Under assumed compromise, the reference monitor contained 92.3% of the 588 in-scope AgentDojo pairs (95% Wilson CI [89.9%, 94.2%]) with no soundness violation. Strict provenance enforcement costs benign utility, from 95.9% to 62.9% overall and from 100% to 28.6% on Slack. A directory-aware variant recovers 78.4% overall. Against four AgentDojo baseline defenses under the same model and loop, GUIDE gave the lowest or tied-lowest live attack success. On 15 LangGraph, CrewAI and AutoGen applications it stopped every compromised-reader attack under strict enforcement.
+- Empirical containment, trade-off and comparison findings (C4). Under assumed compromise, the reference monitor contained 92.3% of the 588 in-scope AgentDojo pairs (95% Wilson CI [89.9%, 94.2%]) with no soundness violation. Strict provenance enforcement costs benign utility, from 95.9% to 62.9% overall and from 100% to 28.6% on Slack. A directory-aware variant recovers utility to 78.4% overall. Against four AgentDojo baseline defenses under the same model and loop, GUIDE gave the lowest or tied-lowest live attack success. On 15 LangGraph, CrewAI and AutoGen applications it stopped every compromised-reader attack under strict enforcement.
 
 The paper evaluates six research questions:
 
@@ -135,7 +135,7 @@ Figure 1. GUIDE as an external reference monitor: controls and data flow for one
 
 The steps in a run are executed sequentially. A router chooses a candidate agent for each step, and the step inputs reach that agent through a hand-off. The agent then proposes tool calls inside a closed agent loop. Finally, the external reference monitor verifies each proposed call before any tool code runs. GUIDE applies four controls during this execution:
 
-Control 1: Beta posterior routing policy. Routing keeps a success estimate for each candidate agent in each task domain, modeled as a beta distribution (equation 1):
+Control 1: Beta posterior routing policy. Routing keeps a success estimate for each candidate agent in each task domain, modeled as a beta distribution (equation (1)):
 
 θi,d∼Beta(αi,d,βi,d)  (1)
 
@@ -458,7 +458,7 @@ Table 13 compares GUIDE with the AgentDojo baseline defenses on DeepSeek 4.1 Fla
 
 Table 13. Assumed-compromise containment, benign utility and live attack success by defense on AgentDojo (Protocol v9a, DeepSeek 4.1 Flash).
 
-| Defense | Benign utility (97 tasks) | Slack benign utility | Direct attack success | Important_instructions attack success | Utility under direct attack | Full-grid containment (588 pairs) |
+| Defense | Benign utility (97 tasks) | Slack benign utility | Direct attack success | Important-instructions attack success | Utility under direct attack | Full-grid containment (588 pairs) |
 |---|---|---|---|---|---|---|
 | None | 95.9% | 100.0% | 9.0% | 2.5% | 88.5% | 0.0% |
 | GUIDE strict | 62.9% | 28.6% | 0.5% | 0.5% | 58.5% | 92.3% |
@@ -540,7 +540,7 @@ Multi-agent evaluation suite: The internal suites and the 15 framework applicati
 
 External benchmark and models: AgentDojo is a single-agent benchmark. The main runs used DeepSeek 4.1 Flash, and the Gemini replication covered only 20 pairs because of a free-tier quota.
 
-Live sample sizes: The Protocol v6 live runs used 10 workspace tasks, and the Protocol v9 attack runs used a stratified sample of 200 pairs. The assumed-compromise replay covers the full 949-pair grid.
+Live sample sizes: The Protocol v6 live attack runs used 10 workspace user tasks, and the Protocol v9 attack runs used a stratified sample of 200 pairs. The assumed-compromise replay covers the full 949-pair grid.
 
 Live injection resistance: DeepSeek 4.1 Flash resisted most live injections even when told to obey tool outputs, so most live attack comparisons have low power. The adaptive attacker was limited to five rounds.
 
@@ -574,7 +574,7 @@ GUIDE is an external reference monitor. It does not depend on agents following t
 
 ### Acknowledgments
 
-The author thanks the supervisor, Ts. Dr. Maythem Kamal Abbas, for his guidance. This work received no external funding. API usage for the evaluations in Section 3.5 on Groq and Google AI Studio fell under each provider’s public free tier. API credits for DeepSeek 4.1 Flash were self-financed.
+The author thanks the supervisor, Ts. Dr. Maythem Kamal Abbas, for his guidance. This work received no external funding. API usage for the evaluations in Sections 3.5 and 3.14 on Groq and Google AI Studio fell under each provider’s public free tier. API credits for DeepSeek 4.1 Flash were self-financed.
 
 ### Statements
 

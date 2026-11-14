@@ -176,5 +176,5 @@ After auditing `GUIDE_Manuscript_Revised_V2.docx`, figures, tables, supplementar
 
 - Step 4: target-journal formatting (template styling, section/word-limit adjustments, and bibliography style conversion once the target journal is decided).
 - Open `GUIDE_Manuscript_Revised_V2.docx` and `GUIDE_Supplementary_Material_V2.docx` in Microsoft Word once on desktop to visually confirm page breaks, figure clarity, and table rendering.
-- Acknowledgments mention the free tier for Section 3.5; Section 3.14 also notes its Gemini 3.1 Flash-Lite replication quota was set by the free tier (can be echoed in Acknowledgments during journal formatting if desired).
+- Push branch `step3-protocol-v9` to GitHub interactively (non-interactive HTTPS push requires user credentials).
 - Local `.env` and `.env.gemini_keys` remain untracked and gitignored (external API key rotation skipped by user instruction).
