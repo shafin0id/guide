@@ -199,7 +199,7 @@ therefore BR can only shrink or stay the same, never grow, as the agent partitio
 
 Verified by property test (`test_refinement_monotonicity`, protocol-v7c): every (coarse, fine) partition pair
 reachable by splitting one block in two, over every real-world config with ≤ 6 steps, k ∈ {1,2}, both TRANSCRIPT and
-SIGNED mode, 200 Hypothesis examples — zero counterexamples. See `docs/static-analysis-extensions-results.md` §v7c
+SIGNED mode, 200 Hypothesis examples — zero counterexamples. See `docs/results/protocol-v7.md` §v7c
 for the disclosed caveat that this proposition is about the WORST-CASE FRACTION over a fixed workflow's partition
 space; it does not by itself guarantee a lower floor is reachable when every step in a config shares the same
 downstream sink (observed in 18 of 19 self-authored configs, which are linear chains with no independent branch to
@@ -207,8 +207,7 @@ exploit). WBR is normalised by Sinks* under the same policy, so a least-privileg
 
 Notation: Π_⊥ is the finest partition (one agent per step); for a step s, Infl_s =
 Infl({a_s}) under Π_⊥ (this includes context and state-flow rules); R(s) = the set of
-distinct (tool, operation) sinks in ⋃_{t ∈ Infl_s} Auth_g(t); Sinks* is as in §2.2 of
-`docs/static-analysis-extensions-plan.md`.
+distinct (tool, operation) sinks in ⋃_{t ∈ Infl_s} Auth_g(t); Sinks* is the set of distinct (tool, operation) write/external pairs reachable by any single agent under policy P (`guide_research.topology.total_sinks_star`).
 
 **Proposition 4 (Topology floor).** For a fixed workflow, mode m and policy P with
 Sinks* ≠ ∅:

@@ -1,16 +1,7 @@
 # Static-Analysis Extensions — Results (Protocol v7a / v7c / v7b)
 
-Standalone, auditable record of all three tasks in
-`docs/static-analysis-extensions-plan.md`. This file is updated after each task
-completes, not only at the end. The plan file is the frozen spec; only its §8
-status boxes are ticked there. Every number below traces to a file under
-`experiments/results/` or `experiments/mining/` — a number with no source file
-does not appear here.
-
-Executed by: Sonnet (model switched mid-thread per user instruction), continuing
-from Opus's plan. Host memory was tight-to-critical throughout (confirmed via
-`resource_status`); all work was static analysis, run serially, no parallel
-spawns, consistent with the plan's own stop condition (§5).
+Standalone record of Protocol v7a, v7c, and v7b. Every number below traces to a
+file under `experiments/results/` or `experiments/mining/`.
 
 ---
 
@@ -170,7 +161,7 @@ reproduction itself is still sequential.
 **Consequence for the paper**: the topology/partition axis of this analysis
 cannot show a benefit on the *current* config set, because there is no
 branch point to exploit. This is disclosed here in full rather than
-suppressed, per `pref.scientific_integrity`. It does not invalidate
+suppressed, for scientific integrity. It does not invalidate
 Proposition 3 (which holds regardless, and was verified independently of this
 observation) or the Q1–Q4 computations (which are correct given the input).
 It does mean the "design guidance" claim in plan §7 ("v7c supports design

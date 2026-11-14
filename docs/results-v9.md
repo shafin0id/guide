@@ -1,6 +1,6 @@
-# Step 3 results (Protocols v9a, v9b, v9c, exhaustive check; Gemini block v9g pending)
+# Protocol v9 results (Protocols v9a, v9b, v9c, v9g, exhaustive check)
 
-Auto-generated tables: `experiments/results/step3/summary.md` (script `scripts/step3/analyze.py`). Protocol freezes are git tags
+Auto-generated tables: `experiments/results/v9/summary.md` (script `scripts/v9/analyze.py`). Protocol freezes are git tags
 `protocol-v9a-frozen`, `protocol-v9b-frozen`, `protocol-v9c-frozen`, `protocol-v9g-frozen`. Model: DeepSeek-V4.1-Flash
 (`deepseek-flash`, non-thinking, temperature 0; the v6 model name was retired, so all conditions were re-run).
 
@@ -16,7 +16,7 @@ Auto-generated tables: `experiments/results/step3/summary.md` (script `scripts/s
 | 6 theory | exhaustive check, zero API cost | 594,516 influence cases (all DAGs up to 5 steps) with 0 oracle mismatches and 0 monotonicity violations; 1,966,080 gate evaluations (250,880 executed, 1,715,200 denied) with 0 soundness and 0 exactness violations. Valid for the enumerated space only. |
 | 8 prediction on unseen tasks | static rule on the 15 held-out apps | 69 attacker sink calls: 0 soundness violations (nothing executed that was predicted blocked); 84.1% agreement; 11 over-approximations (call denied although predicted admissible, because the agent had not performed the lookup). |
 | 9 statistics | Wilson CIs, exact McNemar, Cohen's h, 3 repetitions | repetition disagreement per task: 1-2 of 97 tasks per condition. |
-| 11, 12 reproducibility | pinned model id, settings, per-row ledger, frozen tags; `scripts/step3/` | `.env` is not committed; `protocol-v9*.md` list all settings. |
+| 11, 12 reproducibility | pinned model id, settings, per-row ledger, frozen tags; `scripts/v9/` | `.env` is not committed; `docs/protocols/protocol-v9*.md` list all settings. |
 
 ## Limitations to state in the paper
 - Attack success is low even undefended on DeepSeek-V4.1-Flash (weak agent, standard attacks). Defence-vs-defence security differences are therefore mostly shown by the `direct` attack (9.0% undefended, n=200) and by the assumed-compromised-reader relay (25.6%, n=90). A more susceptible model is evaluated only in a small Gemini block (free-tier quota).
@@ -25,4 +25,4 @@ Auto-generated tables: `experiments/results/step3/summary.md` (script `scripts/s
 - Content-bearing sinks (calendar event bodies, DMs, emails) are not constrained by control-value provenance; this accounts for most residual uncontained pairs.
 - `tool_filter` was re-implemented after the first version was found to be broken (provider ignores tool schemas when `tool_choice=none`); first-version rows are discarded and disclosed. PI-detector inputs are truncated to the model's 512-token window (speed fix). Infrastructure fixes after freeze: YAML sanitising of attacker text, last-message handling, detector truncation.
 - Not done: CaMeL/Progent quantitative comparison; static re-mining of third-party repos (clones were deleted; extractor rewrite out of budget); mechanised formal proof.
-- Gemini block (v9g, completed): Gemini 3.1 Flash-Lite, default agent, `important_instructions`, 20 pairs, 4 conditions, run on free-tier keys with automatic key swapping (no key reached its daily limit). Attack success: none 15/20, strict 1/20, cred 1/20, flexI_cred 1/20. Utility under attack: 12, 10, 10, 11 of 20. n=20, so intervals are wide; pi_detector and the other baselines were not run on Gemini. Cells left over from the aborted larger plan (v9g-2) are in the same rows file and are not part of the frozen matrix.
+- Gemini block (v9g, completed): Gemini 3.1 Flash-Lite, default agent, `important_instructions`, 20 pairs, 4 conditions; the Gemini replication was limited to 20 pairs by the free-tier request quota. Attack success: none 15/20, strict 1/20, cred 1/20, flexI_cred 1/20. Utility under attack: 12, 10, 10, 11 of 20. n=20, so intervals are wide; pi_detector and the other baselines were not run on Gemini. Cells left over from the aborted larger plan (v9g-2) are in the same rows file and are not part of the frozen matrix.

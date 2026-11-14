@@ -71,10 +71,10 @@ exactly as for DeepSeek in protocol-v1..v4.
   constraint of the free tier, not a change to the protocol, and it is why a full 360-run main suite per
   model takes materially longer in wall-clock time than the DeepSeek runs did.
 * Any model-specific failure (malformed JSON, truncation, refusal) is scored and reported exactly like
-  a DeepSeek failure -- no special-casing, no exclusion, per `pref.scientific_integrity`.
+  a DeepSeek failure -- no special-casing, no exclusion, for scientific integrity.
 * Fair-benchmarking framing for peer review: this is **not** a claim that GUIDE was "tested against
   CrewAI/LangGraph/AutoGen on multiple models." It is the SAME single-framework, four-condition
-  ablation (B1/B2/P/GPLUS), repeated with the model held to a different free-tier LLM each time. A21/A1
-  in `docs/submission-alignment.md` already withdrew the claim that any third-party framework's code was
-  executed; nothing here reopens that. External validity is what changes: "does this null result / this
+  ablation (B1/B2/P/GPLUS), repeated with the model held to a different free-tier LLM each time. As
+  disclosed in `docs/archive/research-audit.md` and `docs/experiments.md`, no third-party framework's code was
+  executed in Protocols v1–v5; nothing here reopens that. External validity is what changes: "does this null result / this
   containment finding hold for a different model family," which is exactly the open item A16 flagged.

@@ -1,8 +1,8 @@
 # Protocol v9a: live AgentDojo evaluation (frozen 2026-11-13)
 
 Frozen before any v9a main-run cell was executed. Code: `src/guide_agentdojo/run_v9.py`, `pipeline.py`,
-`src/guide_research/provenance_v9.py`. Sample: `experiments/results/step3/protocol/pairs_sample200.json`
-(seed 20261113). Offline variant study: `experiments/results/step3/w2/variants.json`.
+`src/guide_research/provenance_v9.py`. Sample: `experiments/results/v9/protocol/pairs_sample200.json`
+(seed 20261113). Offline variant study: `experiments/results/v9/w2/variants.json`.
 
 ## Model and settings
 - Agent model: `deepseek-flash` (served as DeepSeek-V4.1-Flash-1017), non-thinking mode (`thinking: disabled`),
@@ -25,7 +25,7 @@ Frozen before any v9a main-run cell was executed. Code: `src/guide_agentdojo/run
 `tool_filter`, `spotlighting` (delimiting), `repeat_user_prompt`, `pi_detector` (protectai DeBERTa v2, threshold 0.5),
 all run inside the same agent loop, model and settings.
 
-Variant selection rule and result: `docs/step3-plan.md` section 6.6 (offline, dev/held-out split seeded 20261113).
+Variant selection rule and result: `scripts/v9/w2_variants.py` (offline, dev/held-out split seeded 20261113).
 
 ## Matrix (all rows 1 temperature-0 run unless stated)
 | Block | Agent | Attack | Conditions | Cells |
@@ -60,7 +60,7 @@ Executed by a scheduled job after the daily quota reset; incomplete cells are re
 A funded key (paid tier) was supplied, so the free-tier cut-down is replaced. Gemini 3.1 Flash-Lite, default agent prompt, attack
 `important_instructions`, first 20 pairs per suite of the frozen 200-pair sample (80 pairs), conditions none, strict, cred, flexI_cred,
 tool_filter, spotlighting, repeat_user_prompt (pi_detector omitted: local model memory). Benign: all 97 tasks, conditions none, strict,
-cred, flexI_cred. Spend cap $9.00 (ledger estimate) as before. Results in `experiments/results/step3/runs/gemini/`.
+cred, flexI_cred. Spend cap $9.00 (ledger estimate) as before. Results in `experiments/results/v9/runs/gemini/`.
 
 ## Addendum v9g-3: Gemini block reverted to the free-tier size (frozen 2026-11-13, before the reported run)
 The supplied key is also on Google's free tier (429: `generate_content_free_tier_requests`, 15 requests/minute plus a daily cap), so the

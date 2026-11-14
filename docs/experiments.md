@@ -424,9 +424,8 @@ Evaluation of identical tasks and injection vectors with GUIDE runtime enforceme
 ## Protocol v7: static-analysis extensions (tags `protocol-v7a`, `protocol-v7c`, `protocol-v7b`)
 
 Three static, zero-API-cost analyses extending GUIDE's multi-agent contribution. Full
-specification: `docs/static-analysis-extensions-plan.md`. Full results, deviations and
-soundness-critical items: `docs/static-analysis-extensions-results.md` (the authoritative,
-auditable record — this section summarises it).
+results, deviations and soundness-critical items: `docs/results/protocol-v7.md`
+(the authoritative, auditable record — this section summarises it).
 
 ### v7a: static utility-cost prediction (tag `protocol-v7a`, commit `fd8acff`)
 
@@ -463,7 +462,7 @@ hand-off signing nor topology lowers the floor in a linear chain; only a policy 
 removes the sink entirely does (the one exception, `sql-01`, has zero write/external
 operations under its least-privilege policy for that unrelated reason). This is a genuine
 negative result about linear pipelines, not a null computation — see
-`docs/static-analysis-extensions-results.md` for the full Q1–Q4 tables and the formal
+`docs/results/protocol-v7.md` for the full Q1–Q4 tables and the formal
 mechanism (Definition 2 rule C: a dependency edge propagates influence under BOTH
 transcript and signed mode, since signing blocks transport tampering, not a legitimately
 produced hand-off from a compromised-but-protocol-honest upstream agent).

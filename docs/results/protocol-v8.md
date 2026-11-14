@@ -1,17 +1,9 @@
-# Final Run Results — M1 to M6 (Protocol v8 + publication readiness)
-
-Spec: `docs/final-run-plan.md`. Fill this file in **as each step finishes**. Every number
-must trace to a file under `experiments/` (give the path next to it). Where a list is
-empty, write "none found" explicitly.
-
-Executor / model: ___ · Run date: ___ · Branch: `research/evidence-based-rebuild`
+# Protocol v8 Results — M1, M1b, M2, M3, and M5
 
 ---
 
 ## Run log
-- Live log: `experiments/results/final-v8/run.log`
 - Progress ledger: `experiments/results/final-v8/progress.json`
-- Final overall %: ___
 
 ## M3 — flaky test fix
 - Final `max_examples`: 4000 · executed (ALLOW+BOUND) count: 294 (threshold 200, kept)
@@ -98,29 +90,6 @@ Outputs: `experiments/results/topology-v8/`
 - Final bibliography: 115 total, 93 peer-reviewed (80.9%) / 22 preprint (19.1%)
 - Competitor search: 55 hits (submitted >= 2026-07-01); `NOVELTY-CRITICAL`: 1 (arXiv:2608.15888, "Bounded Agents: Delegation Security for Multi-Agent AI Systems", proving Blast Radius Monotonicity for dynamic principal chains; honestly contrasted against GUIDE's static DAG bound and pre-deployment cost prediction) — details in `docs/lit-review/final-competitor-check.md`
 - Lookup log: `experiments/results/final-v8/ref_lookup.jsonl`
-- Citation/reference cross-check mismatches: ___
-
-## M4 — Documents and manuscript
-- [ ] 4.1 experiments.md corrected (v6 pooled utility; Key Finding 1 rewritten; v6b + v8 sections)
-- [ ] 4.2 submission-alignment.md A34–A36
-- [ ] 4.3 differences-from-submitted.md
-- [ ] 4.4 title / abstract (word count ___) / keywords
-- [ ] 4.5 introduction, C1–C4, RQs reordered
-- [ ] 4.6 related work + comparison table (cells sourced)
-- [ ] 4.7 methods 3.10–3.13
-- [ ] 4.8 results
-- [ ] 4.9 discussion
-- [ ] 4.10 limitations (all listed items present)
-- [ ] 4.11 conclusion + new figure
-- [ ] 4.12 voice pass; wording greps clean; `check_numbers` missing = 0
-
-## M6 — Release preparation
-- Secret scan on result dirs: clean / redacted (details)
-- REPRODUCE.md, README section, CITATION.cff written: yes/no
-- LICENSE present: yes/no (owner decision if no)
-- Full suite: ___ passed / ___ failed
-- Docx built: media entries ___ = image refs ___
-- `paper-v1` tag → commit ___ (not pushed)
 
 ## Soundness-critical items
 - M1 soundness violations: 0

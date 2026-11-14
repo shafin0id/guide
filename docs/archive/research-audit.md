@@ -1,7 +1,7 @@
 # GUIDE / RMCE — Baseline Research & Engineering Audit
 
 Audit date: 2026-09-29. Audited commits: `guide@fc1d4b4`, `guide-bench@f5642d8`.
-Scope source of truth: `previously submitted to university/` (Proposal = Assignment 2, Literature Review = Assignment 1).
+Scope source of truth: approved research proposal (Assignment 2) and literature review (Assignment 1) (archived outside the public repository).
 Status legend: **VERIFIED** (read code / ran it), **INFERRED** (strong evidence, not executed), **TO VERIFY**.
 
 ---
@@ -109,7 +109,7 @@ What *is* genuine in guide-bench (VERIFIED): the 240 runs made real DeepSeek cal
 - No human-escalation path, no rollback semantics for write-effect tools (only deny).
 - No authN/authZ model for principals (user, agent, tool); policy is a dict.
 
-## 7. Novelty assessment (preliminary — full literature verification pending in `docs/novelty.md`)
+## 7. Novelty assessment (preliminary — see `docs/lit-review/literature-review.md`)
 
 | Element | Prior art (TO VERIFY exact citations) | Novel? |
 |---|---|---|
@@ -165,4 +165,4 @@ Candidate directions that could turn this into a stronger (Q1/Q2-plausible) cont
 E1–E6, E8, E10, E11 are fixed and regression-tested (`tests/regression/`). E7/E9 are resolved by withdrawal: no
 third-party framework or named-benchmark claim remains. All §4–§6 mechanism issues were addressed, except those listed as
 explicit limitations (in-process keys, no rollback, no human escalation, sequential execution). Results:
-`docs/experiments.md`. Scope deviations: `docs/submission-alignment.md`.
+`docs/experiments.md`.

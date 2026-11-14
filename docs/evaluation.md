@@ -1,7 +1,7 @@
 # Evaluation protocol (frozen as git tag `protocol-v1` before any formal run)
 
 Purpose: answer RQ3/RQ4 of the approved proposal with evidence that cannot be produced by the
-harness itself. Deviations from the proposal are listed in `docs/submission-alignment.md`.
+harness itself. Deviations from the proposal are documented in `docs/experiments.md` and `docs/limitations.md`.
 
 ## 1. Unit of analysis and controls
 

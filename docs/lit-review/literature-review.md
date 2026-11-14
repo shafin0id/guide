@@ -24,7 +24,7 @@ second-screener check (§5.4) is still open (amendment A5).
 | `prisma.svg`, `prisma-counts.json` | PRISMA 2020 flow |
 | `second-screener-sample.csv` | Seeded 20 % sample (342 records) for the inter-rater check; `scripts/kappa.py` scores it |
 | `data/` | Raw API records, dedup/pre-filter output, screening batches, snowball candidates |
-| `/references.bib` (repo root) | 81 entries generated from verified metadata; each `note` gives verification status |
+| `docs/references.bib` | verified BibTeX references |
 
 Re-run order: `search.py` → `dedup_prefilter.py` → `snowball.py` → `snowball.py s2` →
 `screening.py` → `extract.py` → `prisma.py` → `verify_refs.py` → `build_bib.py`. Searches return
@@ -82,7 +82,7 @@ orchestration, arXiv), confidence- and
 uncertainty-aware routing, topology search (GPTSwarm, DyTopo) and selective delegation
 (Uno-Orchestra). They optimise accuracy and cost; none of the reviewed routing works treats policy
 denials or integrity failures as routing signals, and routing is evaluated on reasoning benchmarks,
-not under compromise. GUIDE's Beta-posterior Bayes-UCB router is a standard algorithm (novelty.md) and
+not under compromise. GUIDE's Beta-posterior Bayes-UCB router is a standard algorithm and
 its contribution is only as one control of the artefact.
 **Gap:** routing is studied for capability and cost, separately from authorisation and integrity.
 
@@ -249,7 +249,7 @@ Consequences:
   upper confidence bounds for bandit problems. AISTATS" — the AISTATS 2012 paper is *On Bayesian Upper
   Confidence Bounds for Bandit Problems* by Kaufmann, Cappé and Garivier (PMLR 22:592–600). Korda and
   Munos co-authored a different 2012 Kaufmann paper (Thompson sampling, ALT). Use the corrected entry in
-  the paper. (`docs/novelty.md` already cites the correct authors.)
+  the paper.
 - Venue still unverified by API (OpenReview blocks scripted access): Triedman et al. as COLM 2025;
   WebArena as ICLR 2024; τ-bench venue; AutoGen venue. Open the pages before citing those venues;
   otherwise cite as arXiv.
@@ -266,9 +266,9 @@ Consequences:
 
 ## 10. Differences from the submitted reports
 
-Compared with `previously submitted to university/RMCE - Assignment 1 (Liturature Review).docx` (A1)
-and `RMCE - Assignment 2 (Proposal).docx` (A2). The submitted files are not edited; each difference must
-be stated in the paper (Table 9 / §3.8 in the plan) and is mirrored in `docs/submission-alignment.md`.
+Compared with Assignment 1 (`RMCE - Assignment 1 (Liturature Review).docx`, A1)
+and Assignment 2 (`RMCE - Assignment 2 (Proposal).docx`, A2). The submitted files are not edited; each difference is
+documented in the manuscript and `docs/experiments.md`.
 
 | # | Submitted report says | This review found | Effect on the paper |
 |---|---|---|---|
