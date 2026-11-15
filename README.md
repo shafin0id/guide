@@ -147,7 +147,6 @@ instead of the system. Those numbers were withdrawn, and the audit is in [`docs/
 | [`docs/limitations.md`](docs/limitations.md) | Known limitations and bypasses |
 | [`docs/security.md`](docs/security.md) | Threat model and security notes |
 
-The checked submission manuscript and supplementary material are in [the submission folder](docs/paper/revision-v2/Final%20by%20Supervisor/). Finished figure files are in [`docs/figures/`](docs/figures/).
 
 ## Citation
 
