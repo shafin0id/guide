@@ -19,7 +19,7 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
-# Core is intentionally minimal: signing is the only hard dependency.
+# Core imports only signing support; this research distribution also installs AgentDojo for benchmark reproducibility.
 dependencies = [
     "agentdojo==0.1.35",
     "cryptography>=42,<47",

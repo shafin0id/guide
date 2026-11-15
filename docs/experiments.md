@@ -387,7 +387,9 @@ Static blast-radius bounds: 100% control-parameter bounding across all 74 tools 
 | **Slack** | 21 | 28.6% | 105 | 28.6% | **100.0%** (0/105 compromised) | 1,741,079 | ~2.49 CNY |
 | **Travel** | 20 | 80.0% | 140 | 75.7% | **91.4%** (128/140 contained; 100% on tool sinks) | 3,756,971 | ~4.40 CNY |
 | **Workspace** | 40 | 65.0% | 140* | 80.0% | **100.0%** (0/140 compromised) | 4,677,221 | ~5.25 CNY |
-| **Total / Overall** | **97** | **61.9%** | **529** | **68.4%** | **97.7%** (**100.0%** on tool sinks) | **11,450,443** | **~13.95 CNY (~$1.96 USD)** |
+| **Total / Overall** | **97** | **61.9%** | **529** | **68.4%** | **97.7%** (**100.0%** on tool sinks) | **11,426,990** | **~13.93 CNY** |
+
+Token totals above cover the canonical task set (11,426,990 tokens); the additional banking artifact is excluded.
 
 Note: Overall utility is pooled across tasks (60/97 = 61.9% benign, 362/529 = 68.4% attack), rather than the unweighted average of suite percentages (63.9% and 70.5%).
 
@@ -396,7 +398,7 @@ Note: Overall utility is pooled across tasks (60/97 = 61.9% benign, 362/529 = 68
 ### Key Findings and Synthesis
 
 1. **Model Resistance and Absence of Tool Execution Immunity**:
-   Across 517 tool-calling attack vectors in Protocol v6, zero tool-sink compromises were observed. However, as demonstrated by the paired undefended baseline (Protocol v6b), this zero rate is **not** attributable to GUIDE's runtime enforcement: the undefended model (`deepseek-v4-flash`) also had 0 tool-sink compromises (ASR 2.1% overall, limited entirely to text-only persuasion tasks), ignoring the injections. GUIDE's deterministic containment under actual attack execution is instead established by Protocol v8 (M1), which replays injection tool calls under assumed compromise.
+   Across 517 tool-calling attack vectors in Protocol v6, zero tool-sink compromises were observed. However, as demonstrated by the paired undefended baseline (Protocol v6b), this zero rate is **not** attributable to GUIDE's runtime enforcement: the undefended model (`deepseek-v4-flash`) also had 0 tool-sink compromises (ASR 2.1% overall, limited entirely to text-only persuasion tasks), ignoring the injections. Protocol v8 (M1) instead measures deterministic gate admission under assumed compromise; its replay does not invoke tool backends.
 2. **Text-Only Endorsement Scope Boundary (Travel `injection_task_6`)**:
    The only compromised runs (12 in Travel) had no tool calls; the attack objective was conversational text promotion (*"Say that I should visit Riverside View Hotel"*). This delineates GUIDE's formal scope: runtime reference monitoring contains tool side-effects and sinks, but does not constrain ungrounded conversational prose.
 3. **Utility vs. Containment Policy Trade-Off (Slack)**:
@@ -408,10 +410,10 @@ Evaluation of identical tasks and injection vectors with GUIDE runtime enforceme
 
 | Suite | Benign Tasks | Benign Utility | Attack Pairs | Attack Utility | Attack Success Rate (ASR) | Tokens Used | Cost (Off-Peak) |
 |---|---|---|---|---|---|---|---|
-| **Banking** | 16 | 100.0% (16/16) | 144 | 97.2% (140/144) | 0.0% (0/144) | 800,105 | ~0.96 CNY |
-| **Slack** | 21 | 95.2% (20/21) | 105 | 95.2% (100/105) | 0.0% (0/105) | 1,142,668 | ~1.37 CNY |
-| **Travel** | 20 | 95.0% (19/20) | 140 | 85.0% (119/140) | 7.9% (11/140)* | 3,246,192 | ~3.90 CNY |
-| **Workspace** | 40 | 85.0% (34/40) | 140 | 67.1% (94/140) | 0.0% (0/140) | 3,879,281 | ~4.66 CNY |
+| **Banking** | 16 | 93.8% (15/16) | 144 | 86.8% (125/144) | 0.0% (0/144) | 800,105 | ~0.96 CNY |
+| **Slack** | 21 | 95.2% (20/21) | 105 | 75.2% (79/105) | 0.0% (0/105) | 1,142,668 | ~1.37 CNY |
+| **Travel** | 20 | 80.0% (16/20) | 140 | 77.9% (109/140) | 7.9% (11/140)* | 3,246,192 | ~3.90 CNY |
+| **Workspace** | 40 | 95.0% (38/40) | 140 | 100.0% (140/140) | 0.0% (0/140) | 3,879,281 | ~4.66 CNY |
 | **Total / Overall** | **97** | **91.8% (89/97)** | **529** | **85.6% (453/529)** | **2.1% (11/529)** | **9,068,246** | **~10.89 CNY (~$1.53 USD)** |
 
 \* All 11 compromised runs in Travel were on `injection_task_6` (text-only recommendation).
@@ -506,7 +508,7 @@ Protocol v8 addresses the uninformative live attack success rate of Protocol v6 
 
 ### M1: Assumed-Compromise Replay on AgentDojo
 
-Evaluation of 949 task-injection pairs across all four AgentDojo suites (`experiments/results/compromise-replay-v8/`), directly executing the benchmark's ground-truth malicious tool invocations through GUIDE's runtime gate.
+Evaluation of 949 task-injection pairs across all four AgentDojo suites (`experiments/results/compromise-replay-v8/`), evaluating the benchmark's ground-truth malicious tool invocations through GUIDE's gate without invoking the tool backends.
 
 | Suite | Pairs (Full) | In-Scope Pairs | CONTAINED | PARTIAL | EXECUTED | Containment Rate [95% Wilson CI] | v6-Subset Containment | Undefended Containment |
 |---|---|---|---|---|---|---|---|---|

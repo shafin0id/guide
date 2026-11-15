@@ -182,9 +182,9 @@ adversary whose agent is selected for s: propose a well-formed call admitted by 
 Hence BR restricted to Direct(K) is exact. On Infl ∖ Direct, BR over-approximates: realising it requires honest
 agents to be manipulated.
 
-**Proposition 3 (Refinement monotonicity, protocol-v7c)**. Fix a workflow's step set, mode m, policy P and k. Let
+**Proposition 3 (Refinement monotonicity, protocol-v7c)**. Fix a workflow's step set, mode m, policy P and a feasible compromise budget 1 ≤ k ≤ |Π|. Let
 Π′ refine Π (every block of Π′ is a subset of some block of Π — i.e. Π′ reassigns the same steps to a finer-grained
-set of agents, splitting one or more of Π's agents into several). Then for every k:
+set of agents, splitting one or more of Π's agents into several). Then for that k:
 
 WBR_k(Π′, m, P) ≤ WBR_k(Π, m, P)
 

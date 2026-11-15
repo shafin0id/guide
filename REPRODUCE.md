@@ -60,12 +60,12 @@ PYTHONPATH=src uv run python scripts/v9/analyze.py
 ## Reproduction by table
 
 ### Table 1. Comparison of security mechanisms
-- **Protocol**: Systematic literature review (`review-protocol-v1`)
-- **Inputs**: Literature review corpus and extraction data in `docs/lit-review/`
-- **Outputs**: `docs/lit-review/literature-review.md` (§6)
-- **Expected key number**: 721 included studies (607 database + 114 snowball); comparative matrix across single-agent monitors and multi-agent frameworks
+- **Method**: Narrative comparison of cited related work (no systematic-review corpus or selection-count claim)
+- **Inputs**: Cited publications in the final manuscript; see `docs/lit-review/README.md` for the scope
+- **Outputs**: the checked manuscript, Section 2 and Table 1
+- **Expected key number**: comparative matrix across single-agent monitors and multi-agent frameworks; no corpus-size claim
 - **API cost**: $0.00 (zero-cost)
-- **Git tag**: `review-protocol-v1`
+- **Version**: Final checked manuscript (historical systematic-review planning is not a reproducible corpus for this table)
 
 ---
 
@@ -73,7 +73,7 @@ PYTHONPATH=src uv run python scripts/v9/analyze.py
 - **Protocol**: Pre-registered evaluation design (`protocol-v1`, extended in `protocol-v3` to `protocol-v9a-frozen`)
 - **Inputs**: `docs/evaluation.md`, `docs/experiments.md`, `docs/results-v9.md`
 - **Outputs**: Summary against hypotheses in `docs/experiments.md`
-- **Expected key number**: 5 research questions and pre-registered hypotheses mapped to recorded artifacts
+- **Expected key number**: 6 research questions in the final manuscript, with the original hypotheses and later protocol additions mapped to recorded artifacts
 - **API cost**: $0.00 (zero-cost)
 - **Git tag**: `protocol-v1`
 
@@ -338,14 +338,10 @@ PYTHONPATH=src uv run python scripts/v9/analyze.py
 
 ## Figures
 
-### Figures 1 to 7, S1, and S2
-- **Protocol**: Figure generation from verified result summaries
-- **Command**:
-  ```bash
-  uv run python scripts/paper/make_figures.py
-  ```
-- **Inputs**: Verified result tables from `docs/experiments.md`, `docs/lit-review/prisma-counts.json`, and `experiments/results/`
-- **Outputs** (`scripts/paper/figures/`):
+### Figures 1 to 7 and S1
+- **Protocol**: Finished figures from verified result summaries. The paper-generation script is archived locally in `temp/submission-cleanup-2026-11-15/scripts/paper/`; it is intentionally excluded from the public repository.
+- **Inputs**: Verified result tables from `docs/experiments.md` and `experiments/results/`
+- **Outputs** (`docs/figures/`):
   - `fig1_reference_monitor_design.png`
   - `fig4_main_suite_success.png`
   - `fig5_compromise_heatmap.png`
@@ -353,8 +349,7 @@ PYTHONPATH=src uv run python scripts/v9/analyze.py
   - `fig7_overhead.png`
   - `fig8_degraded_agent_sequence.png`
   - `fig9_agentdojo_utility_containment.png`
-  - `figS1_prisma_flow.png`
-  - `figS2_routing_regret.png`
+  - `figS1_routing_regret.png`
 - **API cost**: $0.00 (zero-cost)
 - **Git tag**: `paper-v1`
 

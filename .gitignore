@@ -76,3 +76,21 @@ experiments/mining/_clones/
 .ruff_cache/
 .env.gemini_keys
 ~$*
+/temp/
+
+# Publish only the checked submission documents; keep source drafts local.
+!/docs/paper/
+/docs/paper/*
+!/docs/paper/revision-v2/
+/docs/paper/revision-v2/*
+!/docs/paper/revision-v2/Final by Supervisor/
+/docs/paper/revision-v2/Final by Supervisor/*
+!/docs/paper/revision-v2/Final by Supervisor/Submission/
+/docs/paper/revision-v2/Final by Supervisor/Submission/*
+!/docs/paper/revision-v2/Final by Supervisor/Submission/GUIDE_Manuscript_JIDMIS_Checked.docx
+!/docs/paper/revision-v2/Final by Supervisor/GUIDE_Supplementary_Material_Checked.docx
+/docs/paper/More/
+
+# Frozen literature-review evidence is needed to audit the reported counts.
+!docs/lit-review/*.csv
+!docs/lit-review/data/**/*.jsonl

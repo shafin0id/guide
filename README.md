@@ -51,11 +51,11 @@ All numbers come from the files under `experiments/results/` and are reproduced 
 
 | Question | Result |
 |---|---|
-| Is the static bound sound? | No violation in 1,575 replayed runs (2,051 tool calls). A bounded exhaustive check found no mismatch in 594,516 influence cases and no soundness or exactness violation in 1,966,080 gate evaluations. |
+| Is the static bound sound? | No violation in 1,575 replayed runs (2,051 tool calls). A bounded exhaustive check (full configured combinations through four steps, reduced combinations at five) found no mismatch in 594,516 influence cases and no soundness or exactness violation in 1,966,080 gate evaluations. |
 | Does runtime enforcement contain a compromised agent? | On AgentDojo, an assumed-compromise replay contained 543 of 588 in-scope task-injection pairs (92.3%). The `cred` variant raises this to 559 of 588 (95.1%). |
 | Can the utility cost be predicted before deployment? | The static predictor flagged 29 of the 30 benign AgentDojo tasks that enforcement later lost (96.9% accuracy). |
 | What does enforcement cost? | Benign utility fell from 95.9% to 62.9% under strict enforcement. The directory-aware `flexI_cred` variant recovers 78.4%. |
-| How does it compare with existing defenses? | Against the AgentDojo `direct` attack, success fell from 9.0% undefended to 0.5% under GUIDE. Tool filtering reached 1.0%, the PI detector 1.5%, spotlighting 4.5% and prompt repetition 4.0%, all under the same model and agent loop. |
+| How does it compare with existing defenses? | Against the AgentDojo `direct` attack on 200 pairs with a deliberately vulnerable agent prompt, success fell from 9.0% undefended to 0.5% under GUIDE. Tool filtering reached 1.0%, the PI detector 1.5%, spotlighting 4.5% and prompt repetition 4.0%, all under the same model and agent loop. |
 | Does it hold in framework-built applications? | In 15 applications built with LangGraph, CrewAI and AutoGen, a compromised reader agent reached its goal in 23 of 90 undefended runs and in none under strict enforcement. |
 | Does it hold on a more vulnerable model? | On Gemini 3.1 Flash-Lite, attack success fell from 15 of 20 undefended pairs to 1 of 20 under GUIDE. |
 | Does splitting work across agents help? | In a linear chain it cannot lower the worst-case reach. In a census of 55 workflow configurations, 49 (89.1%) were linear chains, so least privilege is the lever that works. |
@@ -64,7 +64,7 @@ All numbers come from the files under `experiments/results/` and are reproduced 
 
 - Live attacks rarely succeeded on DeepSeek 4.1 Flash even without a defense, so most live comparisons have low power.
 - The framework applications and internal suites were written by the author with sandboxed tools. They are not
-  third-party production systems.
+  third-party production systems. Framework adapters evaluate the gate and provenance controls, not the core runtime’s signed hand-offs or router.
 - The bound covers acyclic workflows only, and calls whose control value appears in the user's request are admitted
   even when their content is harmful.
 - CaMeL and Progent were not run under the same conditions.
@@ -83,9 +83,8 @@ tests/                unit, integration, security, regression and performance te
 scripts/
   check_boundaries.py layer rule check (core <- research <- bench)
   v9/                 Protocol v9 run, analysis and completeness scripts
-  paper/              figure generation
 experiments/          frozen raw results and summaries for every protocol
-docs/                 architecture, formal model, evaluation, experiment log, protocols, literature review
+docs/                 architecture, formal model, evaluation, experiment log, protocols, literature review, finished figures and manuscript
 ```
 
 The layer rule is enforced in CI. The core package imports nothing from the research or benchmark packages.
@@ -123,15 +122,14 @@ PYTHONPATH=src uv run python scripts/v9/analyze.py                  # rebuild th
 PYTHONPATH=src uv run python scripts/v9/verify_complete.py          # check that every v9 cell completed
 ```
 
-Every table and figure, with its protocol, inputs, outputs and API cost, is listed in [`REPRODUCE.md`](REPRODUCE.md).
+Every result table and the finished figures, with their protocol, inputs, outputs and API cost, are listed in [`REPRODUCE.md`](REPRODUCE.md).
 
 ## Research method
 
 Every evaluation protocol was frozen in git before its run, and each freeze is a tag (`protocol-v1` to `protocol-v8`,
 `protocol-v9a-frozen`, `protocol-v9b-frozen`, `protocol-v9c-frozen`, `protocol-v9g-frozen`). Scoring is deterministic
 and blind to the condition label. Negative results are kept, including the ceiling effect on nominal tasks and the low
-live attack success on DeepSeek. The literature review followed PRISMA 2020 and included 721 studies; its protocol, search
-log and PRISMA counts are in [`docs/lit-review/`](docs/lit-review/).
+live attack success on DeepSeek. The final manuscript uses a narrative related-work review; its scope is explained in [`docs/lit-review/`](docs/lit-review/).
 
 An earlier version of this project (tag `baseline-v0`) reported benchmark numbers that came from the evaluation code
 instead of the system. Those numbers were withdrawn, and the audit is in [`docs/archive/research-audit.md`](docs/archive/research-audit.md).
@@ -149,9 +147,11 @@ instead of the system. Those numbers were withdrawn, and the audit is in [`docs/
 | [`docs/limitations.md`](docs/limitations.md) | Known limitations and bypasses |
 | [`docs/security.md`](docs/security.md) | Threat model and security notes |
 
+The checked submission manuscript and supplementary material are in [the submission folder](docs/paper/revision-v2/Final%20by%20Supervisor/). Finished figure files are in [`docs/figures/`](docs/figures/).
+
 ## Citation
 
-A manuscript describing GUIDE is under journal review. Until it is published, please cite the software using
+A manuscript describing GUIDE is being prepared for journal submission. Until it is published, please cite the software using
 [`CITATION.cff`](CITATION.cff).
 
 ## Author
