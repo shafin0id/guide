@@ -1,6 +1,10 @@
 <div align="center">
 
-<h1>GUIDE</h1>
+<p>
+  <img src="docs/guide-banner.svg" alt="GUIDE" width="540" />
+</p>
+
+<h3>GUIDE: An External Reference Monitor For Containing Compromised Agents In LLM-Based Multi-Agent Systems</h3>
 
 <p>
   GUIDE is a research prototype for an external reference monitor and static<br />
