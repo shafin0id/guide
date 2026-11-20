@@ -1,0 +1,797 @@
+{
+  "n": 97,
+  "tp": 29,
+  "fp": 2,
+  "fn": 1,
+  "tn": 65,
+  "accuracy": 0.9690721649484536,
+  "accuracy_ci": [
+    0.91297996484689,
+    0.9894266550514476
+  ],
+  "precision": 0.9354838709677419,
+  "recall": 0.9666666666666667,
+  "lost_count": 30,
+  "v6b_utility_count": 89,
+  "v6_utility_count": 60,
+  "predicted_cost_pp": 29.896907216494846,
+  "observed_cost_pp": 29.896907216494846,
+  "records": [
+    {
+      "suite": "banking",
+      "user_task_id": "user_task_0",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "banking",
+      "user_task_id": "user_task_1",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "banking",
+      "user_task_id": "user_task_2",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "banking",
+      "user_task_id": "user_task_3",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "banking",
+      "user_task_id": "user_task_4",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "banking",
+      "user_task_id": "user_task_5",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "banking",
+      "user_task_id": "user_task_6",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "banking",
+      "user_task_id": "user_task_7",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "banking",
+      "user_task_id": "user_task_8",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "banking",
+      "user_task_id": "user_task_9",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "banking",
+      "user_task_id": "user_task_10",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "banking",
+      "user_task_id": "user_task_11",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": false
+    },
+    {
+      "suite": "banking",
+      "user_task_id": "user_task_12",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "banking",
+      "user_task_id": "user_task_13",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "banking",
+      "user_task_id": "user_task_14",
+      "v6b_utility": false,
+      "v6_utility": false,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "banking",
+      "user_task_id": "user_task_15",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "slack",
+      "user_task_id": "user_task_0",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "slack",
+      "user_task_id": "user_task_1",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "slack",
+      "user_task_id": "user_task_2",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "slack",
+      "user_task_id": "user_task_3",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "slack",
+      "user_task_id": "user_task_4",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "slack",
+      "user_task_id": "user_task_5",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "slack",
+      "user_task_id": "user_task_6",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "slack",
+      "user_task_id": "user_task_7",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "slack",
+      "user_task_id": "user_task_8",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "slack",
+      "user_task_id": "user_task_9",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "slack",
+      "user_task_id": "user_task_10",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "slack",
+      "user_task_id": "user_task_11",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "slack",
+      "user_task_id": "user_task_12",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "slack",
+      "user_task_id": "user_task_13",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "slack",
+      "user_task_id": "user_task_14",
+      "v6b_utility": false,
+      "v6_utility": false,
+      "lost": false,
+      "predicted_block": true
+    },
+    {
+      "suite": "slack",
+      "user_task_id": "user_task_15",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "slack",
+      "user_task_id": "user_task_16",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "slack",
+      "user_task_id": "user_task_17",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "slack",
+      "user_task_id": "user_task_18",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "slack",
+      "user_task_id": "user_task_19",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "slack",
+      "user_task_id": "user_task_20",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "travel",
+      "user_task_id": "user_task_0",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "travel",
+      "user_task_id": "user_task_1",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "travel",
+      "user_task_id": "user_task_2",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "travel",
+      "user_task_id": "user_task_3",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "travel",
+      "user_task_id": "user_task_4",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "travel",
+      "user_task_id": "user_task_5",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "travel",
+      "user_task_id": "user_task_6",
+      "v6b_utility": false,
+      "v6_utility": false,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "travel",
+      "user_task_id": "user_task_7",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "travel",
+      "user_task_id": "user_task_8",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "travel",
+      "user_task_id": "user_task_9",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "travel",
+      "user_task_id": "user_task_10",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "travel",
+      "user_task_id": "user_task_11",
+      "v6b_utility": false,
+      "v6_utility": false,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "travel",
+      "user_task_id": "user_task_12",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "travel",
+      "user_task_id": "user_task_13",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "travel",
+      "user_task_id": "user_task_14",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "travel",
+      "user_task_id": "user_task_15",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "travel",
+      "user_task_id": "user_task_16",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "travel",
+      "user_task_id": "user_task_17",
+      "v6b_utility": false,
+      "v6_utility": false,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "travel",
+      "user_task_id": "user_task_18",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "travel",
+      "user_task_id": "user_task_19",
+      "v6b_utility": false,
+      "v6_utility": false,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_0",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_1",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_2",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_3",
+      "v6b_utility": false,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_4",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_5",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_6",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_7",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_8",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_9",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_10",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_11",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_12",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_13",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_14",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_15",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_16",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_17",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_18",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_19",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_20",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_21",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_22",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_23",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_24",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_25",
+      "v6b_utility": false,
+      "v6_utility": false,
+      "lost": false,
+      "predicted_block": true
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_26",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_27",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_28",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_29",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_30",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_31",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_32",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_33",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_34",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_35",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_36",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_37",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_38",
+      "v6b_utility": true,
+      "v6_utility": false,
+      "lost": true,
+      "predicted_block": true
+    },
+    {
+      "suite": "workspace",
+      "user_task_id": "user_task_39",
+      "v6b_utility": true,
+      "v6_utility": true,
+      "lost": false,
+      "predicted_block": false
+    }
+  ]
+}

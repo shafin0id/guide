@@ -1,0 +1,203 @@
+{
+ "strict": {
+  "containment": {
+   "dev": [
+    167,
+    181
+   ],
+   "heldout": [
+    376,
+    407
+   ]
+  },
+  "benign_est": {
+   "dev": [
+    14,
+    30
+   ],
+   "heldout": [
+    44,
+    67
+   ]
+  },
+  "dev_containment_rate": 0.9226519337016574,
+  "dev_benign_rate": 0.4666666666666667
+ },
+ "cred": {
+  "containment": {
+   "dev": [
+    172,
+    181
+   ],
+   "heldout": [
+    387,
+    407
+   ]
+  },
+  "benign_est": {
+   "dev": [
+    14,
+    30
+   ],
+   "heldout": [
+    43,
+    67
+   ]
+  },
+  "dev_containment_rate": 0.9502762430939227,
+  "dev_benign_rate": 0.4666666666666667
+ },
+ "hard": {
+  "containment": {
+   "dev": [
+    172,
+    181
+   ],
+   "heldout": [
+    387,
+    407
+   ]
+  },
+  "benign_est": {
+   "dev": [
+    12,
+    30
+   ],
+   "heldout": [
+    41,
+    67
+   ]
+  },
+  "dev_containment_rate": 0.9502762430939227,
+  "dev_benign_rate": 0.4
+ },
+ "flexI": {
+  "containment": {
+   "dev": [
+    155,
+    181
+   ],
+   "heldout": [
+    351,
+    407
+   ]
+  },
+  "benign_est": {
+   "dev": [
+    20,
+    30
+   ],
+   "heldout": [
+    52,
+    67
+   ]
+  },
+  "dev_containment_rate": 0.856353591160221,
+  "dev_benign_rate": 0.6666666666666666
+ },
+ "flexI_cred": {
+  "containment": {
+   "dev": [
+    160,
+    181
+   ],
+   "heldout": [
+    362,
+    407
+   ]
+  },
+  "benign_est": {
+   "dev": [
+    20,
+    30
+   ],
+   "heldout": [
+    51,
+    67
+   ]
+  },
+  "dev_containment_rate": 0.8839779005524862,
+  "dev_benign_rate": 0.6666666666666666
+ },
+ "flexI_hard": {
+  "containment": {
+   "dev": [
+    160,
+    181
+   ],
+   "heldout": [
+    362,
+    407
+   ]
+  },
+  "benign_est": {
+   "dev": [
+    18,
+    30
+   ],
+   "heldout": [
+    49,
+    67
+   ]
+  },
+  "dev_containment_rate": 0.8839779005524862,
+  "dev_benign_rate": 0.6
+ },
+ "flexA": {
+  "containment": {
+   "dev": [
+    151,
+    181
+   ],
+   "heldout": [
+    339,
+    407
+   ]
+  },
+  "benign_est": {
+   "dev": [
+    20,
+    30
+   ],
+   "heldout": [
+    52,
+    67
+   ]
+  },
+  "dev_containment_rate": 0.8342541436464088,
+  "dev_benign_rate": 0.6666666666666666
+ },
+ "flexA_hard": {
+  "containment": {
+   "dev": [
+    156,
+    181
+   ],
+   "heldout": [
+    350,
+    407
+   ]
+  },
+  "benign_est": {
+   "dev": [
+    18,
+    30
+   ],
+   "heldout": [
+    49,
+    67
+   ]
+  },
+  "dev_containment_rate": 0.861878453038674,
+  "dev_benign_rate": 0.6
+ },
+ "_selection": {
+  "rule": "highest dev benign estimate with dev containment >= strict-2pp; ties -> simpler",
+  "eligible": [
+   "strict",
+   "cred",
+   "hard"
+  ],
+  "chosen": "strict"
+ }
+}

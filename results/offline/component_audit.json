@@ -1,0 +1,1263 @@
+{
+  "component_ablations_agentdojo": {
+    "none": {
+      "benign_admissibility": {
+        "pooled": {
+          "k": 97,
+          "n": 97,
+          "pct": 100.0
+        },
+        "dev_30": {
+          "k": 30,
+          "n": 30,
+          "pct": 100.0
+        },
+        "heldout_67": {
+          "k": 67,
+          "n": 67,
+          "pct": 100.0
+        },
+        "by_suite": {
+          "banking": {
+            "k": 16,
+            "n": 16,
+            "pct": 100.0
+          },
+          "slack": {
+            "k": 21,
+            "n": 21,
+            "pct": 100.0
+          },
+          "travel": {
+            "k": 20,
+            "n": 20,
+            "pct": 100.0
+          },
+          "workspace": {
+            "k": 40,
+            "n": 40,
+            "pct": 100.0
+          }
+        }
+      },
+      "attack_containment": {
+        "pooled": {
+          "k": 0,
+          "n": 588,
+          "pct": 0.0
+        },
+        "dev": {
+          "k": 0,
+          "n": 181,
+          "pct": 0.0
+        },
+        "heldout": {
+          "k": 0,
+          "n": 407,
+          "pct": 0.0
+        },
+        "by_suite": {
+          "banking": {
+            "k": 0,
+            "n": 144,
+            "pct": 0.0
+          },
+          "slack": {
+            "k": 0,
+            "n": 84,
+            "pct": 0.0
+          },
+          "travel": {
+            "k": 0,
+            "n": 120,
+            "pct": 0.0
+          },
+          "workspace": {
+            "k": 0,
+            "n": 240,
+            "pct": 0.0
+          }
+        },
+        "admitted_total": 588,
+        "admitted_taxonomy": {
+          "authorized_recipient_malicious_content": 512,
+          "missing_control_metadata": 16,
+          "omitted_optional_control_param": 20,
+          "untyped_numeric_token_collision": 40
+        }
+      }
+    },
+    "rule_read_only": {
+      "benign_admissibility": {
+        "pooled": {
+          "k": 37,
+          "n": 97,
+          "pct": 38.1443
+        },
+        "dev_30": {
+          "k": 9,
+          "n": 30,
+          "pct": 30.0
+        },
+        "heldout_67": {
+          "k": 28,
+          "n": 67,
+          "pct": 41.791
+        },
+        "by_suite": {
+          "banking": {
+            "k": 4,
+            "n": 16,
+            "pct": 25.0
+          },
+          "slack": {
+            "k": 1,
+            "n": 21,
+            "pct": 4.7619
+          },
+          "travel": {
+            "k": 14,
+            "n": 20,
+            "pct": 70.0
+          },
+          "workspace": {
+            "k": 18,
+            "n": 40,
+            "pct": 45.0
+          }
+        }
+      },
+      "attack_containment": {
+        "pooled": {
+          "k": 588,
+          "n": 588,
+          "pct": 100.0
+        },
+        "dev": {
+          "k": 181,
+          "n": 181,
+          "pct": 100.0
+        },
+        "heldout": {
+          "k": 407,
+          "n": 407,
+          "pct": 100.0
+        },
+        "by_suite": {
+          "banking": {
+            "k": 144,
+            "n": 144,
+            "pct": 100.0
+          },
+          "slack": {
+            "k": 84,
+            "n": 84,
+            "pct": 100.0
+          },
+          "travel": {
+            "k": 120,
+            "n": 120,
+            "pct": 100.0
+          },
+          "workspace": {
+            "k": 240,
+            "n": 240,
+            "pct": 100.0
+          }
+        },
+        "admitted_total": 0,
+        "admitted_taxonomy": {}
+      }
+    },
+    "rule_no_external": {
+      "benign_admissibility": {
+        "pooled": {
+          "k": 68,
+          "n": 97,
+          "pct": 70.1031
+        },
+        "dev_30": {
+          "k": 20,
+          "n": 30,
+          "pct": 66.6667
+        },
+        "heldout_67": {
+          "k": 48,
+          "n": 67,
+          "pct": 71.6418
+        },
+        "by_suite": {
+          "banking": {
+            "k": 6,
+            "n": 16,
+            "pct": 37.5
+          },
+          "slack": {
+            "k": 10,
+            "n": 21,
+            "pct": 47.619
+          },
+          "travel": {
+            "k": 18,
+            "n": 20,
+            "pct": 90.0
+          },
+          "workspace": {
+            "k": 34,
+            "n": 40,
+            "pct": 85.0
+          }
+        }
+      },
+      "attack_containment": {
+        "pooled": {
+          "k": 411,
+          "n": 588,
+          "pct": 69.898
+        },
+        "dev": {
+          "k": 127,
+          "n": 181,
+          "pct": 70.1657
+        },
+        "heldout": {
+          "k": 284,
+          "n": 407,
+          "pct": 69.7789
+        },
+        "by_suite": {
+          "banking": {
+            "k": 128,
+            "n": 144,
+            "pct": 88.8889
+          },
+          "slack": {
+            "k": 63,
+            "n": 84,
+            "pct": 75.0
+          },
+          "travel": {
+            "k": 100,
+            "n": 120,
+            "pct": 83.3333
+          },
+          "workspace": {
+            "k": 120,
+            "n": 240,
+            "pct": 50.0
+          }
+        },
+        "admitted_total": 177,
+        "admitted_taxonomy": {
+          "missing_control_metadata": 16,
+          "authorized_recipient_malicious_content": 101,
+          "omitted_optional_control_param": 20,
+          "untyped_numeric_token_collision": 40
+        }
+      }
+    },
+    "strict": {
+      "benign_admissibility": {
+        "pooled": {
+          "k": 66,
+          "n": 97,
+          "pct": 68.0412
+        },
+        "dev_30": {
+          "k": 16,
+          "n": 30,
+          "pct": 53.3333
+        },
+        "heldout_67": {
+          "k": 50,
+          "n": 67,
+          "pct": 74.6269
+        },
+        "by_suite": {
+          "banking": {
+            "k": 14,
+            "n": 16,
+            "pct": 87.5
+          },
+          "slack": {
+            "k": 6,
+            "n": 21,
+            "pct": 28.5714
+          },
+          "travel": {
+            "k": 20,
+            "n": 20,
+            "pct": 100.0
+          },
+          "workspace": {
+            "k": 26,
+            "n": 40,
+            "pct": 65.0
+          }
+        }
+      },
+      "attack_containment": {
+        "pooled": {
+          "k": 543,
+          "n": 588,
+          "pct": 92.3469
+        },
+        "dev": {
+          "k": 167,
+          "n": 181,
+          "pct": 92.2652
+        },
+        "heldout": {
+          "k": 376,
+          "n": 407,
+          "pct": 92.3833
+        },
+        "by_suite": {
+          "banking": {
+            "k": 128,
+            "n": 144,
+            "pct": 88.8889
+          },
+          "slack": {
+            "k": 79,
+            "n": 84,
+            "pct": 94.0476
+          },
+          "travel": {
+            "k": 99,
+            "n": 120,
+            "pct": 82.5
+          },
+          "workspace": {
+            "k": 237,
+            "n": 240,
+            "pct": 98.75
+          }
+        },
+        "admitted_total": 45,
+        "admitted_taxonomy": {
+          "missing_control_metadata": 16,
+          "authorized_recipient_malicious_content": 6,
+          "omitted_optional_control_param": 20,
+          "untyped_numeric_token_collision": 3
+        }
+      }
+    },
+    "strict_nonempty": {
+      "benign_admissibility": {
+        "pooled": {
+          "k": 57,
+          "n": 97,
+          "pct": 58.7629
+        },
+        "dev_30": {
+          "k": 15,
+          "n": 30,
+          "pct": 50.0
+        },
+        "heldout_67": {
+          "k": 42,
+          "n": 67,
+          "pct": 62.6866
+        },
+        "by_suite": {
+          "banking": {
+            "k": 11,
+            "n": 16,
+            "pct": 68.75
+          },
+          "slack": {
+            "k": 6,
+            "n": 21,
+            "pct": 28.5714
+          },
+          "travel": {
+            "k": 16,
+            "n": 20,
+            "pct": 80.0
+          },
+          "workspace": {
+            "k": 24,
+            "n": 40,
+            "pct": 60.0
+          }
+        }
+      },
+      "attack_containment": {
+        "pooled": {
+          "k": 563,
+          "n": 588,
+          "pct": 95.7483
+        },
+        "dev": {
+          "k": 173,
+          "n": 181,
+          "pct": 95.5801
+        },
+        "heldout": {
+          "k": 390,
+          "n": 407,
+          "pct": 95.8231
+        },
+        "by_suite": {
+          "banking": {
+            "k": 128,
+            "n": 144,
+            "pct": 88.8889
+          },
+          "slack": {
+            "k": 79,
+            "n": 84,
+            "pct": 94.0476
+          },
+          "travel": {
+            "k": 119,
+            "n": 120,
+            "pct": 99.1667
+          },
+          "workspace": {
+            "k": 237,
+            "n": 240,
+            "pct": 98.75
+          }
+        },
+        "admitted_total": 25,
+        "admitted_taxonomy": {
+          "missing_control_metadata": 16,
+          "authorized_recipient_malicious_content": 6,
+          "untyped_numeric_token_collision": 3
+        }
+      }
+    },
+    "cred": {
+      "benign_admissibility": {
+        "pooled": {
+          "k": 65,
+          "n": 97,
+          "pct": 67.0103
+        },
+        "dev_30": {
+          "k": 16,
+          "n": 30,
+          "pct": 53.3333
+        },
+        "heldout_67": {
+          "k": 49,
+          "n": 67,
+          "pct": 73.1343
+        },
+        "by_suite": {
+          "banking": {
+            "k": 13,
+            "n": 16,
+            "pct": 81.25
+          },
+          "slack": {
+            "k": 6,
+            "n": 21,
+            "pct": 28.5714
+          },
+          "travel": {
+            "k": 20,
+            "n": 20,
+            "pct": 100.0
+          },
+          "workspace": {
+            "k": 26,
+            "n": 40,
+            "pct": 65.0
+          }
+        }
+      },
+      "attack_containment": {
+        "pooled": {
+          "k": 559,
+          "n": 588,
+          "pct": 95.068
+        },
+        "dev": {
+          "k": 172,
+          "n": 181,
+          "pct": 95.0276
+        },
+        "heldout": {
+          "k": 387,
+          "n": 407,
+          "pct": 95.086
+        },
+        "by_suite": {
+          "banking": {
+            "k": 144,
+            "n": 144,
+            "pct": 100.0
+          },
+          "slack": {
+            "k": 79,
+            "n": 84,
+            "pct": 94.0476
+          },
+          "travel": {
+            "k": 99,
+            "n": 120,
+            "pct": 82.5
+          },
+          "workspace": {
+            "k": 237,
+            "n": 240,
+            "pct": 98.75
+          }
+        },
+        "admitted_total": 29,
+        "admitted_taxonomy": {
+          "authorized_recipient_malicious_content": 6,
+          "omitted_optional_control_param": 20,
+          "untyped_numeric_token_collision": 3
+        }
+      }
+    },
+    "cred_nonempty": {
+      "benign_admissibility": {
+        "pooled": {
+          "k": 56,
+          "n": 97,
+          "pct": 57.732
+        },
+        "dev_30": {
+          "k": 15,
+          "n": 30,
+          "pct": 50.0
+        },
+        "heldout_67": {
+          "k": 41,
+          "n": 67,
+          "pct": 61.194
+        },
+        "by_suite": {
+          "banking": {
+            "k": 10,
+            "n": 16,
+            "pct": 62.5
+          },
+          "slack": {
+            "k": 6,
+            "n": 21,
+            "pct": 28.5714
+          },
+          "travel": {
+            "k": 16,
+            "n": 20,
+            "pct": 80.0
+          },
+          "workspace": {
+            "k": 24,
+            "n": 40,
+            "pct": 60.0
+          }
+        }
+      },
+      "attack_containment": {
+        "pooled": {
+          "k": 579,
+          "n": 588,
+          "pct": 98.4694
+        },
+        "dev": {
+          "k": 178,
+          "n": 181,
+          "pct": 98.3425
+        },
+        "heldout": {
+          "k": 401,
+          "n": 407,
+          "pct": 98.5258
+        },
+        "by_suite": {
+          "banking": {
+            "k": 144,
+            "n": 144,
+            "pct": 100.0
+          },
+          "slack": {
+            "k": 79,
+            "n": 84,
+            "pct": 94.0476
+          },
+          "travel": {
+            "k": 119,
+            "n": 120,
+            "pct": 99.1667
+          },
+          "workspace": {
+            "k": 237,
+            "n": 240,
+            "pct": 98.75
+          }
+        },
+        "admitted_total": 9,
+        "admitted_taxonomy": {
+          "authorized_recipient_malicious_content": 6,
+          "untyped_numeric_token_collision": 3
+        }
+      }
+    },
+    "hard": {
+      "benign_admissibility": {
+        "pooled": {
+          "k": 61,
+          "n": 97,
+          "pct": 62.8866
+        },
+        "dev_30": {
+          "k": 14,
+          "n": 30,
+          "pct": 46.6667
+        },
+        "heldout_67": {
+          "k": 47,
+          "n": 67,
+          "pct": 70.1493
+        },
+        "by_suite": {
+          "banking": {
+            "k": 13,
+            "n": 16,
+            "pct": 81.25
+          },
+          "slack": {
+            "k": 5,
+            "n": 21,
+            "pct": 23.8095
+          },
+          "travel": {
+            "k": 19,
+            "n": 20,
+            "pct": 95.0
+          },
+          "workspace": {
+            "k": 24,
+            "n": 40,
+            "pct": 60.0
+          }
+        }
+      },
+      "attack_containment": {
+        "pooled": {
+          "k": 559,
+          "n": 588,
+          "pct": 95.068
+        },
+        "dev": {
+          "k": 172,
+          "n": 181,
+          "pct": 95.0276
+        },
+        "heldout": {
+          "k": 387,
+          "n": 407,
+          "pct": 95.086
+        },
+        "by_suite": {
+          "banking": {
+            "k": 144,
+            "n": 144,
+            "pct": 100.0
+          },
+          "slack": {
+            "k": 79,
+            "n": 84,
+            "pct": 94.0476
+          },
+          "travel": {
+            "k": 99,
+            "n": 120,
+            "pct": 82.5
+          },
+          "workspace": {
+            "k": 237,
+            "n": 240,
+            "pct": 98.75
+          }
+        },
+        "admitted_total": 29,
+        "admitted_taxonomy": {
+          "authorized_recipient_malicious_content": 6,
+          "omitted_optional_control_param": 20,
+          "untyped_numeric_token_collision": 3
+        }
+      }
+    },
+    "hard_nonempty": {
+      "benign_admissibility": {
+        "pooled": {
+          "k": 52,
+          "n": 97,
+          "pct": 53.6082
+        },
+        "dev_30": {
+          "k": 13,
+          "n": 30,
+          "pct": 43.3333
+        },
+        "heldout_67": {
+          "k": 39,
+          "n": 67,
+          "pct": 58.209
+        },
+        "by_suite": {
+          "banking": {
+            "k": 10,
+            "n": 16,
+            "pct": 62.5
+          },
+          "slack": {
+            "k": 5,
+            "n": 21,
+            "pct": 23.8095
+          },
+          "travel": {
+            "k": 15,
+            "n": 20,
+            "pct": 75.0
+          },
+          "workspace": {
+            "k": 22,
+            "n": 40,
+            "pct": 55.0
+          }
+        }
+      },
+      "attack_containment": {
+        "pooled": {
+          "k": 579,
+          "n": 588,
+          "pct": 98.4694
+        },
+        "dev": {
+          "k": 178,
+          "n": 181,
+          "pct": 98.3425
+        },
+        "heldout": {
+          "k": 401,
+          "n": 407,
+          "pct": 98.5258
+        },
+        "by_suite": {
+          "banking": {
+            "k": 144,
+            "n": 144,
+            "pct": 100.0
+          },
+          "slack": {
+            "k": 79,
+            "n": 84,
+            "pct": 94.0476
+          },
+          "travel": {
+            "k": 119,
+            "n": 120,
+            "pct": 99.1667
+          },
+          "workspace": {
+            "k": 237,
+            "n": 240,
+            "pct": 98.75
+          }
+        },
+        "admitted_total": 9,
+        "admitted_taxonomy": {
+          "authorized_recipient_malicious_content": 6,
+          "untyped_numeric_token_collision": 3
+        }
+      }
+    },
+    "flexI_cred": {
+      "benign_admissibility": {
+        "pooled": {
+          "k": 80,
+          "n": 97,
+          "pct": 82.4742
+        },
+        "dev_30": {
+          "k": 22,
+          "n": 30,
+          "pct": 73.3333
+        },
+        "heldout_67": {
+          "k": 58,
+          "n": 67,
+          "pct": 86.5672
+        },
+        "by_suite": {
+          "banking": {
+            "k": 13,
+            "n": 16,
+            "pct": 81.25
+          },
+          "slack": {
+            "k": 14,
+            "n": 21,
+            "pct": 66.6667
+          },
+          "travel": {
+            "k": 20,
+            "n": 20,
+            "pct": 100.0
+          },
+          "workspace": {
+            "k": 33,
+            "n": 40,
+            "pct": 82.5
+          }
+        }
+      },
+      "attack_containment": {
+        "pooled": {
+          "k": 522,
+          "n": 588,
+          "pct": 88.7755
+        },
+        "dev": {
+          "k": 160,
+          "n": 181,
+          "pct": 88.3978
+        },
+        "heldout": {
+          "k": 362,
+          "n": 407,
+          "pct": 88.9435
+        },
+        "by_suite": {
+          "banking": {
+            "k": 144,
+            "n": 144,
+            "pct": 100.0
+          },
+          "slack": {
+            "k": 79,
+            "n": 84,
+            "pct": 94.0476
+          },
+          "travel": {
+            "k": 99,
+            "n": 120,
+            "pct": 82.5
+          },
+          "workspace": {
+            "k": 200,
+            "n": 240,
+            "pct": 83.3333
+          }
+        },
+        "admitted_total": 66,
+        "admitted_taxonomy": {
+          "authorized_recipient_malicious_content": 6,
+          "omitted_optional_control_param": 20,
+          "untyped_numeric_token_collision": 40
+        }
+      }
+    },
+    "flexI_cred_nonempty": {
+      "benign_admissibility": {
+        "pooled": {
+          "k": 71,
+          "n": 97,
+          "pct": 73.1959
+        },
+        "dev_30": {
+          "k": 21,
+          "n": 30,
+          "pct": 70.0
+        },
+        "heldout_67": {
+          "k": 50,
+          "n": 67,
+          "pct": 74.6269
+        },
+        "by_suite": {
+          "banking": {
+            "k": 10,
+            "n": 16,
+            "pct": 62.5
+          },
+          "slack": {
+            "k": 14,
+            "n": 21,
+            "pct": 66.6667
+          },
+          "travel": {
+            "k": 16,
+            "n": 20,
+            "pct": 80.0
+          },
+          "workspace": {
+            "k": 31,
+            "n": 40,
+            "pct": 77.5
+          }
+        }
+      },
+      "attack_containment": {
+        "pooled": {
+          "k": 542,
+          "n": 588,
+          "pct": 92.1769
+        },
+        "dev": {
+          "k": 166,
+          "n": 181,
+          "pct": 91.7127
+        },
+        "heldout": {
+          "k": 376,
+          "n": 407,
+          "pct": 92.3833
+        },
+        "by_suite": {
+          "banking": {
+            "k": 144,
+            "n": 144,
+            "pct": 100.0
+          },
+          "slack": {
+            "k": 79,
+            "n": 84,
+            "pct": 94.0476
+          },
+          "travel": {
+            "k": 119,
+            "n": 120,
+            "pct": 99.1667
+          },
+          "workspace": {
+            "k": 200,
+            "n": 240,
+            "pct": 83.3333
+          }
+        },
+        "admitted_total": 46,
+        "admitted_taxonomy": {
+          "authorized_recipient_malicious_content": 6,
+          "untyped_numeric_token_collision": 40
+        }
+      }
+    },
+    "flexI_hard_nonempty": {
+      "benign_admissibility": {
+        "pooled": {
+          "k": 67,
+          "n": 97,
+          "pct": 69.0722
+        },
+        "dev_30": {
+          "k": 19,
+          "n": 30,
+          "pct": 63.3333
+        },
+        "heldout_67": {
+          "k": 48,
+          "n": 67,
+          "pct": 71.6418
+        },
+        "by_suite": {
+          "banking": {
+            "k": 10,
+            "n": 16,
+            "pct": 62.5
+          },
+          "slack": {
+            "k": 13,
+            "n": 21,
+            "pct": 61.9048
+          },
+          "travel": {
+            "k": 15,
+            "n": 20,
+            "pct": 75.0
+          },
+          "workspace": {
+            "k": 29,
+            "n": 40,
+            "pct": 72.5
+          }
+        }
+      },
+      "attack_containment": {
+        "pooled": {
+          "k": 542,
+          "n": 588,
+          "pct": 92.1769
+        },
+        "dev": {
+          "k": 166,
+          "n": 181,
+          "pct": 91.7127
+        },
+        "heldout": {
+          "k": 376,
+          "n": 407,
+          "pct": 92.3833
+        },
+        "by_suite": {
+          "banking": {
+            "k": 144,
+            "n": 144,
+            "pct": 100.0
+          },
+          "slack": {
+            "k": 79,
+            "n": 84,
+            "pct": 94.0476
+          },
+          "travel": {
+            "k": 119,
+            "n": 120,
+            "pct": 99.1667
+          },
+          "workspace": {
+            "k": 200,
+            "n": 240,
+            "pct": 83.3333
+          }
+        },
+        "admitted_total": 46,
+        "admitted_taxonomy": {
+          "authorized_recipient_malicious_content": 6,
+          "untyped_numeric_token_collision": 40
+        }
+      }
+    }
+  },
+  "predictor_oracle_vs_trace_free": {
+    "oracle_trace_predictor_m1b": {
+      "pooled_97": {
+        "n": 97,
+        "tp": 29,
+        "fp": 2,
+        "fn": 1,
+        "tn": 65,
+        "accuracy": 0.9691,
+        "precision": 0.9355,
+        "recall": 0.9667,
+        "f1": 0.9508
+      },
+      "dev_30": {
+        "n": 30,
+        "tp": 12,
+        "fp": 2,
+        "fn": 1,
+        "tn": 15,
+        "accuracy": 0.9,
+        "precision": 0.8571,
+        "recall": 0.9231,
+        "f1": 0.8889
+      },
+      "heldout_67": {
+        "n": 67,
+        "tp": 17,
+        "fp": 0,
+        "fn": 0,
+        "tn": 50,
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "deployable_trace_free_predictor": {
+      "pooled_97": {
+        "n": 97,
+        "tp": 17,
+        "fp": 14,
+        "fn": 13,
+        "tn": 53,
+        "accuracy": 0.7216,
+        "precision": 0.5484,
+        "recall": 0.5667,
+        "f1": 0.5574
+      },
+      "dev_30": {
+        "n": 30,
+        "tp": 6,
+        "fp": 5,
+        "fn": 7,
+        "tn": 12,
+        "accuracy": 0.6,
+        "precision": 0.5455,
+        "recall": 0.4615,
+        "f1": 0.5
+      },
+      "heldout_67": {
+        "n": 67,
+        "tp": 11,
+        "fp": 9,
+        "fn": 6,
+        "tn": 41,
+        "accuracy": 0.7761,
+        "precision": 0.55,
+        "recall": 0.6471,
+        "f1": 0.5946
+      }
+    }
+  },
+  "independent_external_branching_dags": [
+    {
+      "id": "ext-crewai-meeting-assistant-flow",
+      "source_kind": "official_external_repo",
+      "repo": "crewAIInc/crewAI-examples",
+      "sha": "da94a91e691e",
+      "file": "flows/meeting_assistant_flow/src/meeting_assistant_flow/main.py",
+      "topology": "rooted_parallel_fanout_3_sinks",
+      "n_steps": 5,
+      "total_sinks": 3,
+      "is_linear_chain": false,
+      "has_dominating_source_over_sinks": true,
+      "coarse_1agent_signed": {
+        "wbr1_max": 3,
+        "mean_agent_reach": 3.0,
+        "per_agent_sinks": {
+          "ag_shared": 3
+        }
+      },
+      "refined_transcript": {
+        "wbr1_max": 3,
+        "mean_agent_reach": 2.4,
+        "per_agent_sinks": {
+          "ag_loader": 3,
+          "ag_extractor": 3,
+          "ag_trello_ag": 3,
+          "ag_csv_ag": 2,
+          "ag_slack_ag": 1
+        }
+      },
+      "refined_signed": {
+        "wbr1_max": 3,
+        "mean_agent_reach": 1.8,
+        "per_agent_sinks": {
+          "ag_loader": 3,
+          "ag_extractor": 3,
+          "ag_trello_ag": 1,
+          "ag_csv_ag": 1,
+          "ag_slack_ag": 1
+        }
+      }
+    },
+    {
+      "id": "ext-crewai-lead-score-flow",
+      "source_kind": "official_external_repo",
+      "repo": "crewAIInc/crewAI-examples",
+      "sha": "da94a91e691e",
+      "file": "flows/lead-score-flow/src/lead_score_flow/main.py",
+      "topology": "routed_async_fanout_with_human_gate",
+      "n_steps": 4,
+      "total_sinks": 2,
+      "is_linear_chain": false,
+      "has_dominating_source_over_sinks": true,
+      "coarse_1agent_signed": {
+        "wbr1_max": 2,
+        "mean_agent_reach": 2.0,
+        "per_agent_sinks": {
+          "ag_shared": 2
+        }
+      },
+      "refined_transcript": {
+        "wbr1_max": 2,
+        "mean_agent_reach": 1.75,
+        "per_agent_sinks": {
+          "ag_loader": 2,
+          "ag_scorer": 2,
+          "ag_writer_a": 2,
+          "ag_writer_b": 1
+        }
+      },
+      "refined_signed": {
+        "wbr1_max": 2,
+        "mean_agent_reach": 1.5,
+        "per_agent_sinks": {
+          "ag_loader": 2,
+          "ag_scorer": 2,
+          "ag_writer_a": 1,
+          "ag_writer_b": 1
+        }
+      }
+    },
+    {
+      "id": "ext-langgraph-hierarchical-teams-acyclic-unfolding",
+      "source_kind": "official_external_repo",
+      "repo": "langchain-ai/langgraph",
+      "sha": "7830b91a24e6",
+      "file": "examples/multi_agent/hierarchical_agent_teams.ipynb",
+      "topology": "2_branch_isolated_teams_acyclic_unfolding",
+      "n_steps": 5,
+      "total_sinks": 2,
+      "is_linear_chain": false,
+      "has_dominating_source_over_sinks": true,
+      "coarse_1agent_signed": {
+        "wbr1_max": 2,
+        "mean_agent_reach": 2.0,
+        "per_agent_sinks": {
+          "ag_shared": 2
+        }
+      },
+      "refined_transcript": {
+        "wbr1_max": 2,
+        "mean_agent_reach": 1.4,
+        "per_agent_sinks": {
+          "ag_supervisor": 2,
+          "ag_researcher": 2,
+          "ag_scraper": 0,
+          "ag_writer": 2,
+          "ag_charter": 1
+        }
+      },
+      "refined_signed": {
+        "wbr1_max": 2,
+        "mean_agent_reach": 0.8,
+        "per_agent_sinks": {
+          "ag_supervisor": 2,
+          "ag_researcher": 0,
+          "ag_scraper": 0,
+          "ag_writer": 1,
+          "ag_charter": 1
+        }
+      }
+    },
+    {
+      "id": "ext-rootless-decoupled-parallel-sinks-design",
+      "source_kind": "author_modified_rootless_variant",
+      "repo": "author-modified rootless isolation variant of crewAIInc/crewAI-examples meeting_assistant_flow",
+      "sha": "da94a91e691e",
+      "file": "flows/meeting_assistant_flow/src/meeting_assistant_flow/main.py (decoupled branches)",
+      "topology": "rootless_parallel_3_independent_pipelines",
+      "n_steps": 3,
+      "total_sinks": 3,
+      "is_linear_chain": false,
+      "has_dominating_source_over_sinks": false,
+      "coarse_1agent_signed": {
+        "wbr1_max": 3,
+        "mean_agent_reach": 3.0,
+        "per_agent_sinks": {
+          "ag_shared": 3
+        }
+      },
+      "refined_transcript": {
+        "wbr1_max": 3,
+        "mean_agent_reach": 2.0,
+        "per_agent_sinks": {
+          "ag_trello_ag": 3,
+          "ag_csv_ag": 2,
+          "ag_slack_ag": 1
+        }
+      },
+      "refined_signed": {
+        "wbr1_max": 1,
+        "mean_agent_reach": 1.0,
+        "per_agent_sinks": {
+          "ag_trello_ag": 1,
+          "ag_csv_ag": 1,
+          "ag_slack_ag": 1
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "n_per_cell": 500,
+  "seed": 11,
+  "detection_rate": {
+    "valid (control)": {
+      "per-principal": 0.0,
+      "shared-key": 0.0,
+      "none": 0.0
+    },
+    "content_edit": {
+      "per-principal": 1.0,
+      "shared-key": 1.0,
+      "none": 0.0
+    },
+    "field_deleted": {
+      "per-principal": 1.0,
+      "shared-key": 1.0,
+      "none": 0.0
+    },
+    "field_added": {
+      "per-principal": 1.0,
+      "shared-key": 1.0,
+      "none": 0.0
+    },
+    "type_changed": {
+      "per-principal": 1.0,
+      "shared-key": 1.0,
+      "none": 0.0
+    },
+    "signature_bitflip": {
+      "per-principal": 1.0,
+      "shared-key": 1.0,
+      "none": 0.0
+    },
+    "content_edit_relinked": {
+      "per-principal": 1.0,
+      "shared-key": 1.0,
+      "none": 0.0
+    },
+    "replay_wrong_parent": {
+      "per-principal": 1.0,
+      "shared-key": 1.0,
+      "none": 0.0
+    },
+    "expired": {
+      "per-principal": 1.0,
+      "shared-key": 1.0,
+      "none": 0.0
+    },
+    "misdelivered": {
+      "per-principal": 1.0,
+      "shared-key": 1.0,
+      "none": 0.0
+    },
+    "sender_spoofed": {
+      "per-principal": 1.0,
+      "shared-key": 0.0,
+      "none": 0.0
+    }
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "abs_reach_medians": {
+    "nominal_transcript": {
+      "median_abs": 2,
+      "median_nom_norm": 1.0
+    },
+    "least_privilege_transcript": {
+      "median_abs": 1,
+      "median_nom_norm": 0.5,
+      "reduction_from_i": 1
+    },
+    "least_privilege_signed": {
+      "median_abs": 1,
+      "median_nom_norm": 0.5,
+      "reduction_from_i": 1
+    },
+    "least_privilege_signed_best_partition": {
+      "median_abs": 1,
+      "median_nom_norm": 0.5,
+      "reduction_from_i": 1
+    }
+  },
+  "census": {
+    "own": {
+      "n": 19,
+      "chain_count": 19,
+      "chain_pct": 1.0,
+      "chain_ci": [
+        0.8318207759473837,
+        1.0
+      ],
+      "dom_all_count": 19,
+      "dom_all_pct": 1.0,
+      "dom_all_ci": [
+        0.8318207759473837,
+        1.0
+      ],
+      "n_with_sinks": 19,
+      "dom_sinks_count": 19,
+      "dom_sinks_pct": 1.0,
+      "dom_sinks_ci": [
+        0.8318207759473837,
+        1.0
+      ],
+      "prop4_floor1_count": 19,
+      "prop4_floor1_pct": 1.0,
+      "prop4_floor1_ci": [
+        0.8318207759473837,
+        1.0
+      ]
+    },
+    "mined_scored": {
+      "n": 36,
+      "chain_count": 30,
+      "chain_pct": 0.8333333333333334,
+      "chain_ci": [
+        0.6810920568872053,
+        0.921295524049819
+      ],
+      "dom_all_count": 36,
+      "dom_all_pct": 1.0,
+      "dom_all_ci": [
+        0.9035813714055363,
+        1.0
+      ],
+      "n_with_sinks": 2,
+      "dom_sinks_count": 2,
+      "dom_sinks_pct": 1.0,
+      "dom_sinks_ci": [
+        0.3423802275066531,
+        1.0
+      ],
+      "prop4_floor1_count": 2,
+      "prop4_floor1_pct": 0.05555555555555555,
+      "prop4_floor1_ci": [
+        0.015369986664161854,
+        0.18144657208647252
+      ]
+    },
+    "total_acyclic": {
+      "n": 55,
+      "chain_count": 49,
+      "chain_pct": 0.8909090909090909,
+      "chain_ci": [
+        0.7817445091344649,
+        0.9490327499921767
+      ],
+      "dom_all_count": 55,
+      "dom_all_pct": 1.0,
+      "dom_all_ci": [
+        0.9347150988829136,
+        1.0
+      ],
+      "n_with_sinks": 21,
+      "dom_sinks_count": 21,
+      "dom_sinks_pct": 1.0,
+      "dom_sinks_ci": [
+        0.8453609810751531,
+        1.0
+      ],
+      "prop4_floor1_count": 21,
+      "prop4_floor1_pct": 0.38181818181818183,
+      "prop4_floor1_ci": [
+        0.2651595425889379,
+        0.5139077976751008
+      ]
+    },
+    "cyclic_count": 1,
+    "cyclic_configs": [
+      "zhongyu09/openchatbi:openchatbi/text2sql/sql_graph.py"
+    ]
+  }
+}

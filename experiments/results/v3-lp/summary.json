@@ -1,0 +1,102 @@
+{
+  "replay": {
+    "T01": {
+      "train_calls": 3,
+      "test_calls": 2,
+      "test_denied": 0
+    },
+    "T02": {
+      "train_calls": 3,
+      "test_calls": 2,
+      "test_denied": 0
+    },
+    "T03": {
+      "train_calls": 3,
+      "test_calls": 2,
+      "test_denied": 0
+    },
+    "T04": {
+      "train_calls": 3,
+      "test_calls": 2,
+      "test_denied": 0
+    },
+    "T05": {
+      "train_calls": 3,
+      "test_calls": 2,
+      "test_denied": 0
+    },
+    "T06": {
+      "train_calls": 3,
+      "test_calls": 2,
+      "test_denied": 0
+    },
+    "T07": {
+      "train_calls": 3,
+      "test_calls": 2,
+      "test_denied": 0
+    },
+    "T08": {
+      "train_calls": 3,
+      "test_calls": 2,
+      "test_denied": 0
+    },
+    "T09": {
+      "train_calls": 3,
+      "test_calls": 2,
+      "test_denied": 0
+    },
+    "T10": {
+      "train_calls": 3,
+      "test_calls": 2,
+      "test_denied": 0
+    },
+    "T11": {
+      "train_calls": 3,
+      "test_calls": 2,
+      "test_denied": 0
+    },
+    "T12": {
+      "train_calls": 3,
+      "test_calls": 2,
+      "test_denied": 0
+    },
+    "T13": {
+      "train_calls": 3,
+      "test_calls": 2,
+      "test_denied": 0
+    },
+    "T14": {
+      "train_calls": 3,
+      "test_calls": 2,
+      "test_denied": 0
+    },
+    "T15": {
+      "train_calls": 6,
+      "test_calls": 4,
+      "test_denied": 0
+    },
+    "T16": {
+      "train_calls": 6,
+      "test_calls": 4,
+      "test_denied": 0
+    },
+    "T17": {
+      "train_calls": 3,
+      "test_calls": 2,
+      "test_denied": 0
+    },
+    "T18": {
+      "train_calls": 9,
+      "test_calls": 6,
+      "test_denied": 0
+    }
+  },
+  "live_success": 1.0,
+  "live_runs": 36,
+  "live_denials": 0,
+  "git": {
+    "commit": "00446514c6735e0fcec71b700257c59904248d14",
+    "dirty": false
+  },
+  "finished_utc": "2026-09-29T15:59:51Z"
+}

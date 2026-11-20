@@ -1,0 +1,61 @@
+{
+  "suite": "compromised",
+  "conditions": [
+    "B1",
+    "B2",
+    "P",
+    "GPLUS"
+  ],
+  "reps": 5,
+  "seed": 2026,
+  "provider": "openai-compatible",
+  "model_requested": "qwen/qwen3.8-27b",
+  "base_url": "https://api.groq.com/openai/v1",
+  "settings": {
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "seed": null,
+    "json_mode": true
+  },
+  "git": {
+    "commit": "19d8025b83e1d0ee6f514c920f0f144ad025f212",
+    "dirty": true
+  },
+  "python": "3.12.13",
+  "platform": "macOS-26.5.2-arm64-arm-64bit",
+  "tasks": {
+    "K2": "12bea64a21f93f1f",
+    "K1": "d0f64be64f0c9183",
+    "K3": "88c188084d90ecf0",
+    "K4": "db3a2d66cb3c8734"
+  },
+  "started_utc": "2026-09-30T11:31:25Z",
+  "items_total": 80,
+  "items_resumed_skipped": 0,
+  "reportable": true,
+  "previous_sessions": [
+    {
+      "started_utc": "2026-09-30T10:26:34Z",
+      "git": {
+        "commit": "19d8025b83e1d0ee6f514c920f0f144ad025f212",
+        "dirty": true
+      },
+      "finished_utc": null
+    },
+    {
+      "started_utc": "2026-09-30T11:03:59Z",
+      "git": {
+        "commit": "19d8025b83e1d0ee6f514c920f0f144ad025f212",
+        "dirty": true
+      },
+      "finished_utc": "2026-09-30T11:29:06Z"
+    }
+  ],
+  "finished_utc": "2026-09-30T12:03:04Z",
+  "model_ids_observed": [
+    "qwen/qwen3.8-27b"
+  ],
+  "status_counts_this_session": {
+    "failed": 80
+  }
+}

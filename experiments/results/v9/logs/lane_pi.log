@@ -1,0 +1,16 @@
+W1113 22:17:44.869000 25092 .venv/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
+<REPO_ROOT>/.venv/lib/python3.12/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+
+Loading weights:   0%|          | 0/202 [00:00<?, ?it/s]
+Loading weights: 100%|██████████| 202/202 [00:00<00:00, 6851.39it/s]
+[10/97] new=10 failed=0 run_usd=0.002
+[20/97] new=20 failed=0 run_usd=0.005
+[30/97] new=30 failed=0 run_usd=0.009
+[40/97] new=40 failed=0 run_usd=0.015
+[50/97] new=50 failed=0 run_usd=0.029
+[60/97] new=60 failed=0 run_usd=0.037
+[70/97] new=70 failed=0 run_usd=0.040
+[80/97] new=80 failed=0 run_usd=0.046
+/Applications/KiroCrew.app/Contents/Resources/backend-dist/kirocrew-backend-arm64/lib/python3.12/multiprocessing/resource_tracker.py:279: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '

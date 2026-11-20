@@ -1,0 +1,27 @@
+[10/200] new=0 failed=0 run_usd=0.000
+W1113 23:36:48.779000 36848 .venv/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
+<REPO_ROOT>/.venv/lib/python3.12/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+
+Loading weights:   0%|          | 0/202 [00:00<?, ?it/s]
+Loading weights: 100%|██████████| 202/202 [00:00<00:00, 11733.94it/s]
+[20/200] new=9 failed=0 run_usd=0.006
+[30/200] new=19 failed=0 run_usd=0.012
+[40/200] new=29 failed=0 run_usd=0.020
+[50/200] new=39 failed=0 run_usd=0.026
+[60/200] new=49 failed=0 run_usd=0.034
+[70/200] new=59 failed=0 run_usd=0.044
+[80/200] new=69 failed=0 run_usd=0.051
+[90/200] new=79 failed=0 run_usd=0.055
+[100/200] new=89 failed=0 run_usd=0.060
+[110/200] new=99 failed=0 run_usd=0.066
+[120/200] new=109 failed=0 run_usd=0.074
+[130/200] new=119 failed=0 run_usd=0.080
+[140/200] new=129 failed=0 run_usd=0.089
+[150/200] new=139 failed=0 run_usd=0.096
+[160/200] new=149 failed=0 run_usd=0.102
+[170/200] new=159 failed=0 run_usd=0.109
+[180/200] new=169 failed=0 run_usd=0.116
+[190/200] new=179 failed=0 run_usd=0.121
+[200/200] new=189 failed=0 run_usd=0.131
+DONE new=189 failed=0 run_usd=0.131

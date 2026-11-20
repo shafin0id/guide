@@ -1,0 +1,29 @@
+{
+  "n_configs": 19,
+  "unconstrained_reachability_pct": 94.7,
+  "nominal_workflow_preserved_pct": 100.0,
+  "total_sink_capabilities_nominal": 144,
+  "total_sink_capabilities_least_privilege": 64,
+  "mean_per_config_sink_reduction_pct": 53.2,
+  "aggregate_sink_reduction_pct": 55.6,
+  "by_pattern": {
+    "langgraph": {
+      "n": 7,
+      "unconstrained_pct": 100.0
+    },
+    "crewai": {
+      "n": 7,
+      "unconstrained_pct": 85.71428571428571
+    },
+    "autogen": {
+      "n": 5,
+      "unconstrained_pct": 100.0
+    }
+  },
+  "git": {
+    "commit": "8a835dd958b319f6e0d2818d5168c6cd2b532e5f",
+    "dirty": true
+  },
+  "finished_utc": "2026-11-19T16:11:17Z",
+  "scope_note": "Configurations are hand-authored in GUIDE's own types reproducing documented LangGraph/CrewAI/AutoGen structural patterns; no external framework code was executed."
+}

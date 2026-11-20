@@ -1,0 +1,623 @@
+{
+  "manifests": [
+    {
+      "path": "experiments/pilot/pilot-1/manifest.json",
+      "suite": "pilot",
+      "model_requested": "deepseek-chat",
+      "model_ids_observed": [
+        "deepseek-flash"
+      ],
+      "base_url": "https://api.deepseek.com",
+      "settings": {
+        "temperature": 0.0,
+        "max_tokens": 1024,
+        "seed": 42,
+        "json_mode": true
+      },
+      "git_commit": null,
+      "git_dirty": null,
+      "started_at": null,
+      "finished_at": null,
+      "total_runs": null
+    },
+    {
+      "path": "experiments/pilot/pilot-2/manifest.json",
+      "suite": "pilot",
+      "model_requested": "deepseek-chat",
+      "model_ids_observed": [
+        "deepseek-flash"
+      ],
+      "base_url": "https://api.deepseek.com",
+      "settings": {
+        "temperature": 0.0,
+        "max_tokens": 4096,
+        "seed": 42,
+        "json_mode": true
+      },
+      "git_commit": null,
+      "git_dirty": null,
+      "started_at": null,
+      "finished_at": null,
+      "total_runs": null
+    },
+    {
+      "path": "experiments/pilot/pilot-3/manifest.json",
+      "suite": "pilot",
+      "model_requested": "deepseek-chat",
+      "model_ids_observed": [
+        "deepseek-flash"
+      ],
+      "base_url": "https://api.deepseek.com",
+      "settings": {
+        "temperature": 0.0,
+        "max_tokens": 4096,
+        "seed": 42,
+        "json_mode": true
+      },
+      "git_commit": null,
+      "git_dirty": null,
+      "started_at": null,
+      "finished_at": null,
+      "total_runs": null
+    },
+    {
+      "path": "experiments/results/adversarial/manifest.json",
+      "suite": "adversarial",
+      "model_requested": "deepseek-chat",
+      "model_ids_observed": [
+        "deepseek-flash",
+        "fault-injected"
+      ],
+      "base_url": "https://api.deepseek.com",
+      "settings": {
+        "temperature": 0.0,
+        "max_tokens": 4096,
+        "seed": 42,
+        "json_mode": true
+      },
+      "git_commit": null,
+      "git_dirty": null,
+      "started_at": null,
+      "finished_at": null,
+      "total_runs": null
+    },
+    {
+      "path": "experiments/results/main/manifest.json",
+      "suite": "main",
+      "model_requested": "deepseek-chat",
+      "model_ids_observed": [
+        "deepseek-flash"
+      ],
+      "base_url": "https://api.deepseek.com",
+      "settings": {
+        "temperature": 0.0,
+        "max_tokens": 4096,
+        "seed": 42,
+        "json_mode": true
+      },
+      "git_commit": null,
+      "git_dirty": null,
+      "started_at": null,
+      "finished_at": null,
+      "total_runs": null
+    },
+    {
+      "path": "experiments/results/sequence/manifest.json",
+      "suite": "sequence",
+      "model_requested": "deepseek-chat",
+      "model_ids_observed": [
+        "deepseek-flash",
+        "fault-injected"
+      ],
+      "base_url": "https://api.deepseek.com",
+      "settings": {
+        "temperature": 0.0,
+        "max_tokens": 4096,
+        "seed": 42,
+        "json_mode": true
+      },
+      "git_commit": null,
+      "git_dirty": null,
+      "started_at": null,
+      "finished_at": null,
+      "total_runs": null
+    },
+    {
+      "path": "experiments/results/v2-adversarial/manifest.json",
+      "suite": "adversarial",
+      "model_requested": "deepseek-chat",
+      "model_ids_observed": [
+        "deepseek-flash",
+        "fault-injected"
+      ],
+      "base_url": "https://api.deepseek.com",
+      "settings": {
+        "temperature": 0.0,
+        "max_tokens": 4096,
+        "seed": 42,
+        "json_mode": true
+      },
+      "git_commit": null,
+      "git_dirty": null,
+      "started_at": null,
+      "finished_at": null,
+      "total_runs": null
+    },
+    {
+      "path": "experiments/results/v2-compromised/manifest.json",
+      "suite": "compromised",
+      "model_requested": "deepseek-chat",
+      "model_ids_observed": [
+        "deepseek-flash"
+      ],
+      "base_url": "https://api.deepseek.com",
+      "settings": {
+        "temperature": 0.0,
+        "max_tokens": 4096,
+        "seed": 42,
+        "json_mode": true
+      },
+      "git_commit": null,
+      "git_dirty": null,
+      "started_at": null,
+      "finished_at": null,
+      "total_runs": null
+    },
+    {
+      "path": "experiments/results/v2-main/manifest.json",
+      "suite": "main",
+      "model_requested": "deepseek-chat",
+      "model_ids_observed": [
+        "deepseek-flash"
+      ],
+      "base_url": "https://api.deepseek.com",
+      "settings": {
+        "temperature": 0.0,
+        "max_tokens": 4096,
+        "seed": 42,
+        "json_mode": true
+      },
+      "git_commit": null,
+      "git_dirty": null,
+      "started_at": null,
+      "finished_at": null,
+      "total_runs": null
+    },
+    {
+      "path": "experiments/results/v3-nominal/manifest.json",
+      "suite": "main",
+      "model_requested": "deepseek-chat",
+      "model_ids_observed": [
+        "deepseek-flash"
+      ],
+      "base_url": "https://api.deepseek.com",
+      "settings": {
+        "temperature": 0.0,
+        "max_tokens": 4096,
+        "seed": 42,
+        "json_mode": true
+      },
+      "git_commit": null,
+      "git_dirty": null,
+      "started_at": null,
+      "finished_at": null,
+      "total_runs": null
+    },
+    {
+      "path": "experiments/results/v5-compromised-gemini/manifest.json",
+      "suite": "compromised",
+      "model_requested": "gemini-3.5-flash-lite",
+      "model_ids_observed": [
+        "gemini-3.5-flash-lite"
+      ],
+      "base_url": "https://generativelanguage.googleapis.com/v1beta/openai",
+      "settings": {
+        "temperature": 0.0,
+        "max_tokens": 4096,
+        "seed": null,
+        "json_mode": true
+      },
+      "git_commit": null,
+      "git_dirty": null,
+      "started_at": null,
+      "finished_at": null,
+      "total_runs": null
+    },
+    {
+      "path": "experiments/results/v5-compromised-groq-gptoss120b/manifest.json",
+      "suite": "compromised",
+      "model_requested": "openai/gpt-oss-120b",
+      "model_ids_observed": [
+        "openai/gpt-oss-120b"
+      ],
+      "base_url": "https://api.groq.com/openai/v1",
+      "settings": {
+        "temperature": 0.0,
+        "max_tokens": 4096,
+        "seed": null,
+        "json_mode": true
+      },
+      "git_commit": null,
+      "git_dirty": null,
+      "started_at": null,
+      "finished_at": null,
+      "total_runs": null
+    },
+    {
+      "path": "experiments/results/v5-compromised-groq-qwen/manifest.json",
+      "suite": "compromised",
+      "model_requested": "qwen/qwen3.8-27b",
+      "model_ids_observed": [
+        "qwen/qwen3.8-27b"
+      ],
+      "base_url": "https://api.groq.com/openai/v1",
+      "settings": {
+        "temperature": 0.0,
+        "max_tokens": 4096,
+        "seed": null,
+        "json_mode": true
+      },
+      "git_commit": null,
+      "git_dirty": null,
+      "started_at": null,
+      "finished_at": null,
+      "total_runs": null
+    },
+    {
+      "path": "experiments/results/v5-main-gemini/manifest.json",
+      "suite": "main",
+      "model_requested": "gemini-3.5-flash-lite",
+      "model_ids_observed": [
+        "gemini-3.5-flash-lite"
+      ],
+      "base_url": "https://generativelanguage.googleapis.com/v1beta/openai",
+      "settings": {
+        "temperature": 0.0,
+        "max_tokens": 4096,
+        "seed": null,
+        "json_mode": true
+      },
+      "git_commit": null,
+      "git_dirty": null,
+      "started_at": null,
+      "finished_at": null,
+      "total_runs": null
+    },
+    {
+      "path": "experiments/results/v5-main-groq-gptoss120b/manifest.json",
+      "suite": "main",
+      "model_requested": "openai/gpt-oss-120b",
+      "model_ids_observed": [
+        "openai/gpt-oss-120b"
+      ],
+      "base_url": "https://api.groq.com/openai/v1",
+      "settings": {
+        "temperature": 0.0,
+        "max_tokens": 4096,
+        "seed": null,
+        "json_mode": true
+      },
+      "git_commit": null,
+      "git_dirty": null,
+      "started_at": null,
+      "finished_at": null,
+      "total_runs": null
+    }
+  ],
+  "runs": {
+    "experiments/results/agentdojo-v6": {
+      "token_usage_rows": 11,
+      "token_usage_models": {
+        "model=deepseek-v4-flash": 11
+      },
+      "dates": [],
+      "summary_fields": {
+        "model=deepseek-v4-flash": 9,
+        "attack=important_instructions": 4,
+        "suite=workspace": 2,
+        "attack=none": 5,
+        "suite=banking": 3,
+        "suite=slack": 2,
+        "suite=travel": 2
+      }
+    },
+    "experiments/results/agentdojo-v6b-undefended": {
+      "token_usage_rows": 8,
+      "token_usage_models": {
+        "model=deepseek-v4-flash": 8
+      },
+      "dates": [],
+      "summary_fields": {
+        "model=deepseek-v4-flash": 8,
+        "attack=important_instructions": 4,
+        "suite=workspace": 2,
+        "attack=none": 4,
+        "suite=banking": 2,
+        "suite=slack": 2,
+        "suite=travel": 2
+      }
+    },
+    "v9_jsonl_files": {
+      "experiments/results/v9/ledger.jsonl": {
+        "rows": 29875,
+        "providers": {
+          "deepseek": 28820,
+          "gemini": 1055
+        },
+        "models": {},
+        "conditions": {},
+        "attacks": {},
+        "statuses": {},
+        "dates": []
+      },
+      "experiments/results/v9/realworld/main/rows.jsonl": {
+        "rows": 720,
+        "providers": {},
+        "models": {},
+        "conditions": {
+          "none": 180,
+          "strict": 180,
+          "cred": 180,
+          "flexI_cred": 180
+        },
+        "attacks": {},
+        "statuses": {
+          "completed": 720
+        },
+        "dates": []
+      },
+      "experiments/results/v9/realworld/smoke/rows.jsonl": {
+        "rows": 180,
+        "providers": {},
+        "models": {},
+        "conditions": {
+          "none": 45,
+          "strict": 45,
+          "cred": 45,
+          "flexI_cred": 45
+        },
+        "attacks": {},
+        "statuses": {
+          "completed": 180
+        },
+        "dates": []
+      },
+      "experiments/results/v9/realworld/smoke2/rows.jsonl": {
+        "rows": 60,
+        "providers": {},
+        "models": {},
+        "conditions": {
+          "none": 60
+        },
+        "attacks": {},
+        "statuses": {
+          "completed": 60
+        },
+        "dates": []
+      },
+      "experiments/results/v9/runs/gemini/rows_important_instructions_default.jsonl": {
+        "rows": 96,
+        "providers": {
+          "gemini-default": 96
+        },
+        "models": {},
+        "conditions": {
+          "tool_filter": 5,
+          "none": 20,
+          "spotlighting": 5,
+          "cred": 20,
+          "repeat_user_prompt": 6,
+          "flexI_cred": 20,
+          "strict": 20
+        },
+        "attacks": {
+          "important_instructions": 96
+        },
+        "statuses": {
+          "failed": 2,
+          "completed": 94
+        },
+        "dates": []
+      },
+      "experiments/results/v9/runs/main/rows_adaptive_weak.jsonl": {
+        "rows": 141,
+        "providers": {},
+        "models": {},
+        "conditions": {
+          "none": 34,
+          "cred": 36,
+          "flexI_cred": 35,
+          "strict": 36
+        },
+        "attacks": {},
+        "statuses": {
+          "completed": 120,
+          "failed": 21
+        },
+        "dates": []
+      },
+      "experiments/results/v9/runs/main/rows_direct_weak.jsonl": {
+        "rows": 1793,
+        "providers": {
+          "deepseek-weak": 1793
+        },
+        "models": {},
+        "conditions": {
+          "tool_filter": 391,
+          "none": 200,
+          "strict": 200,
+          "spotlighting": 200,
+          "cred": 200,
+          "repeat_user_prompt": 202,
+          "flexI_cred": 200,
+          "pi_detector": 200
+        },
+        "attacks": {
+          "direct": 1793
+        },
+        "statuses": {
+          "completed": 1791,
+          "failed": 2
+        },
+        "dates": []
+      },
+      "experiments/results/v9/runs/main/rows_guide_aware_weak.jsonl": {
+        "rows": 800,
+        "providers": {
+          "deepseek-weak": 800
+        },
+        "models": {},
+        "conditions": {
+          "none": 200,
+          "strict": 200,
+          "cred": 200,
+          "flexI_cred": 200
+        },
+        "attacks": {
+          "guide_aware": 800
+        },
+        "statuses": {
+          "completed": 800
+        },
+        "dates": []
+      },
+      "experiments/results/v9/runs/main/rows_important_instructions_weak.jsonl": {
+        "rows": 1779,
+        "providers": {
+          "deepseek-weak": 1779
+        },
+        "models": {},
+        "conditions": {
+          "tool_filter": 378,
+          "none": 200,
+          "spotlighting": 200,
+          "strict": 200,
+          "repeat_user_prompt": 201,
+          "cred": 200,
+          "flexI_cred": 200,
+          "pi_detector": 200
+        },
+        "attacks": {
+          "important_instructions": 1779
+        },
+        "statuses": {
+          "completed": 1778,
+          "failed": 1
+        },
+        "dates": []
+      },
+      "experiments/results/v9/runs/main/rows_none_default.jsonl": {
+        "rows": 874,
+        "providers": {
+          "deepseek-default": 874
+        },
+        "models": {},
+        "conditions": {
+          "tool_filter": 194,
+          "none": 98,
+          "strict": 97,
+          "cred": 97,
+          "flexI_cred": 97,
+          "spotlighting": 97,
+          "repeat_user_prompt": 97,
+          "pi_detector": 97
+        },
+        "attacks": {
+          "none": 874
+        },
+        "statuses": {
+          "completed": 873,
+          "failed": 1
+        },
+        "dates": []
+      },
+      "experiments/results/v9/runs/rep2/rows_none_default.jsonl": {
+        "rows": 388,
+        "providers": {
+          "deepseek-default": 388
+        },
+        "models": {},
+        "conditions": {
+          "none": 97,
+          "strict": 97,
+          "cred": 97,
+          "flexI_cred": 97
+        },
+        "attacks": {
+          "none": 388
+        },
+        "statuses": {
+          "completed": 388
+        },
+        "dates": []
+      },
+      "experiments/results/v9/runs/rep3/rows_none_default.jsonl": {
+        "rows": 388,
+        "providers": {
+          "deepseek-default": 388
+        },
+        "models": {},
+        "conditions": {
+          "none": 97,
+          "strict": 97,
+          "cred": 97,
+          "flexI_cred": 97
+        },
+        "attacks": {
+          "none": 388
+        },
+        "statuses": {
+          "completed": 388
+        },
+        "dates": []
+      }
+    },
+    "bench_results_models": {
+      "experiments/results/adversarial/results.jsonl": {
+        "model_ids=['deepseek-flash']": 500,
+        "model_ids=['deepseek-flash', 'fault-injected']": 50
+      },
+      "experiments/results/main/results.jsonl": {
+        "model_ids=['deepseek-flash']": 360
+      },
+      "experiments/results/main-rescored/results.jsonl": {
+        "model_ids=['deepseek-flash']": 360
+      },
+      "experiments/results/sequence/results.jsonl": {
+        "model_ids=['deepseek-flash', 'fault-injected']": 43,
+        "model_ids=['deepseek-flash']": 57
+      },
+      "experiments/results/v2-adversarial/results.jsonl": {
+        "model_ids=['deepseek-flash']": 150,
+        "model_ids=['deepseek-flash', 'fault-injected']": 15
+      },
+      "experiments/results/v2-compromised/results.jsonl": {
+        "model_ids=['deepseek-flash']": 140
+      },
+      "experiments/results/v2-main/results.jsonl": {
+        "model_ids=['deepseek-flash']": 360
+      },
+      "experiments/results/v3-lp/results.jsonl": {
+        "model_ids=['deepseek-flash']": 36
+      },
+      "experiments/results/v3-nominal/results.jsonl": {
+        "model_ids=['deepseek-flash']": 90
+      },
+      "experiments/results/v5-compromised-gemini/results.jsonl": {
+        "model_ids=['gemini-3.5-flash-lite']": 46
+      },
+      "experiments/results/v5-compromised-groq-gptoss120b/results.jsonl": {
+        "model_ids=['openai/gpt-oss-120b']": 38
+      },
+      "experiments/results/v5-compromised-groq-qwen/results.jsonl": {
+        "model_ids=['qwen/qwen3.8-27b']": 3
+      },
+      "experiments/results/v5-main-gemini/results.jsonl": {
+        "model_ids=['gemini-3.5-flash-lite']": 248
+      },
+      "experiments/results/v5-main-groq-gptoss120b/results.jsonl": {
+        "model_ids=['openai/gpt-oss-120b']": 166
+      }
+    }
+  }
+}

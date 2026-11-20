@@ -1,0 +1,73 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "guide-mas"
+version = "0.4.0"
+description = "GUIDE: an external reference monitor that bounds the blast radius of compromised agents in LLM multi-agent systems (research prototype)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Shafin Ahmad" }]
+keywords = ["multi-agent-systems", "llm", "orchestration", "policy-enforcement", "provenance", "audit"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+# Core package imports only cryptography; benchmark and framework adapters are optional extras.
+dependencies = [
+    "cryptography>=42,<47",
+]
+
+[project.optional-dependencies]
+agentdojo = ["agentdojo==0.1.35"]
+openai = ["httpx>=0.27,<1"]  # OpenAI-compatible HTTP provider
+bench = ["httpx>=0.27,<1", "scipy>=1.11,<2", "numpy>=1.26,<3"]
+figures = ["matplotlib>=3.10.9"]
+dev = ["agentdojo==0.1.35", "pytest>=8,<10", "hypothesis>=6.100,<7", "ruff>=0.6,<1", "mypy>=1.10,<2", "scipy>=1.11,<2", "numpy>=1.26,<3", "httpx>=0.27,<1", "matplotlib>=3.10.9"]
+
+[project.scripts]
+guide-bench = "guide_bench.run:main"
+guide-agentdojo = "guide_agentdojo.run:main"
+guide-agentdojo-v9 = "guide_agentdojo.run_v9:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["guide*", "guide_research*", "guide_bench*"]
+
+[tool.setuptools.package-data]
+guide = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+markers = ["live: requires a real model provider and credentials (deselected by default)"]
+addopts = "-m 'not live'"
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "BLE", "S"]
+ignore = ["S101"]  # asserts are fine in tests
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S", "BLE"]
+"src/guide_bench/**" = ["S311", "E501"]  # seeded PRNGs and markdown table templates
+"src/guide_agentdojo/**" = ["S311", "E501"]  # seeded PRNGs and markdown/log templates
+"src/guide_realworld/**" = ["E501"]  # benchmark prompt literals
+"scripts/**" = ["S311", "E501"]  # seeded PRNGs and markdown table templates
+
+[tool.mypy]
+python_version = "3.10"
+packages = ["guide", "guide_research"]
+mypy_path = "src"
+strict = true
+warn_unused_ignores = true

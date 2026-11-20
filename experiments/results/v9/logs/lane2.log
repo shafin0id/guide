@@ -1,0 +1,11 @@
+[10/97] new=30 failed=0 run_usd=0.007
+[20/97] new=60 failed=0 run_usd=0.014
+[30/97] new=90 failed=0 run_usd=0.022
+[40/97] new=120 failed=0 run_usd=0.035
+[50/97] new=150 failed=0 run_usd=0.051
+[60/97] new=180 failed=0 run_usd=0.064
+[70/97] new=210 failed=0 run_usd=0.071
+[80/97] new=240 failed=0 run_usd=0.083
+[90/97] new=270 failed=0 run_usd=0.112
+DONE new=291 failed=0 run_usd=0.135
+LANE 2 FINISHED

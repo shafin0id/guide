@@ -1,0 +1,9 @@
+B deleg=(False, False, False) evals=245760 unsound=0 inexact=0 t=0s
+B deleg=(False, False, True) evals=491520 unsound=0 inexact=0 t=0s
+B deleg=(False, True, False) evals=737280 unsound=0 inexact=0 t=1s
+B deleg=(False, True, True) evals=983040 unsound=0 inexact=0 t=1s
+B deleg=(True, False, False) evals=1228800 unsound=0 inexact=0 t=1s
+B deleg=(True, False, True) evals=1474560 unsound=0 inexact=0 t=2s
+B deleg=(True, True, False) evals=1720320 unsound=0 inexact=0 t=2s
+B deleg=(True, True, True) evals=1966080 unsound=0 inexact=0 t=3s
+RESULT {'gate_evaluations': 1966080, 'executed_by_real_gate': 250880, 'denied_by_real_gate': 1715200, 'soundness_violations': 0, 'exactness_violations': 0}

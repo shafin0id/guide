@@ -1,0 +1,195 @@
+{
+  "conditions": {
+    "P": {
+      "runs": 55,
+      "completed": 0.9090909090909091,
+      "halted_integrity": 5,
+      "trace_completeness": 1.0,
+      "model_calls": 4.454545454545454,
+      "tokens_iqr": [
+        2609.0,
+        3030,
+        3333.0
+      ],
+      "wall_iqr": [
+        3.484,
+        4.153,
+        4.848
+      ],
+      "denials": 0,
+      "false_denial_runs": 0,
+      "task_success": 0.9090909090909091,
+      "task_success_ci": [
+        0.7272727272727273,
+        1.0
+      ],
+      "intent_fidelity": 0.9545454545454546,
+      "intent_fidelity_ci": [
+        0.8636363636363636,
+        1.0
+      ],
+      "violation": 0.0,
+      "violation_ci": [
+        0.0,
+        0.0
+      ]
+    },
+    "B2": {
+      "runs": 55,
+      "completed": 1.0,
+      "halted_integrity": 0,
+      "trace_completeness": 0.0,
+      "model_calls": 4.545454545454546,
+      "tokens_iqr": [
+        2675.0,
+        3025,
+        3245.0
+      ],
+      "wall_iqr": [
+        3.709,
+        4.257,
+        4.777
+      ],
+      "denials": 0,
+      "false_denial_runs": 0,
+      "task_success": 1.0,
+      "task_success_ci": [
+        1.0,
+        1.0
+      ],
+      "intent_fidelity": 1.0,
+      "intent_fidelity_ci": [
+        1.0,
+        1.0
+      ],
+      "violation": 0.0,
+      "violation_ci": [
+        0.0,
+        0.0
+      ]
+    },
+    "GPLUS": {
+      "runs": 55,
+      "completed": 0.9090909090909091,
+      "halted_integrity": 5,
+      "trace_completeness": 1.0,
+      "model_calls": 4.454545454545454,
+      "tokens_iqr": [
+        2586.0,
+        3025,
+        3298.0
+      ],
+      "wall_iqr": [
+        3.555,
+        4.016,
+        4.84
+      ],
+      "denials": 0,
+      "false_denial_runs": 0,
+      "task_success": 0.9090909090909091,
+      "task_success_ci": [
+        0.7272727272727273,
+        1.0
+      ],
+      "intent_fidelity": 0.9545454545454546,
+      "intent_fidelity_ci": [
+        0.8636363636363636,
+        1.0
+      ],
+      "violation": 0.0,
+      "violation_ci": [
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "tests": {
+    "task_success": {
+      "P vs B2": {
+        "n_tasks": 11,
+        "mean_diff": -0.09090909090909091,
+        "nonzero": 1,
+        "W": 0.0,
+        "p": 1.0,
+        "note": "fewer than 6 non-zero differences; low power",
+        "p_holm": 1.0
+      },
+      "GPLUS vs P": {
+        "n_tasks": 11,
+        "mean_diff": 0.0,
+        "nonzero": 0,
+        "W": null,
+        "p": NaN,
+        "note": "all paired differences are zero; test uninformative",
+        "p_holm": NaN
+      },
+      "GPLUS vs B2": {
+        "n_tasks": 11,
+        "mean_diff": -0.09090909090909091,
+        "nonzero": 1,
+        "W": 0.0,
+        "p": 1.0,
+        "note": "fewer than 6 non-zero differences; low power",
+        "p_holm": 1.0
+      }
+    },
+    "intent_fidelity": {
+      "P vs B2": {
+        "n_tasks": 11,
+        "mean_diff": -0.045454545454545456,
+        "nonzero": 1,
+        "W": 0.0,
+        "p": 1.0,
+        "note": "fewer than 6 non-zero differences; low power",
+        "p_holm": 1.0
+      },
+      "GPLUS vs P": {
+        "n_tasks": 11,
+        "mean_diff": 0.0,
+        "nonzero": 0,
+        "W": null,
+        "p": NaN,
+        "note": "all paired differences are zero; test uninformative",
+        "p_holm": NaN
+      },
+      "GPLUS vs B2": {
+        "n_tasks": 11,
+        "mean_diff": -0.045454545454545456,
+        "nonzero": 1,
+        "W": 0.0,
+        "p": 1.0,
+        "note": "fewer than 6 non-zero differences; low power",
+        "p_holm": 1.0
+      }
+    },
+    "violation": {
+      "P vs B2": {
+        "n_tasks": 11,
+        "mean_diff": 0.0,
+        "nonzero": 0,
+        "W": null,
+        "p": NaN,
+        "note": "all paired differences are zero; test uninformative",
+        "p_holm": NaN
+      },
+      "GPLUS vs P": {
+        "n_tasks": 11,
+        "mean_diff": 0.0,
+        "nonzero": 0,
+        "W": null,
+        "p": NaN,
+        "note": "all paired differences are zero; test uninformative",
+        "p_holm": NaN
+      },
+      "GPLUS vs B2": {
+        "n_tasks": 11,
+        "mean_diff": 0.0,
+        "nonzero": 0,
+        "W": null,
+        "p": NaN,
+        "note": "all paired differences are zero; test uninformative",
+        "p_holm": NaN
+      }
+    }
+  }
+}

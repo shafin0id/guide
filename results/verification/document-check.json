@@ -1,0 +1,47 @@
+{
+  "references": 109,
+  "tables": 15,
+  "figures": 7,
+  "native_equations": 15,
+  "main_pdf_pages": 35,
+  "supplement_pdf_pages": 2,
+  "text_change_records": 121,
+  "citation_targets_in_range": true,
+  "offline_audit_matches_imported_result": true,
+  "layout": "35 main pages and 2 supplement pages; all changed pages inspected, unchanged pages matched earlier reviewed render. Canvas text read back; visual preview unavailable.",
+  "authorship_update": "Shafin Ahmad first author; Maythem Kamal Abbas co-author and corresponding author; changed rendered pages inspected.",
+  "checked_rewrite_passages": 65,
+  "unrelated_paragraphs_unchanged": true,
+  "tables_figures_equations_unchanged": "Numerical table results and figures unchanged; Table 1 labels and native Equation 4 intentionally revised.",
+  "rewrite_scope": "Compared author rewrites with prior manuscript and retained evidence; no new experiments or full reference-source audit.",
+  "final_proofread": {
+    "wording_corrections": 11,
+    "tables": 15,
+    "figures": 7,
+    "references": 109,
+    "main_pdf_pages": 34,
+    "comments_or_tracked_changes": 0,
+    "visual_check": "Eight changed pages inspected after rendering; other 26 pages pixel-identical to previously inspected render.",
+    "pending_author_confirmation": "Corresponding author competing-interest declaration; current statement covers Shafin Ahmad only."
+  },
+  "claim_scope_revision": {
+    "passages_and_labels": 16,
+    "replacement_words": 503,
+    "production_source_unchanged": true,
+    "experimental_table_numbers_unchanged": true,
+    "references_unchanged": true,
+    "equation_4": "Procedure notation replaces unsupported least-policy intersection",
+    "unresolved_code_issues": "Disclosed in manuscript Section 5.7 and audit/claim-scope-corrections.md",
+    "layout": "35 main pages and 2 supplement pages; all changed pages inspected, unchanged pages matched earlier reviewed render. Canvas text read back; visual preview unavailable."
+  },
+  "author_claim_rewrite_check": {
+    "passages_checked": 16,
+    "paragraphs_updated": 13,
+    "tables_figures_equations_references_unchanged": true,
+    "main_pages": 35,
+    "supplement_pages": 2,
+    "production_code_unchanged": true,
+    "meaning_corrections": "Restored bound, exactness, assumptions, known synthesis counterexamples, fixed-DAG scope and unresolved enforcement limitations; removed unrelated/duplicated text.",
+    "layout": "All changed rendered pages inspected; unchanged pages matched previous reviewed render."
+  }
+}

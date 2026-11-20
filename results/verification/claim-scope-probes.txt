@@ -1,0 +1,6 @@
+SYNTHESIS {"domains": ["corp.example"], "recipients": ["a@corp.example", "service-42"], "old": ["ALLOW", "ALLOW"], "new": ["ALLOW", "DENY"]}
+UNSELECTABLE_COLUMNS ALLOW
+MALFORMED_COLUMNS TypeError unhashable type: 'dict'
+NUMERIC_AUTHORITY {"input": 1000, "authority_admits": true, "gate": "BOUND", "executed_args": {"limit": 100}}
+NUMERIC_AUTHORITY {"input": true, "authority_admits": true, "gate": "DENY", "executed_args": null}
+LEAST_ELEMENT {"synthesized_bounds": {"limit": [1, 100]}, "smaller_bounds": {"limit": [1, 1]}, "smaller_policy_admits_observed": "ALLOW"}

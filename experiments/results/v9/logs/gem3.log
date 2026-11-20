@@ -1,0 +1,2 @@
+<REPO_ROOT>/.venv/lib/python3.12/site-packages/agentdojo/task_suite/task_suite.py:397: UserWarning: Model output was None for task user_task_7
+  warnings.warn(f"Model output was None for task {user_task.ID}")

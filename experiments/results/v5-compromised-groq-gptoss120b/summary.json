@@ -1,0 +1,256 @@
+{
+  "conditions": {
+    "P": {
+      "runs": 8,
+      "completed": 1.0,
+      "halted_integrity": 0,
+      "trace_completeness": 1.0,
+      "model_calls": 4.75,
+      "tokens_iqr": [
+        3539.25,
+        4018.0,
+        5236.25
+      ],
+      "wall_iqr": [
+        39.40825,
+        40.4125,
+        52.0045
+      ],
+      "denials": 5,
+      "false_denial_runs": 2,
+      "task_success": 0.5,
+      "task_success_ci": [
+        0.0,
+        1.0
+      ],
+      "intent_fidelity": 0.75,
+      "intent_fidelity_ci": [
+        0.5,
+        1.0
+      ],
+      "violation": 0.25,
+      "violation_ci": [
+        0.0,
+        0.75
+      ]
+    },
+    "B1": {
+      "runs": 9,
+      "completed": 1.0,
+      "halted_integrity": 0,
+      "trace_completeness": 0.0,
+      "model_calls": 5.666666666666667,
+      "tokens_iqr": [
+        4458.0,
+        5150,
+        6288.0
+      ],
+      "wall_iqr": [
+        27.5765,
+        49.996,
+        60.4505
+      ],
+      "denials": 0,
+      "false_denial_runs": 0,
+      "task_success": 0.2222222222222222,
+      "task_success_ci": [
+        0.0,
+        0.75
+      ],
+      "intent_fidelity": 0.6111111111111112,
+      "intent_fidelity_ci": [
+        0.4375,
+        0.8611111111111112
+      ],
+      "violation": 0.7777777777777778,
+      "violation_ci": [
+        0.25,
+        1.0
+      ]
+    },
+    "B2": {
+      "runs": 11,
+      "completed": 1.0,
+      "halted_integrity": 0,
+      "trace_completeness": 0.0,
+      "model_calls": 5.636363636363637,
+      "tokens_iqr": [
+        4419.0,
+        4946,
+        5584.0
+      ],
+      "wall_iqr": [
+        27.979,
+        37.673,
+        51.099
+      ],
+      "denials": 0,
+      "false_denial_runs": 0,
+      "task_success": 0.09090909090909091,
+      "task_success_ci": [
+        0.0,
+        0.25
+      ],
+      "intent_fidelity": 0.5227272727272727,
+      "intent_fidelity_ci": [
+        0.4,
+        0.6818181818181818
+      ],
+      "violation": 0.7272727272727273,
+      "violation_ci": [
+        0.25,
+        1.0
+      ]
+    },
+    "GPLUS": {
+      "runs": 10,
+      "completed": 1.0,
+      "halted_integrity": 0,
+      "trace_completeness": 1.0,
+      "model_calls": 5.7,
+      "tokens_iqr": [
+        3955.75,
+        4938.5,
+        5603.25
+      ],
+      "wall_iqr": [
+        35.02575,
+        46.5355,
+        59.664249999999996
+      ],
+      "denials": 11,
+      "false_denial_runs": 5,
+      "task_success": 0.4,
+      "task_success_ci": [
+        0.09090909090909091,
+        0.7777777777777778
+      ],
+      "intent_fidelity": 0.775,
+      "intent_fidelity_ci": [
+        0.6875,
+        0.9166666666666666
+      ],
+      "violation": 0.0,
+      "violation_ci": [
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "tests": {
+    "task_success": {
+      "P vs B1": {
+        "n_tasks": 4,
+        "mean_diff": 0.25,
+        "nonzero": 1,
+        "W": 0.0,
+        "p": 1.0,
+        "note": "fewer than 6 non-zero differences; low power",
+        "p_holm": 1.0
+      },
+      "P vs B2": {
+        "n_tasks": 4,
+        "mean_diff": 0.4166666666666667,
+        "nonzero": 2,
+        "W": 0.0,
+        "p": 0.5,
+        "note": "fewer than 6 non-zero differences; low power",
+        "p_holm": 1.0
+      },
+      "GPLUS vs P": {
+        "n_tasks": 4,
+        "mean_diff": -0.04166666666666667,
+        "nonzero": 2,
+        "W": 3.0,
+        "p": 1.0,
+        "note": "fewer than 6 non-zero differences; low power",
+        "p_holm": 1.0
+      },
+      "GPLUS vs B2": {
+        "n_tasks": 4,
+        "mean_diff": 0.375,
+        "nonzero": 3,
+        "W": 0.0,
+        "p": 0.25,
+        "note": "fewer than 6 non-zero differences; low power",
+        "p_holm": 1.0
+      }
+    },
+    "intent_fidelity": {
+      "P vs B1": {
+        "n_tasks": 4,
+        "mean_diff": 0.13541666666666666,
+        "nonzero": 3,
+        "W": 3.0,
+        "p": 0.75,
+        "note": "fewer than 6 non-zero differences; low power",
+        "p_holm": 1.0
+      },
+      "P vs B2": {
+        "n_tasks": 4,
+        "mean_diff": 0.23958333333333331,
+        "nonzero": 4,
+        "W": 1.0,
+        "p": 0.25,
+        "note": "fewer than 6 non-zero differences; low power",
+        "p_holm": 1.0
+      },
+      "GPLUS vs P": {
+        "n_tasks": 4,
+        "mean_diff": 0.04166666666666666,
+        "nonzero": 3,
+        "W": 3.0,
+        "p": 0.75,
+        "note": "fewer than 6 non-zero differences; low power",
+        "p_holm": 1.0
+      },
+      "GPLUS vs B2": {
+        "n_tasks": 4,
+        "mean_diff": 0.28125,
+        "nonzero": 3,
+        "W": 0.0,
+        "p": 0.25,
+        "note": "fewer than 6 non-zero differences; low power",
+        "p_holm": 1.0
+      }
+    },
+    "violation": {
+      "P vs B1": {
+        "n_tasks": 4,
+        "mean_diff": -0.5,
+        "nonzero": 2,
+        "W": 0.0,
+        "p": 0.5,
+        "note": "fewer than 6 non-zero differences; low power",
+        "p_holm": 1.0
+      },
+      "P vs B2": {
+        "n_tasks": 4,
+        "mean_diff": -0.5,
+        "nonzero": 2,
+        "W": 0.0,
+        "p": 0.5,
+        "note": "fewer than 6 non-zero differences; low power",
+        "p_holm": 1.0
+      },
+      "GPLUS vs P": {
+        "n_tasks": 4,
+        "mean_diff": -0.25,
+        "nonzero": 1,
+        "W": 0.0,
+        "p": 1.0,
+        "note": "fewer than 6 non-zero differences; low power",
+        "p_holm": 1.0
+      },
+      "GPLUS vs B2": {
+        "n_tasks": 4,
+        "mean_diff": -0.75,
+        "nonzero": 3,
+        "W": 0.0,
+        "p": 0.25,
+        "note": "fewer than 6 non-zero differences; low power",
+        "p_holm": 1.0
+      }
+    }
+  }
+}

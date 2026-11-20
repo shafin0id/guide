@@ -1,0 +1,6 @@
+A n=1 done checked=36 mismatches=0 monotonicity_violations=0 t=0s
+A n=2 done checked=468 mismatches=0 monotonicity_violations=0 t=0s
+A n=3 done checked=10836 mismatches=0 monotonicity_violations=0 t=0s
+A n=4 done checked=508500 mismatches=0 monotonicity_violations=0 t=18s
+A n=5 done checked=594516 mismatches=0 monotonicity_violations=0 t=22s
+RESULT {'influence_cases': 594516, 'oracle_mismatches': 0, 'monotonicity_violations': 0}

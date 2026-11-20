@@ -1,0 +1,200 @@
+{
+  "v6_benign_util": {
+    "value": "61.9%",
+    "raw": 0.6185567010309279,
+    "detail": "60/97",
+    "source": "experiments/results/agentdojo-v6/*/summary_none.json",
+    "manuscript": true
+  },
+  "v6_attack_util": {
+    "value": "68.4%",
+    "raw": 0.6843100189035917,
+    "detail": "362/529",
+    "source": "experiments/results/agentdojo-v6/*/summary_important_instructions.json",
+    "manuscript": true
+  },
+  "v6_asr": {
+    "value": "2.3%",
+    "raw": 0.022684310018903593,
+    "detail": "12/529",
+    "source": "experiments/results/agentdojo-v6/*/summary_important_instructions.json",
+    "manuscript": true
+  },
+  "v6b_benign_util": {
+    "value": "91.8%",
+    "raw": 0.9175257731958762,
+    "detail": "89/97",
+    "source": "experiments/results/agentdojo-v6b-undefended/*/summary_none.json",
+    "manuscript": true
+  },
+  "v6b_attack_util": {
+    "value": "85.6%",
+    "raw": 0.8563327032136105,
+    "detail": "453/529",
+    "source": "experiments/results/agentdojo-v6b-undefended/*/summary_important_instructions.json",
+    "manuscript": true
+  },
+  "v6b_asr": {
+    "value": "2.1%",
+    "raw": 0.020793950850661626,
+    "detail": "11/529",
+    "source": "experiments/results/agentdojo-v6b-undefended/*/summary_important_instructions.json",
+    "manuscript": true
+  },
+  "util_cost_pp": {
+    "value": "29.9",
+    "raw": 29.89690721649484,
+    "source": "experiments/results/agentdojo-v6b-undefended + agentdojo-v6",
+    "manuscript": true
+  },
+  "slack_cost_pp": {
+    "value": "66.7",
+    "raw": 66.66666666666666,
+    "source": "experiments/results/agentdojo-v6b-undefended/slack + agentdojo-v6/slack",
+    "manuscript": true
+  },
+  "v7a_acc": {
+    "value": "92.8%",
+    "source": "experiments/results/predict-utility-v7a/summary.json",
+    "manuscript": true
+  },
+  "v7a_ci": {
+    "value": "[85.8%, 96.5%]",
+    "source": "experiments/results/predict-utility-v7a/summary.json",
+    "manuscript": true
+  },
+  "v7a_fn_onpath": {
+    "value": "0",
+    "source": "experiments/results/predict-utility-v7a/summary.json",
+    "manuscript": true
+  },
+  "m1_containment_full": {
+    "value": "92.3%",
+    "source": "experiments/results/compromise-replay-v8/summary.json",
+    "manuscript": true
+  },
+  "m1_ci_full": {
+    "value": "[89.9%, 94.2%]",
+    "source": "experiments/results/compromise-replay-v8/summary.json",
+    "manuscript": true
+  },
+  "m1_containment_v6sub": {
+    "value": "89.5%",
+    "source": "experiments/results/compromise-replay-v8/summary.json",
+    "manuscript": true
+  },
+  "m1_sink_block_rate": {
+    "value": "93.6%",
+    "source": "experiments/results/compromise-replay-v8/summary.json",
+    "manuscript": true
+  },
+  "m1_in_scope_pairs": {
+    "value": "588",
+    "source": "experiments/results/compromise-replay-v8/summary.json",
+    "manuscript": true
+  },
+  "m1_soundness_violations": {
+    "value": "0",
+    "source": "experiments/results/compromise-replay-v8/summary.json",
+    "manuscript": true
+  },
+  "m1_exactness_gaps": {
+    "value": "0",
+    "source": "experiments/results/compromise-replay-v8/summary.json",
+    "manuscript": true
+  },
+  "m1b_acc": {
+    "value": "96.9%",
+    "source": "experiments/results/final-v8/v7a_attributable_loss.json",
+    "manuscript": true
+  },
+  "m1b_pred_blocked": {
+    "value": "31",
+    "source": "experiments/results/final-v8/v7a_attributable_loss.json",
+    "manuscript": true
+  },
+  "m1b_pred_blocked_pp": {
+    "value": "32.0",
+    "source": "experiments/results/final-v8/v7a_attributable_loss.json",
+    "manuscript": true
+  },
+  "m1b_lost_pp": {
+    "value": "30.9",
+    "source": "experiments/results/final-v8/v7a_attributable_loss.json",
+    "manuscript": true
+  },
+  "m1b_net_cost_pp": {
+    "value": "29.9",
+    "source": "experiments/results/final-v8/v7a_attributable_loss.json",
+    "manuscript": true
+  },
+  "m1b_lost_count": {
+    "value": "30",
+    "source": "experiments/results/final-v8/v7a_attributable_loss.json",
+    "manuscript": true
+  },
+  "m2_chain_count": {
+    "value": "49",
+    "source": "experiments/results/topology-v8/summary.json",
+    "manuscript": true
+  },
+  "m2_dominated_count": {
+    "value": "55",
+    "source": "experiments/results/topology-v8/summary.json",
+    "manuscript": true
+  },
+  "m2_census_n": {
+    "value": "55",
+    "source": "experiments/results/topology-v8/summary.json",
+    "manuscript": true
+  },
+  "m2_abs_reduction_median": {
+    "value": "1.0",
+    "source": "experiments/results/topology-v8/summary.json",
+    "manuscript": true
+  },
+  "v7b_configs": {
+    "value": "37",
+    "source": "experiments/mining/configs.jsonl",
+    "manuscript": true
+  },
+  "v7b_scored": {
+    "value": "36",
+    "source": "experiments/mining/summary.json",
+    "manuscript": true
+  },
+  "v7b_no_sink": {
+    "value": "34",
+    "source": "experiments/mining/summary.json",
+    "manuscript": true
+  },
+  "v7b_sequential": {
+    "value": "36",
+    "source": "experiments/mining/summary.json",
+    "manuscript": true
+  },
+  "v6_tokens": {
+    "value": "11,426,990",
+    "raw": 11426990,
+    "source": "experiments/results/agentdojo-v6/*/summary_*.json",
+    "manuscript": true
+  },
+  "v6_cny": {
+    "value": "13.93",
+    "raw": 13.926008,
+    "source": "experiments/results/agentdojo-v6/*/summary_*.json",
+    "manuscript": true
+  },
+  "v6b_tokens": {
+    "value": "9,068,246",
+    "raw": 9068246,
+    "source": "experiments/results/agentdojo-v6b-undefended/*/summary_*.json",
+    "manuscript": true
+  },
+  "v6b_cny": {
+    "value": "10.89",
+    "raw": 10.885166,
+    "source": "experiments/results/agentdojo-v6b-undefended/*/summary_*.json",
+    "manuscript": true
+  }
+}
