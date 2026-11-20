@@ -1,7 +1,0 @@
-{
- "gate_evaluations": 1966080,
- "executed_by_real_gate": 250880,
- "denied_by_real_gate": 1715200,
- "soundness_violations": 0,
- "exactness_violations": 0
-}
